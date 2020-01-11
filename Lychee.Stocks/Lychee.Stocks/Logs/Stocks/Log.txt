@@ -1,0 +1,66 @@
+2020-01-05 21:08:15.470 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:08:15.478 +13:00 [INF] Downloading Chromium
+2020-01-05 21:24:10.212 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:24:10.219 +13:00 [INF] Downloading Chromium
+2020-01-05 21:28:50.909 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:28:50.922 +13:00 [INF] Downloading Chromium
+2020-01-05 21:33:49.209 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:33:49.221 +13:00 [INF] Downloading Chromium
+2020-01-05 21:34:56.489 +13:00 [ERR] 
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Lychee.Scrapper.Domain.Helpers.ScrappedDataHelper.MapToDictionary[T](List`1 scrappedData, Dictionary`2 columnDefinitions)
+   at Lychee.Stocks.Domain.Services.StockService.SaveTechnicalAnalysis(List`1 data) in C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\Services\StockService.cs:line 90
+   at Lychee.Stocks.Domain.Services.StockService.<UpdateAllStocks>d__10.MoveNext() in C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\Services\StockService.cs:line 77
+2020-01-05 21:36:23.317 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:36:23.323 +13:00 [INF] Downloading Chromium
+2020-01-05 21:39:24.992 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:39:25.001 +13:00 [INF] Downloading Chromium
+2020-01-05 21:46:32.937 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:46:32.944 +13:00 [INF] Downloading Chromium
+2020-01-05 21:46:50.849 +13:00 [ERR] 
+System.Collections.Generic.KeyNotFoundException: The given key was not present in the dictionary.
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Lychee.Stocks.Domain.Services.StockService.SaveStockHistory(List`1 data) in C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\Services\StockService.cs:line 124
+   at Lychee.Stocks.Domain.Services.StockService.<UpdateAllStocks>d__10.MoveNext() in C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\Services\StockService.cs:line 78
+2020-01-05 21:48:18.634 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:48:18.642 +13:00 [INF] Downloading Chromium
+2020-01-05 21:51:27.230 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:51:27.238 +13:00 [INF] Downloading Chromium
+2020-01-05 21:55:29.703 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 21:55:29.709 +13:00 [INF] Downloading Chromium
+2020-01-05 22:00:10.039 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 22:00:10.047 +13:00 [INF] Downloading Chromium
+2020-01-05 22:27:15.865 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 22:27:15.872 +13:00 [INF] Downloading Chromium
+2020-01-05 22:28:49.294 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 22:28:49.300 +13:00 [INF] Downloading Chromium
+2020-01-05 22:47:25.726 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 22:47:25.734 +13:00 [INF] Downloading Chromium
+2020-01-05 22:49:12.755 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 22:49:12.763 +13:00 [INF] Downloading Chromium
+2020-01-05 22:51:14.377 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-05 22:51:14.385 +13:00 [INF] Downloading Chromium
+2020-01-06 23:08:51.442 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-06 23:08:51.451 +13:00 [INF] Downloading Chromium
+2020-01-06 23:10:05.179 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-06 23:10:05.187 +13:00 [INF] Downloading Chromium
+2020-01-07 21:48:46.912 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-07 21:48:46.922 +13:00 [INF] Downloading Chromium
+2020-01-07 21:50:56.439 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-07 21:50:56.448 +13:00 [INF] Downloading Chromium
+2020-01-07 22:02:02.921 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-07 22:02:02.931 +13:00 [INF] Downloading Chromium
+2020-01-07 22:05:10.915 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-07 22:05:10.927 +13:00 [INF] Downloading Chromium
+2020-01-07 22:10:18.981 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-07 22:10:18.994 +13:00 [INF] Downloading Chromium
+2020-01-07 22:12:52.682 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-07 22:12:52.695 +13:00 [INF] Downloading Chromium
+2020-01-07 23:08:02.343 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-07 23:08:02.350 +13:00 [INF] Downloading Chromium
+2020-01-08 21:31:16.832 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-08 21:31:16.841 +13:00 [INF] Downloading Chromium
+2020-01-09 21:53:22.515 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-09 21:53:22.523 +13:00 [INF] Downloading Chromium
+2020-01-10 21:53:38.638 +13:00 [INF] Attempting to set up puppeteer to use Chromium found under directory C:\Cawi\DEV\Lychee\Lychee.Scrapper\CustomChromium
+2020-01-10 21:53:38.649 +13:00 [INF] Downloading Chromium
