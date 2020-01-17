@@ -1,0 +1,53 @@
+﻿@using Lychee.Stocks.Domain.Constants
+@model IEnumerable<Lychee.Stocks.Entities.MyPrediction>
+
+@{
+    ViewBag.Title = "Prediction";
+}
+
+<table class="table table-hover table-striped">
+    <tr>
+        <th>
+            Code
+        </th>
+        <th>
+            Prediction
+        </th>
+        <th>
+            Correct?
+        </th>
+        <th>
+            Comments
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Prediction)
+        </td>
+        <td>
+            @if (item.IsCorrect != null)
+            {
+                var check = item.IsCorrect.Value ? "checked=\"check\"" : "";
+                <input type="checkbox" @check disabled="disabled"/>
+            }
+        </td>
+        <td>
+            @if (string.IsNullOrEmpty(item.Comments))
+            {
+                @Html.ActionLink("Edit", "EditPrediction", "Stock", new {id = item.Id }, null)
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.Comments)
+            }
+        </td>
+    </tr>
+}
+
+</table>

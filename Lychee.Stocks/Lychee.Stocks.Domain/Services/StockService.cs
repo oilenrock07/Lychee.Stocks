@@ -29,6 +29,7 @@ namespace Lychee.Stocks.Domain.Services
         private readonly Infrastructure.Interfaces.IRepository<Stock> _stockRepository;
         private readonly Infrastructure.Interfaces.IRepository<TechnicalAnalysis> _technicalAnalysis;
         private readonly Infrastructure.Interfaces.IRepository<StockHistory> _stockHistoryRepository;
+        private readonly Infrastructure.Interfaces.IRepository<MyPrediction> _predictionRepository;
 
         public StockService(IDatabaseFactory databaseFactory, ISettingRepository settingRepository, 
             ILoggingService loggingService, IWebQueryService websQueryService,
@@ -36,7 +37,7 @@ namespace Lychee.Stocks.Domain.Services
             IColumnDefinitionRepository columnDefinitionRepository,
             Infrastructure.Interfaces.IRepository<Stock> stockRepository,
             Infrastructure.Interfaces.IRepository<TechnicalAnalysis> technicalAnalysis,
-            Infrastructure.Interfaces.IRepository<StockHistory> stockHistoryRepository)
+            Infrastructure.Interfaces.IRepository<StockHistory> stockHistoryRepository, Infrastructure.Interfaces.IRepository<MyPrediction> predictionRepository)
         {
             _databaseFactory = databaseFactory;
             _settingRepository = settingRepository;
@@ -48,6 +49,7 @@ namespace Lychee.Stocks.Domain.Services
             _stockRepository = stockRepository;
             _technicalAnalysis = technicalAnalysis;
             _stockHistoryRepository = stockHistoryRepository;
+            _predictionRepository = predictionRepository;
         }
 
         public async Task UpdateAllStocks()
@@ -139,6 +141,20 @@ namespace Lychee.Stocks.Domain.Services
             }
 
             _databaseFactory.SaveChanges();
+        }
+
+        public bool HasStockData(DateTime date)
+        {
+            return false;
+        }
+
+        public ICollection<MyPrediction> GetLast5DaysPredictions()
+        {
+            var date = DateTime.Now.AddDays(-5);
+            return _predictionRepository
+                .Find(x => x.DateCreated >= date)
+                .OrderByDescending(x => x.DateCreated)
+                .ToList();
         }
 
         private async Task LogIn(Page page, ResultCollection<ResultItemCollection> resultCollection, Dictionary<string, object> args)

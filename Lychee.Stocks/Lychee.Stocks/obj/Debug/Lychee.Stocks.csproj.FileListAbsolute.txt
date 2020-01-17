@@ -98,7 +98,6 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Fizzler.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Fizzler.Systems.HtmlAgilityPack.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\FSharp.Core.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\HtmlAgilityPack.dll
-C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\JetEntityFrameworkProvider.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.Scrapper.Domain.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.Scrapper.Entities.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.Scrapper.Repository.dll
@@ -157,3 +156,9 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\ru\FSharp.Core.
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\tr\FSharp.Core.resources.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\zh-Hans\FSharp.Core.resources.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\zh-Hant\FSharp.Core.resources.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\System.Net.Http.Formatting.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\System.Web.Http.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\System.Web.Http.WebHost.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\System.Net.Http.Formatting.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\System.Web.Http.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\System.Web.Http.WebHost.xml

@@ -12,5 +12,7 @@ namespace Lychee.Stocks.Entities
         public virtual IDbSet<Stock> Stocks { get; set; }
         public virtual IDbSet<StockHistory> StockHistory { get; set; }
         public virtual IDbSet<TechnicalAnalysis> TechnicalAnalysis { get; set; }
+
+        public virtual IDbSet<MyPrediction> Predictions { get; set; }
     }
 }

@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Lychee.Scrapper.Domain.Models.Scrappers;
+using Lychee.Stocks.Entities;
 
 namespace Lychee.Stocks.Domain.Interfaces.Services
 {
@@ -10,5 +13,9 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         Task<ResultCollection<ResultItemCollection>> FetchRealTimeStocks();
 
         void SaveStocks(ResultCollection<ResultItemCollection> collections);
+
+        bool HasStockData(DateTime date);
+
+        ICollection<MyPrediction> GetLast5DaysPredictions();
     }
 }
