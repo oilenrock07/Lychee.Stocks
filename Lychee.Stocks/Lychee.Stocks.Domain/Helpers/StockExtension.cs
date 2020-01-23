@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using Lychee.Scrapper.Domain.Helpers;
 
 namespace Lychee.Stocks.Domain.Helpers
@@ -20,6 +21,19 @@ namespace Lychee.Stocks.Domain.Helpers
             }
 
             return strNumber.ToDecimal();
+        }
+
+        public static string ConvertToShortHand(this decimal number)
+        {
+            if (number >= 1000000000)
+                return $"{number / 1000000000} B";
+            if (number >= 1000000)
+                return $"{number / 1000000} M";
+            if (number >= 1000)
+                return $"{number / 1000} K";
+
+            return number.ToString(CultureInfo.InvariantCulture);
+
         }
     }
 }

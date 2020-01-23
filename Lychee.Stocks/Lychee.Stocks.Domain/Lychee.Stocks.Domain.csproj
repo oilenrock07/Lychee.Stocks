@@ -78,7 +78,7 @@
       <HintPath>..\packages\LycheeScrapper.GoogleAPI.Sheet.1.0.0\lib\net40\Lychee.GoogleAPI.Common.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Infrastructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Infrastructure.1.1.0\lib\net40\Lychee.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\Lychee.Infrastructure.1.2.0\lib\net40\Lychee.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Scrapper.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LycheeScrapper.Domain.1.2.3\lib\net40\Lychee.Scrapper.Domain.dll</HintPath>

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using Lychee.Stocks.Domain.Interfaces.Services;
-using Lychee.Stocks.Entities;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -20,8 +15,6 @@ namespace Lychee.Stocks.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var stocks = await _stockService.FetchRealTimeStocks();
-            _stockService.SaveStocks(stocks);
             return View();
         }
 

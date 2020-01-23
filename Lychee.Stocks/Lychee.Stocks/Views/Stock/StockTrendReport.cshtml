@@ -1,0 +1,51 @@
+﻿@using Lychee.Stocks.Domain.Constants
+@using Lychee.Stocks.Domain.Helpers
+@model IEnumerable<Lychee.Stocks.Entities.StockTrendReportModel>
+
+<table class="table table-hover table-striped">
+    <tr>
+        <th>
+            Code
+        </th>
+        <th>
+            Last
+        </th>
+        <th>
+            Volume
+        </th>
+        <th>
+            Low
+        </th>
+        <th>
+            High
+        </th>
+        <th>
+            Stock Type
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+            </td>
+            <td>
+                @item.Last
+            </td>
+            <td>
+                @item.Volume.ConvertToShortHand()
+            </td>
+            <td>
+                @item.Low
+            </td>
+            <td>
+                @item.High
+            </td>
+            <td>
+                @item.StockType
+            </td>
+        </tr>
+    }
+
+</table>

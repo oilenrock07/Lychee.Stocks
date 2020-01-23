@@ -2,10 +2,22 @@
     ViewBag.Title = "Home Page";
 }
 
+<div class="row">
+    @{ Html.RenderAction("LastDataUpdates", "Stock");}
+</div>
+
 <div class="jumbotron">
+
+    @if (TempData["FetchRealTimeData"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            Successfully fetched real time data
+        </div>
+    }
+
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <p><a href="/Stock/FetchRealTimeData" class="btn btn-primary btn-lg">Fetch Real Time Data &raquo;</a></p>
 </div>
 
 <div class="row">
@@ -14,16 +26,18 @@
         <p>
             @{ Html.RenderAction("Prediction", "Stock");}
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Create Prediction &raquo;</a></p>
+        <p><a class="btn btn-default" href="/Stock/CreatePrediction">Create Prediction &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>8/2 Down Trends</h2>
+        <p>
+            @{ Html.RenderAction("StockTrendReport", "Stock", new { days = 10, losingWinningStreak = 8, trend = "Bearish" });}
+        </p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>3/3 Up Trends</h2>
+        <p>
+            @{ Html.RenderAction("StockTrendReport", "Stock", new { days = 3, losingWinningStreak = 3, trend = "Bullish" });}
+        </p>
     </div>
 </div>

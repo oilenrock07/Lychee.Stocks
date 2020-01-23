@@ -1,7 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Net.Configuration;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 using Lychee.Infrastructure.Interfaces;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Entities;
+using Lychee.Stocks.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -15,6 +20,16 @@ namespace Lychee.Stocks.Controllers
             _stockService = stockService;
             _predictionRepository = predictionRepository;
         }
+
+        public async Task<ActionResult> FetchRealTimeData()
+        {
+            var stocks = await _stockService.FetchRealTimeStocks();
+            _stockService.SaveStocks(stocks);
+
+            TempData["FetchRealTimeData"] = "Success";
+            return RedirectToAction("Index", "Home");
+        }
+
 
         //[OutputCache(Duration = 300)] //5 minutes cache
         public PartialViewResult Prediction()
@@ -33,6 +48,37 @@ namespace Lychee.Stocks.Controllers
         public ActionResult EditPrediction(MyPrediction model)
         {
             _predictionRepository.Update(model);
+            _predictionRepository.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult CreatePrediction()
+        {
+            return View(new MyPrediction());
+        }
+
+        public ActionResult LastDataUpdates()
+        {
+            var date = _stockService.GetLastDataUpdates();
+            var viewModel = new LastDataUpdateViewModel
+            {
+                LastStockHistoryUpdate = date
+            };
+            return PartialView(viewModel);
+        }
+
+        public ActionResult StockTrendReport(int days, int losingWinningStreak, string trend)
+        {
+            var result = _stockService.GetStockTrendReport(days, losingWinningStreak, trend);
+            return PartialView(result);
+        }
+
+
+        [HttpPost]
+        public ActionResult CreatePrediction(MyPrediction model)
+        {
+            model.DateCreated = DateTime.Now;
+            _predictionRepository.Add(model);
             _predictionRepository.SaveChanges();
             return RedirectToAction("Index", "Home");
         }

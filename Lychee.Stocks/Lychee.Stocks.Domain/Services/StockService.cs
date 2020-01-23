@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Lychee.Infrastructure.Interfaces;
@@ -146,6 +147,23 @@ namespace Lychee.Stocks.Domain.Services
         public bool HasStockData(DateTime date)
         {
             return false;
+        }
+
+        public DateTime GetLastDataUpdates()
+        {
+            var lastStockHistory = _stockHistoryRepository.GetAll().Take(1).First();
+            return lastStockHistory.Date;
+        }
+
+        public ICollection<StockTrendReportModel> GetStockTrendReport(int days, int losingWinningStreak, string trend = "Bearish")
+        {
+            var paramDays = new SqlParameter {ParameterName = "Days", Value = days};
+            var paramLosingWinningStreak = new SqlParameter { ParameterName = "LosingWinningStreak", Value = losingWinningStreak };
+            var paramTrend = new SqlParameter { ParameterName = "Trend", Value = trend };
+
+            return _stockRepository.ExecuteSqlQuery<StockTrendReportModel>(
+                "EXEC RetrieveStockTrendReport @Days, @LosingWinningStreak, @Trend", paramDays,
+                paramLosingWinningStreak, paramTrend).ToList();
         }
 
         public ICollection<MyPrediction> GetLast5DaysPredictions()
