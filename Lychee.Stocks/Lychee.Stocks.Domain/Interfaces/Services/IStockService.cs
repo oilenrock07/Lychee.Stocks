@@ -22,5 +22,6 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
 
         ICollection<StockTrendReportModel> GetStockTrendReport(int days, int losingWinningStreak,
             string trend = "Bearish");
+        
     }
 }

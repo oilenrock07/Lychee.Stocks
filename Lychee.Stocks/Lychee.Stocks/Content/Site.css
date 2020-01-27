@@ -26,3 +26,16 @@ textarea {
 .data-updates {
     margin-right: 20px;
 }
+
+
+.color-downtrend {
+    color: red;
+}
+
+.color-uptrend {
+    color: green;
+}
+
+.report-stock-highlight {
+    background-color: yellow;
+}

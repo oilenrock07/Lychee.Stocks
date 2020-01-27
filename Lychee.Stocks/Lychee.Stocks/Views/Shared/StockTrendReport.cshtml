@@ -2,6 +2,10 @@
 @using Lychee.Stocks.Domain.Helpers
 @model IEnumerable<Lychee.Stocks.Entities.StockTrendReportModel>
 
+@{
+    var stockCodes = (List<string>) ViewData["CodeExistsForAll"];
+}
+
 <table class="table table-hover table-striped">
     <tr>
         <th>
@@ -25,8 +29,10 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model) {
-        <tr>
+    @foreach (var item in Model)
+    {
+        var highlightClass = stockCodes != null && stockCodes.Contains(item.StockCode) ? "report-stock-highlight" : "";
+        <tr class="@highlightClass">
             <td>
                 <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
             </td>

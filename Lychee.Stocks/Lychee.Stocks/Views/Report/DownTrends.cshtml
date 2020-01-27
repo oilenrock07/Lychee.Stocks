@@ -1,0 +1,21 @@
+﻿@model Lychee.Stocks.Models.Reports.DownTrendReportViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="color-downtrend">5/5 Days Down</h2>
+        @Html.Partial("StockTrendReport", Model.FiveOverFive, new ViewDataDictionary { { "CodeExistsForAll", Model.StockCodesThatExistsForAll} })
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-downtrend">10/8 Days Down</h2>
+        @Html.Partial("StockTrendReport", Model.TenOverEight, new ViewDataDictionary { { "CodeExistsForAll", Model.StockCodesThatExistsForAll} })
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-downtrend">20/15 Days Down</h2>
+        @Html.Partial("StockTrendReport", Model.TwentyOveryFifteen, new ViewDataDictionary { { "CodeExistsForAll", Model.StockCodesThatExistsForAll} })
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-downtrend">30/20 Days Down</h2>
+        @Html.Partial("StockTrendReport", Model.ThirtyOverTwenty, new ViewDataDictionary { { "CodeExistsForAll", Model.StockCodesThatExistsForAll} })
+    </div>
+</div>
+

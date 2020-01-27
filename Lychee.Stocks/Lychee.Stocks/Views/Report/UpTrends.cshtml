@@ -1,0 +1,29 @@
+﻿@model Lychee.Stocks.Models.Reports.UpTrendReportViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="color-uptrend">2/2 Days Up</h2>
+        @Html.Partial("StockTrendReport", Model.FiveOverFive, new ViewDataDictionary { { "CodeExistsForAll", Model.StockCodesThatExistsForAll} })
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-uptrend">3/3 Days Up</h2>
+        @Html.Partial("StockTrendReport", Model.FiveOverFive, new ViewDataDictionary { { "CodeExistsForAll", Model.StockCodesThatExistsForAll} })
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-uptrend">5/5 Days Up</h2>
+        @Html.Partial("StockTrendReport", Model.FiveOverFive, new ViewDataDictionary {{"CodeExistsForAll", Model.StockCodesThatExistsForAll}})
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-uptrend">10/8 Days Up</h2>
+        @Html.Partial("StockTrendReport", Model.TenOverEight, new ViewDataDictionary {{"CodeExistsForAll", Model.StockCodesThatExistsForAll}})
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-uptrend">20/15 Days Up</h2>
+        @Html.Partial("StockTrendReport", Model.TwentyOveryFifteen, new ViewDataDictionary {{"CodeExistsForAll", Model.StockCodesThatExistsForAll}})
+    </div>
+    <div class="col-md-6">
+        <h2 class="color-uptrend">30/20 Days Up</h2>
+        @Html.Partial("StockTrendReport", Model.ThirtyOverTwenty, new ViewDataDictionary {{"CodeExistsForAll", Model.StockCodesThatExistsForAll}})
+    </div>
+</div>
+
