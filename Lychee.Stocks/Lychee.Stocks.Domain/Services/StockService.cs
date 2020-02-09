@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using LazyCache;
+using Lychee.Caching.Interfaces;
+using Lychee.Domain.Interfaces;
 using Lychee.Infrastructure.Interfaces;
 using Lychee.Scrapper.Domain.Extensions;
 using Lychee.Scrapper.Domain.Helpers;
@@ -11,7 +15,9 @@ using Lychee.Scrapper.Domain.Models.Scrappers;
 using Lychee.Scrapper.Entities.Entities;
 using Lychee.Scrapper.Repository.Interfaces;
 using Lychee.Stocks.Domain.Helpers;
+using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
+using Lychee.Stocks.Domain.Models.Investagrams;
 using Lychee.Stocks.Entities;
 using Newtonsoft.Json.Linq;
 using PuppeteerSharp;
@@ -27,10 +33,14 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IScrappedSettingRepository _scrappedSettingRepository;
         private readonly IResultCollectionService _resultCollectionService;
         private readonly IColumnDefinitionRepository _columnDefinitionRepository;
-        private readonly Infrastructure.Interfaces.IRepository<Stock> _stockRepository;
-        private readonly Infrastructure.Interfaces.IRepository<TechnicalAnalysis> _technicalAnalysis;
-        private readonly Infrastructure.Interfaces.IRepository<StockHistory> _stockHistoryRepository;
-        private readonly Infrastructure.Interfaces.IRepository<MyPrediction> _predictionRepository;
+        private readonly IRepository<Stock> _stockRepository;
+        private readonly IRepository<TechnicalAnalysis> _technicalAnalysis;
+        private readonly IRepository<StockHistory> _stockHistoryRepository;
+        private readonly IRepository<MyPrediction> _predictionRepository;
+        private readonly IAppCache _cache;
+        private readonly IInvestagramsApiRepository _investagramsApiRepository;
+
+        private readonly string _investaCookie = "cache:investa-cookie";
 
         public StockService(IDatabaseFactory databaseFactory, ISettingRepository settingRepository, 
             ILoggingService loggingService, IWebQueryService websQueryService,
@@ -38,7 +48,7 @@ namespace Lychee.Stocks.Domain.Services
             IColumnDefinitionRepository columnDefinitionRepository,
             Infrastructure.Interfaces.IRepository<Stock> stockRepository,
             Infrastructure.Interfaces.IRepository<TechnicalAnalysis> technicalAnalysis,
-            Infrastructure.Interfaces.IRepository<StockHistory> stockHistoryRepository, Infrastructure.Interfaces.IRepository<MyPrediction> predictionRepository)
+            Infrastructure.Interfaces.IRepository<StockHistory> stockHistoryRepository, Infrastructure.Interfaces.IRepository<MyPrediction> predictionRepository, ICachingFactory cacheFactory, IInvestagramsApiRepository investagramsApiRepository)
         {
             _databaseFactory = databaseFactory;
             _settingRepository = settingRepository;
@@ -51,6 +61,8 @@ namespace Lychee.Stocks.Domain.Services
             _technicalAnalysis = technicalAnalysis;
             _stockHistoryRepository = stockHistoryRepository;
             _predictionRepository = predictionRepository;
+            _investagramsApiRepository = investagramsApiRepository;
+            _cache = cacheFactory.GetCacheService();
         }
 
         public async Task UpdateAllStocks()
@@ -107,6 +119,23 @@ namespace Lychee.Stocks.Domain.Services
             return await scrapper.Scrape();
         }
 
+        public async Task<ResultCollection<ResultItemCollection>> UpdateLogInCookie()
+        {
+            _cache.Remove(_investaCookie);
+            var scrapper = new SmartScrapper(_settingRepository, _loggingService, _websQueryService)
+            {
+                IsHeadless = true,
+                Url = "https://www.investagrams.com/Login/",
+                CustomScrappingInstructions = new List<SmartScrapper.CustomScrapping>
+                {
+                    LogIn,
+                    SetLoggedInCookie
+                }
+            };
+
+            return await scrapper.Scrape();
+        }
+
         public void SaveStocks(ResultCollection<ResultItemCollection> collections)
         {
             var date = DateTime.Now.Date;
@@ -124,7 +153,7 @@ namespace Lychee.Stocks.Domain.Services
                         High = item.GetItem("High").Value.ToDecimal(),
                         Last = item.GetItem("Last").Value.ToDecimal(),
                         Low = item.GetItem("Low").Value.ToDecimal(),
-                        SOpen = item.GetItem("Open").Value.ToDecimal(),
+                        Open = item.GetItem("Open").Value.ToDecimal(),
                         Volume = item.GetItem("Volume").Value.ToString().ConvertToNumber()
                     });
                 }
@@ -135,7 +164,7 @@ namespace Lychee.Stocks.Domain.Services
                     stock.High = item.GetItem("High").Value.ToDecimal();
                     stock.Last = item.GetItem("Last").Value.ToDecimal();
                     stock.Low = item.GetItem("Low").Value.ToDecimal();
-                    stock.SOpen = item.GetItem("Open").Value.ToDecimal();
+                    stock.Open = item.GetItem("Open").Value.ToDecimal();
                     stock.Volume = item.GetItem("Volume").Value.ToString().ConvertToNumber();
                     _stockHistoryRepository.Update(stock);
                 }
@@ -175,40 +204,30 @@ namespace Lychee.Stocks.Domain.Services
                 .ToList();
         }
 
-        private async Task LogIn(Page page, ResultCollection<ResultItemCollection> resultCollection, Dictionary<string, object> args)
+        /// <summary>
+        /// Stocks that are not suspended or selling today
+        /// </summary>
+        public virtual async Task<LatestStockMarketActivityVm> GetSuspendedAndOnSale()
         {
-            var resultSelector = ".invest-login__input-holder";
-            await page.WaitForSelectorAsync(resultSelector);
-
-            await page.TypeAsync(".invest-login__input-holder form input[data-ng-model='LoginRequest.Username']", "cawicaancornelio@gmail.com");
-            await page.TypeAsync("input[type='password']", "1234567890a!");
-            await page.ClickAsync("button[data-ng-click='authenticateUser()']");
-            await page.WaitForNavigationAsync();
+            var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
+            return result;
         }
 
-        private async Task ScrapeRealTimeMonitoringData(Page page, ResultCollection<ResultItemCollection> resultCollection, Dictionary<string, object> args)
+        public virtual async Task UpdateStocks(IEnumerable<string> stockCodes)
         {
-            var resultSelector = "#StockQuoteTable";
-            await page.WaitForSelectorAsync(resultSelector);
+            var stockList = new List<ViewStock>();
+            var suspendedStocksToday = new List<string>();
 
-            //try to get the table headers
-            var mappings = _scrappedSettingRepository.GetItemSettings("RealTimeMonitoring");
+            //todo: exclude the suspended stocks from getting details in api
 
-            var dataSelector = "#StockQuoteTable > tbody > tr";
-            var tData = await PuppeteerHelper.GetTableData(page, dataSelector, mappings);
-
-            foreach (JToken link in tData)
+            var tasks = new List<Task<ViewStock>>();
+            foreach (var code in stockCodes)
             {
-                resultCollection.Add(new ResultItemCollection
-                {
-                    Key = link["StockCode"].GetValue(),
-                    Items = mappings.Select(x => new ResultItem
-                    {
-                        Name = x.Key,
-                        Value = link[x.Key].GetValue()
-                    }).ToList()
-                });
+                tasks.Add(_investagramsApiRepository.ViewStock(code));
             }
+
+            await Task.WhenAll(tasks);
+            stockList = tasks.Select(x => x.Result).ToList();
         }
 
         private void SaveTechnicalAnalysis(List<ScrappedData> data)
@@ -257,7 +276,7 @@ namespace Lychee.Stocks.Domain.Services
                         ChangePercentage = item.Value[(value.Key, "ChangePerc")].ToDecimal(),
                         High = item.Value[(value.Key, nameof(StockHistory.High))].ToDecimal(),
                         Low = item.Value[(value.Key, nameof(StockHistory.Low))].ToDecimal(),
-                        SOpen = item.Value[(value.Key, "Open")].ToDecimal(),
+                        Open = item.Value[(value.Key, "Open")].ToDecimal(),
                         Volume = item.Value[(value.Key, nameof(StockHistory.Volume))].ConvertToNumber()
                     };
                     _stockHistoryRepository.Add(stockHistory);
@@ -267,6 +286,8 @@ namespace Lychee.Stocks.Domain.Services
             _stockHistoryRepository.SaveChanges();
         }
 
+
+        #region Scrapping Instructions
         private async Task ScrapeHistoricalData(Page page, ResultCollection<ResultItemCollection> resultCollection, Dictionary<string, object> args = null)
         {
             var resultSelector = "#HistoricalDataTable";
@@ -317,5 +338,54 @@ namespace Lychee.Stocks.Domain.Services
                 }).ToList()
             });
         }
+
+        private async Task LogIn(Page page, ResultCollection<ResultItemCollection> resultCollection, Dictionary<string, object> args)
+        {
+            var resultSelector = ".invest-login__input-holder";
+            await page.WaitForSelectorAsync(resultSelector);
+
+            await page.TypeAsync(".invest-login__input-holder form input[data-ng-model='LoginRequest.Username']", "cawicaancornelio@gmail.com");
+            await page.TypeAsync("input[type='password']", "1234567890a!");
+            await page.ClickAsync("button[data-ng-click='authenticateUser()']");
+            await page.WaitForNavigationAsync();
+        }
+
+        private async Task<string> SetLoggedInCookie(Page page, ResultCollection<ResultItemCollection> resultCollection, Dictionary<string, object> args)
+        {
+            Task<CookieParam[]> CacheableAsyncFunc() => page.GetCookiesAsync();
+
+            var cookies = await _cache.GetOrAddAsync(_investaCookie, CacheableAsyncFunc, TimeSpan.FromDays(3));
+            return string.Join("; ", cookies.Select(x => $"{x.Name}={x.Value}"));
+        }
+
+        private async Task ScrapeRealTimeMonitoringData(Page page, ResultCollection<ResultItemCollection> resultCollection, Dictionary<string, object> args)
+        {
+            var resultSelector = "#StockQuoteTable";
+            await page.WaitForSelectorAsync(resultSelector);
+
+            var cookies = await page.GetCookiesAsync(page.Url);
+
+            //try to get the table headers
+            var mappings = _scrappedSettingRepository.GetItemSettings("RealTimeMonitoring");
+
+            var dataSelector = "#StockQuoteTable > tbody > tr";
+            var tData = await PuppeteerHelper.GetTableData(page, dataSelector, mappings);
+
+            foreach (JToken link in tData)
+            {
+                resultCollection.Add(new ResultItemCollection
+                {
+                    Key = link["StockCode"].GetValue(),
+                    Items = mappings.Select(x => new ResultItem
+                    {
+                        Name = x.Key,
+                        Value = link[x.Key].GetValue()
+                    }).ToList()
+                });
+            }
+        }
+
+        #endregion
+
     }
 }

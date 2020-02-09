@@ -1,8 +1,9 @@
 ﻿using System.Data.Entity;
+using Lychee.Entities;
 
 namespace Lychee.Stocks.Entities
 {
-    public class StockContext : DbContext
+    public class StockContext : LycheeContext
     {
         public StockContext() : base("ConnectionString.MsSql")
         {
@@ -14,5 +15,7 @@ namespace Lychee.Stocks.Entities
         public virtual IDbSet<TechnicalAnalysis> TechnicalAnalysis { get; set; }
 
         public virtual IDbSet<MyPrediction> Predictions { get; set; }
+
+        
     }
 }

@@ -36,6 +36,35 @@ textarea {
     color: green;
 }
 
+.color-blue {
+    color: blue;
+}
+
+#nav-header .color-white {
+    color: white;
+}
+
 .report-stock-highlight {
-    background-color: yellow;
+    background-color: #caffc0;
+}
+
+.page-heading h1 {
+    margin-top: 0;
+    color: #fff;
+    font-family: pt sans caption,Helvetica,Arial,sans-serif;
+    font-weight: 700;
+}
+
+.page-heading {
+    margin: -19px -16px 30px -16px;
+    position: relative;
+    padding: 30px 15px;
+    color: rgba(255,255,255,.5);
+    background-color: #67844c;
+    font-size: 1.25rem;
+    background-image: url(/images/bg.png);
+}
+
+.navbar-stocks {
+    background-color: #1e4324;
 }

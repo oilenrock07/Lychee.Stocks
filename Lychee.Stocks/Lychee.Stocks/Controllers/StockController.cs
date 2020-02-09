@@ -30,6 +30,14 @@ namespace Lychee.Stocks.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public async Task<ActionResult> UpdateLoginCookie()
+        {
+            var stocks = await _stockService.FetchRealTimeStocks();
+            _stockService.SaveStocks(stocks);
+
+            TempData["FetchRealTimeData"] = "Success";
+            return RedirectToAction("Index", "Home");
+        }
 
         //[OutputCache(Duration = 300)] //5 minutes cache
         public PartialViewResult Prediction()

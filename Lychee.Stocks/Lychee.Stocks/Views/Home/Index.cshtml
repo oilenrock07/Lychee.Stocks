@@ -1,24 +1,27 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "My Stocks";
 }
 
-<div class="row">
-    @{ Html.RenderAction("LastDataUpdates", "Stock");}
-</div>
+<header class="page-heading">
+    <div class="container-fluid">
+        <h1>My Stocks</h1>
 
-<div class="jumbotron">
+        @if (TempData["FetchRealTimeData"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                Successfully fetched real time data
+            </div>
+        }
 
-    @if (TempData["FetchRealTimeData"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            Successfully fetched real time data
-        </div>
-    }
-
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="/Stock/FetchRealTimeData" class="btn btn-primary btn-lg">Fetch Real Time Data &raquo;</a></p>
-</div>
+        <p>The key to making money in stocks is not to get scared out of them</p>
+        <p>Have patience. Stocks don't go up immediately</p>
+        <br />
+        <a href="/Stock/FetchRealTimeData" class="btn btn-primary btn-lg">Fetch Real Time Data &raquo;</a>
+        <p>
+            @{ Html.RenderAction("LastDataUpdates", "Stock");}
+        </p>
+    </div>
+</header>
 
 <div class="row">
     <div class="col-md-4">

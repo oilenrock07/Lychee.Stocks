@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Models.Reports;
@@ -51,5 +52,19 @@ namespace Lychee.Stocks.Controllers
             };
             return View(viewModel);
         }
+
+        public ActionResult SuspendedAndOnSale()
+        {
+            try
+            {
+                var result = _stockService.GetSuspendedAndOnSale();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
     }
 }

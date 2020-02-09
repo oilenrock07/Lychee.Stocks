@@ -13,12 +13,12 @@ namespace Lychee.Stocks.Entities
         public DateTime Date { get; set; }
 
         [NotMapped]
-        public int Trend => Last > SOpen ? 2 : Last == SOpen ? 1 : 0;
+        public int Trend => Last > Open ? 2 : Last == Open ? 1 : 0;
 
         public decimal Last { get; set; }
         public decimal Change { get; set; }
         public decimal ChangePercentage { get; set; }
-        public decimal SOpen { get; set; }
+        public decimal Open { get; set; }
         public decimal Low { get; set; }
         public decimal High { get; set; }
         public decimal Volume { get; set; }

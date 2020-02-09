@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Lychee.Stocks.Entities.Setting>
+
+@{
+    ViewBag.Title = "Settings";
+}
+
+<h2>Settings</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Key)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Key)
+        </td>
+        <td>
+            @Html.TextAreaFor(modelItem => item.Value, new {@class = "form-control"})
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Update", "Update", new { id=item.SettingId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SettingId })
+        </td>
+    </tr>
+}
+
+</table>

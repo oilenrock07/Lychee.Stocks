@@ -1,4 +1,5 @@
 ﻿@using Lychee.Stocks.Domain.Constants
+@using Lychee.Stocks.Domain.Enums
 @using Lychee.Stocks.Domain.Helpers
 @model IEnumerable<Lychee.Stocks.Entities.StockTrendReportModel>
 
@@ -6,7 +7,7 @@
     var stockCodes = (List<string>) ViewData["CodeExistsForAll"];
 }
 
-<table class="table table-hover table-striped">
+<table class="table table-hover">
     <tr>
         <th>
             Code
@@ -32,6 +33,7 @@
     @foreach (var item in Model)
     {
         var highlightClass = stockCodes != null && stockCodes.Contains(item.StockCode) ? "report-stock-highlight" : "";
+        var stockTypeClass = item.StockType == StockTypes.BlueChips ? "color-blue" : item.StockType == StockTypes.ClassA ? "color-downtrend" : ""; //move this to a service
         <tr class="@highlightClass">
             <td>
                 <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
@@ -48,7 +50,7 @@
             <td>
                 @item.High
             </td>
-            <td>
+            <td class="@stockTypeClass">
                 @item.StockType
             </td>
         </tr>

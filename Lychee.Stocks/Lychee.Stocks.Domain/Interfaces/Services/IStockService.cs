@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lychee.Scrapper.Domain.Models.Scrappers;
+using Lychee.Stocks.Domain.Models.Investagrams;
 using Lychee.Stocks.Entities;
 
 namespace Lychee.Stocks.Domain.Interfaces.Services
@@ -22,6 +23,11 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
 
         ICollection<StockTrendReportModel> GetStockTrendReport(int days, int losingWinningStreak,
             string trend = "Bearish");
-        
+
+        Task<LatestStockMarketActivityVm> GetSuspendedAndOnSale();
+
+        Task UpdateStocks(IEnumerable<string> stockCodes);
+
+
     }
 }
