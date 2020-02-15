@@ -14,6 +14,7 @@ using Lychee.Scrapper.Domain.Interfaces;
 using Lychee.Scrapper.Domain.Models.Scrappers;
 using Lychee.Scrapper.Entities.Entities;
 using Lychee.Scrapper.Repository.Interfaces;
+using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Helpers;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
@@ -21,6 +22,7 @@ using Lychee.Stocks.Domain.Models.Investagrams;
 using Lychee.Stocks.Entities;
 using Newtonsoft.Json.Linq;
 using PuppeteerSharp;
+using SuspendedStock = Lychee.Stocks.Domain.Models.Investagrams.SuspendedStock;
 
 namespace Lychee.Stocks.Domain.Services
 {
@@ -36,9 +38,10 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IRepository<Stock> _stockRepository;
         private readonly IRepository<TechnicalAnalysis> _technicalAnalysis;
         private readonly IRepository<StockHistory> _stockHistoryRepository;
-        private readonly IRepository<MyPrediction> _predictionRepository;
         private readonly IAppCache _cache;
         private readonly IInvestagramsApiRepository _investagramsApiRepository;
+        private readonly ISuspendedStockRepository _suspendedStockRepository;
+        private readonly IBlockSaleStockRepository _blockSaleStockRepository;
 
         private readonly string _investaCookie = "cache:investa-cookie";
 
@@ -46,9 +49,9 @@ namespace Lychee.Stocks.Domain.Services
             ILoggingService loggingService, IWebQueryService websQueryService,
             IScrappedSettingRepository scrappedSettingRepository, IResultCollectionService resultCollectionService,
             IColumnDefinitionRepository columnDefinitionRepository,
-            Infrastructure.Interfaces.IRepository<Stock> stockRepository,
-            Infrastructure.Interfaces.IRepository<TechnicalAnalysis> technicalAnalysis,
-            Infrastructure.Interfaces.IRepository<StockHistory> stockHistoryRepository, Infrastructure.Interfaces.IRepository<MyPrediction> predictionRepository, ICachingFactory cacheFactory, IInvestagramsApiRepository investagramsApiRepository)
+            IRepository<Stock> stockRepository,
+            IRepository<TechnicalAnalysis> technicalAnalysis,
+            IRepository<StockHistory> stockHistoryRepository, ICachingFactory cacheFactory, IInvestagramsApiRepository investagramsApiRepository, ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository)
         {
             _databaseFactory = databaseFactory;
             _settingRepository = settingRepository;
@@ -60,8 +63,9 @@ namespace Lychee.Stocks.Domain.Services
             _stockRepository = stockRepository;
             _technicalAnalysis = technicalAnalysis;
             _stockHistoryRepository = stockHistoryRepository;
-            _predictionRepository = predictionRepository;
             _investagramsApiRepository = investagramsApiRepository;
+            _suspendedStockRepository = suspendedStockRepository;
+            _blockSaleStockRepository = blockSaleStockRepository;
             _cache = cacheFactory.GetCacheService();
         }
 
@@ -96,7 +100,7 @@ namespace Lychee.Stocks.Domain.Services
                     SaveTechnicalAnalysis(mappedData);
                     SaveStockHistory(mappedData);
                 }
-                catch (Exception ex)
+                catch (System.Exception ex)
                 {
                     _loggingService.Logger.Error(ex, "");
                 }
@@ -195,22 +199,64 @@ namespace Lychee.Stocks.Domain.Services
                 paramLosingWinningStreak, paramTrend).ToList();
         }
 
-        public ICollection<MyPrediction> GetLast5DaysPredictions()
+
+        public virtual async Task<ICollection<SuspendedStock>> GetSuspendedStocks()
         {
-            var date = DateTime.Now.AddDays(-5);
-            return _predictionRepository
-                .Find(x => x.DateCreated >= date)
-                .OrderByDescending(x => x.DateCreated)
-                .ToList();
+            var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
+            if (data != null)
+                return data.StockSuspensionList;
+
+            
+            var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
+            result.SetSuspendedStockDate();
+            var stockSuspensionList = result.StockSuspensionList.ToList();
+
+            _cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
+
+            return stockSuspensionList;
+        }
+
+
+        public virtual async Task UpdateSuspendedStocks()
+        {
+            var suspendedStocks = await GetSuspendedStocks();
+            if (!suspendedStocks.Any())
+                return;
+
+            var lastSuspensionDate = _suspendedStockRepository.GetLastStockSuspensionDate();
+
+            if (lastSuspensionDate != suspendedStocks.First().Date)
+                _suspendedStockRepository.SaveSuspendedStocks(suspendedStocks);
+        }
+
+        public virtual async Task<ICollection<StockBlockSale>> GetBlockSaleStocks()
+        {
+            var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
+            if (data != null)
+                return data.StockBlockSaleList;
+
+
+            var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
+            var blockSaleList = result.StockBlockSaleList.ToList();
+
+            _cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
+
+            return blockSaleList;
         }
 
         /// <summary>
-        /// Stocks that are not suspended or selling today
+        /// Block Sales are those stocks that someone might buy a lot. This is a good indicator that it may go up
         /// </summary>
-        public virtual async Task<LatestStockMarketActivityVm> GetSuspendedAndOnSale()
+        public virtual async Task UpdateBlockSaleStocks()
         {
-            var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
-            return result;
+            var blockSaleStocks = await GetBlockSaleStocks();
+            if (!blockSaleStocks.Any())
+                return;
+
+            var lastBlockSaleDate = _blockSaleStockRepository.GetLastBlockSaleStocksDate();
+
+            if (lastBlockSaleDate != blockSaleStocks.First().Date)
+                _blockSaleStockRepository.SaveBlockSaleStocks(blockSaleStocks);
         }
 
         public virtual async Task UpdateStocks(IEnumerable<string> stockCodes)

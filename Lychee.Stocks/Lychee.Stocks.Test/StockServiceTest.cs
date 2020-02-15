@@ -13,6 +13,7 @@ using Moq;
 using NUnit.Framework;
 using Lychee.HttpClientService;
 using Lychee.Stocks.Domain.Constants;
+using Lychee.Stocks.Domain.Interfaces.Repositories;
 
 namespace Lychee.Stocks.Test
 {
@@ -30,6 +31,8 @@ namespace Lychee.Stocks.Test
         private readonly Mock<IRepository<TechnicalAnalysis>> _technicalAnalysis = new Mock<IRepository<TechnicalAnalysis>>();
         private readonly Mock<IRepository<StockHistory>> _stockHistoryRepository = new Mock<IRepository<StockHistory>>();
         private readonly Mock<IRepository<MyPrediction>> _predictionRepository = new Mock<IRepository<MyPrediction>>();
+        private readonly Mock<ISuspendedStockRepository> _suspendedStockRepository = new Mock<ISuspendedStockRepository>();
+        private readonly Mock<BlockSaleStockRepository> _blockSaleStockRepository = new Mock<BlockSaleStockRepository>();
 
         private InvestagramsApiRepository _investagramsApiRepository;
         private IStockService _stockService;
@@ -48,8 +51,8 @@ namespace Lychee.Stocks.Test
 
             _investagramsApiRepository = new InvestagramsApiRepository(_settingRepository.Object, httpClientService);
             _stockService = new StockService(_databaseFactory.Object, _settingRepository.Object, _loggingService.Object, _websQueryService.Object, _scrappedSettingRepository.Object,
-                _resultCollectionService.Object, _columnDefinitionRepository.Object, _stockRepository.Object, _technicalAnalysis.Object, _stockHistoryRepository.Object, _predictionRepository.Object,
-                _cachingFactory.Object, _investagramsApiRepository);
+                _resultCollectionService.Object, _columnDefinitionRepository.Object, _stockRepository.Object, _technicalAnalysis.Object, _stockHistoryRepository.Object,
+                _cachingFactory.Object, _investagramsApiRepository, _suspendedStockRepository.Object, _blockSaleStockRepository.Object);
         }
 
         [Test]

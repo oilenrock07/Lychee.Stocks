@@ -13,12 +13,14 @@ namespace Lychee.Stocks.Controllers
     public class StockController : Controller
     {
         private readonly IRepository<MyPrediction> _predictionRepository;
+        private readonly IPredictionService _predictionService;
         private readonly IStockService _stockService;
 
-        public StockController(IStockService stockService, IRepository<MyPrediction> predictionRepository)
+        public StockController(IStockService stockService, IRepository<MyPrediction> predictionRepository, IPredictionService predictionService)
         {
             _stockService = stockService;
             _predictionRepository = predictionRepository;
+            _predictionService = predictionService;
         }
 
         public async Task<ActionResult> FetchRealTimeData()
@@ -42,7 +44,7 @@ namespace Lychee.Stocks.Controllers
         //[OutputCache(Duration = 300)] //5 minutes cache
         public PartialViewResult Prediction()
         {
-            var predictions = _stockService.GetLast5DaysPredictions();
+            var predictions = _predictionService.GetLast5DaysPredictions();
             return PartialView(predictions);
         }
 
@@ -63,6 +65,15 @@ namespace Lychee.Stocks.Controllers
         public ActionResult CreatePrediction()
         {
             return View(new MyPrediction());
+        }
+
+        public async Task<ActionResult> GetDataUpdates()
+        {
+            await _stockService.UpdateSuspendedStocks();
+            await _stockService.UpdateBlockSaleStocks();
+
+            TempData["FetchRealTimeData"] = "Success";
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult LastDataUpdates()

@@ -9,10 +9,12 @@ namespace Lychee.Stocks.Controllers
     public class ReportController : Controller
     {
         private readonly IStockService _stockService;
+        private readonly IPredictionService _predictionService;
 
-        public ReportController(IStockService stockService)
+        public ReportController(IStockService stockService, IPredictionService predictionService)
         {
             _stockService = stockService;
+            _predictionService = predictionService;
         }
 
         public ActionResult DownTrends()
@@ -57,7 +59,7 @@ namespace Lychee.Stocks.Controllers
         {
             try
             {
-                var result = _stockService.GetSuspendedAndOnSale();
+                //var result = _predictionService();
             }
             catch (Exception ex)
             {

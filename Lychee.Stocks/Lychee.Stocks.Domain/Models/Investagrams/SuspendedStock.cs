@@ -1,4 +1,6 @@
-﻿namespace Lychee.Stocks.Domain.Models.Investagrams
+﻿using System;
+
+namespace Lychee.Stocks.Domain.Models.Investagrams
 {
     public class SuspendedStock
     {
@@ -6,6 +8,7 @@
         public string StockCode { get; set; }
         public int ExchangeType { get; set; }
         public int StockType { get; set; }
+        public DateTime Date { get; set; }
 
     }
 }

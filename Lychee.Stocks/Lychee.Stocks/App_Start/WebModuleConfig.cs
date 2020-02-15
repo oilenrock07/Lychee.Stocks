@@ -48,11 +48,14 @@ namespace Lychee.Stocks
             container.RegisterSingleton<IColumnDefinitionRepository, ColumnDefinitionRepository>();
             container.RegisterSingleton<IScrappedDataRepository, ScrappedDataRepository>();
             container.Register<IInvestagramsApiRepository, InvestagramsApiRepository>(Lifestyle.Scoped);
+            container.Register<ISuspendedStockRepository, SuspendedStockRepository>(Lifestyle.Scoped);
+            container.Register<IBlockSaleStockRepository, BlockSaleStockRepository>(Lifestyle.Scoped);
 
             //Services
             container.RegisterSingleton<ILoggingService, LoggingService>();
             container.RegisterSingleton<IWebQueryService, WebQueryService>();
             container.Register<IStockService, StockService>(Lifestyle.Scoped);
+            container.Register<IPredictionService, PredictionService>(Lifestyle.Scoped);
             container.Register<IResultCollectionService, ResultCollectionService>(Lifestyle.Scoped);
             container.RegisterSingleton<ICachingFactory, CachingFactory>();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Lychee.Stocks.Domain.Models.Investagrams
 {
-    public class LatestStockMarketActivityVm 
+    public class LatestStockMarketActivityVm : InvestagramsResponseBase
     {
         public DateTime Date { get; set; }
         public decimal Advance { get; set; }
@@ -24,5 +24,15 @@ namespace Lychee.Stocks.Domain.Models.Investagrams
         public ICollection<StockBlockSale> StockBlockSaleList { get; set; }
 
         public ICollection<SuspendedStock> StockSuspensionList { get; set; }
+
+        public void SetSuspendedStockDate()
+        {
+            if (StockSuspensionList == null) return;
+
+            foreach (var suspendedStock in StockSuspensionList)
+            {
+                suspendedStock.Date = Date;
+            }
+        }
     }
 }

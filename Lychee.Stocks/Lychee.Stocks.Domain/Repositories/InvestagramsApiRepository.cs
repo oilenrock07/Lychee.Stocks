@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Lychee.CommonHelper.Extensions;
 using Lychee.Domain.Interfaces;
 using Lychee.HttpClientService;
 using Lychee.Stocks.Domain.Constants;
+using Lychee.Stocks.Domain.Exception;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Models.Investagrams;
 
@@ -17,6 +19,9 @@ namespace Lychee.Stocks.Domain.Repositories
         private readonly ISettingRepository _settingRepository;
         private readonly IHttpClientService _httpClientService;
 
+        private readonly string _cookieInvalidMessage = "Please Login to Continue.";
+        private readonly string _cookieErrorMessage = "Cookie is expired";
+
         public InvestagramsApiRepository(ISettingRepository settingRepository, IHttpClientService httpClientService)
         {
             _settingRepository = settingRepository;
@@ -27,6 +32,10 @@ namespace Lychee.Stocks.Domain.Repositories
         {
             var headers = GetInvestagramsHeaderRequest();
             var result = await _httpClientService.SendRequest<LatestStockMarketActivityVm>($"{_stockApiPath}/getLatestStockMarketActivityVM?exchangeType=1", HttpMethod.Post, headers).ConfigureAwait(false);
+
+            if (!string.IsNullOrEmpty(result.Message) && result.Message.EqualsTo(_cookieInvalidMessage))
+                throw new InvestagramsException(_cookieErrorMessage);
+
             return result;
         }
 

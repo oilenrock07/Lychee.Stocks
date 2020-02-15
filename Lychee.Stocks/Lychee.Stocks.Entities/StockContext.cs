@@ -16,6 +16,9 @@ namespace Lychee.Stocks.Entities
 
         public virtual IDbSet<MyPrediction> Predictions { get; set; }
 
+        public virtual IDbSet<SuspendedStock> SuspendedStocks { get; set; }
+        public virtual IDbSet<BlockSaleStock> BlockSaleStocks { get; set; }
+
         
     }
 }

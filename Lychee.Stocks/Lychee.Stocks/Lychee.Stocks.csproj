@@ -74,6 +74,9 @@
     <Reference Include="Lychee.Caching, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Caching.1.0.1\lib\net40\Lychee.Caching.dll</HintPath>
     </Reference>
+    <Reference Include="Lychee.CommonHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lychee.CommonHelper.1.0.0\lib\net40\Lychee.CommonHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Lychee.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Domain.1.0.0\lib\net40\Lychee.Domain.dll</HintPath>
     </Reference>
@@ -84,7 +87,7 @@
       <HintPath>..\packages\Lychee.HttpClientService.1.4.0\lib\net40\Lychee.HttpClientService.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Infrastructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Infrastructure.1.4.0\lib\net40\Lychee.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\Lychee.Infrastructure.1.4.2\lib\net40\Lychee.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Scrapper.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LycheeScrapper.Domain.1.2.7\lib\net40\Lychee.Scrapper.Domain.dll</HintPath>

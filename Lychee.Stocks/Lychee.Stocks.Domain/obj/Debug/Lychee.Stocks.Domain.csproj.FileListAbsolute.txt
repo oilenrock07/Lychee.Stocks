@@ -116,3 +116,6 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\obj\Debug\Ly
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\obj\Debug\Lychee.Stocks.Domain.pdb
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.HttpClientService.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Newtonsoft.Json.pdb
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Omu.ValueInjecter.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Omu.ValueInjecter.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.CommonHelper.dll
