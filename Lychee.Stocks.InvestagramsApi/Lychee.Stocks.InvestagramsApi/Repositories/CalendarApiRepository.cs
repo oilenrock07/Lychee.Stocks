@@ -9,10 +9,16 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
     {
         private readonly string _stockApiPath = "/InvestaApi/Calendar";
 
+        public CalendarApiRepository(ICookieProviderService cookieProviderService) : base(cookieProviderService)
+        {
+        }
+
         public async Task<CalendarOverview> GetCalendarOverview()
         {
             var result = await PostToApi<CalendarOverview>($"{_stockApiPath}/GetCalendarOverview?region=XX", Method.POST);
             return result.Data;
         }
+
+
     }
 }

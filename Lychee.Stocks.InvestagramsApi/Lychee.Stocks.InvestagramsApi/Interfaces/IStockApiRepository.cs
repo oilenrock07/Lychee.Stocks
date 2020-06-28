@@ -5,7 +5,7 @@ using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 
 namespace Lychee.Stocks.InvestagramsApi.Interfaces
 {
-    public interface IStockApiRepository : IInvestagramsRestSharpBaseRepository
+    public interface IStockApiRepository
     {
         Task<LatestStockMarketActivityVm> GetLatestStockMarketActivity();
 

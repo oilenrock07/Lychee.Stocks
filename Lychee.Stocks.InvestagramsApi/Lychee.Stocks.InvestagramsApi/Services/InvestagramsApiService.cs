@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Calendar;
-using Lychee.Stocks.InvestagramsApi.Models.Investagrams;
 using Lychee.Stocks.InvestagramsApi.Models.Social;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 

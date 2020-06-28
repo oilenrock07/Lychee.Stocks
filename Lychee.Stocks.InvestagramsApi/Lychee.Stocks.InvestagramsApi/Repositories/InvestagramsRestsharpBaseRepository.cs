@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Lychee.Models;
@@ -11,11 +9,15 @@ using RestSharp;
 
 namespace Lychee.Stocks.InvestagramsApi.Repositories
 {
-    public abstract class InvestagramsRestsharpBaseRepository : IInvestagramsRestSharpBaseRepository
+    public abstract class InvestagramsRestsharpBaseRepository
     {
         private readonly string _investagramsBaseUrl = "https://webapi.investagrams.com";
+        private readonly ICookieProviderService _cookieProviderService;
 
-        public Func<Dictionary<string, string>> AddCookies { get; set; }
+        public InvestagramsRestsharpBaseRepository(ICookieProviderService cookieProviderService)
+        {
+            _cookieProviderService = cookieProviderService;
+        }
 
         public virtual async Task<IResultData<T>> PostToApi<T>(string url, Method method)
         {
@@ -52,14 +54,7 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
             return new ResultData<T>(checkout, (int)response.StatusCode,
                 response.ErrorMessage, response.ErrorException, response.Content);
         }
-
-
-        public virtual Dictionary<string, string> ParseCookie(string cookie)
-        {
-            var array = cookie.Split(';');
-            return array.Select(data => data.Split('=')).ToDictionary(d => d[0].TrimStart(), d => d[1]);
-        }
-
+        
         protected virtual async Task<IRestResponse> Execute(RestRequest request)
         {
             var client = GetRestClient();
@@ -77,13 +72,10 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
             var url = $"{_investagramsBaseUrl}{endpoint}";
             var req = new RestRequest(url, method);
 
-            if (AddCookies != null)
+            var cookies = _cookieProviderService.GetCookieHeader();
+            foreach (var cookie in cookies)
             {
-                var cookies = AddCookies();
-                foreach (var cookie in cookies)
-                {
-                    req.AddParameter(cookie.Key, cookie.Value, ParameterType.Cookie);
-                }
+                req.AddParameter(cookie.Key, cookie.Value, ParameterType.Cookie);
             }
 
             req.AddHeader("origin", UrlConstants.InvestagramsBaseUrl);

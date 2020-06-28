@@ -10,10 +10,16 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
     {
         private readonly string _stockApiPath = "/InvestaApi/Social";
 
+
+        public SocialApiRepository(ICookieProviderService cookieProviderService) : base(cookieProviderService)
+        {
+        }
+
         public async Task<List<TrendingStock>> GetTrendingStocks()
         {
             var result = await PostToApi<List<TrendingStock>>($"{_stockApiPath}/GetSocialPostTrendingStocksByExchange?exchangeType=1", Method.POST);
             return result.Data;
         }
+
     }
 }

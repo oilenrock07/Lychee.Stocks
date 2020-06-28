@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Repositories;
+using Lychee.Stocks.InvestagramsApi.Services;
 using NUnit.Framework;
 
 namespace Lychee.Stocks.InvestagramsApi.Test
@@ -13,12 +14,12 @@ namespace Lychee.Stocks.InvestagramsApi.Test
     public class SocialApiRepositoryTest : BaseApiRepositoryTest
     {
         private ISocialApiRepository _investagramsApiRepository;
+        
 
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            _investagramsApiRepository = new SocialApiRepository();
-            _investagramsApiRepository.AddCookies = () => _investagramsApiRepository.ParseCookie(GetCookie());
+            _investagramsApiRepository = new SocialApiRepository(_cookieProviderService);
         }
 
         [Test]

@@ -11,6 +11,10 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
     {
         private readonly string _stockApiPath = "/InvestaApi/Stock";
 
+        public StockApiRepository(ICookieProviderService cookieProviderService) : base(cookieProviderService)
+        {
+        }
+
         public async Task<LatestStockMarketActivityVm> GetLatestStockMarketActivity()
         {
             var result = await PostToApi<LatestStockMarketActivityVm>($"{_stockApiPath}/getLatestStockMarketActivityVM?exchangeType=1", Method.POST);

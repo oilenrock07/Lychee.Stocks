@@ -4,7 +4,7 @@ using Lychee.Stocks.InvestagramsApi.Models.Social;
 
 namespace Lychee.Stocks.InvestagramsApi.Interfaces
 {
-    public interface ISocialApiRepository : IInvestagramsRestSharpBaseRepository
+    public interface ISocialApiRepository
     {
         Task<List<TrendingStock>> GetTrendingStocks();
     }

@@ -16,8 +16,7 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
-            _investagramsApiRepository = new StockApiRepository();
-            _investagramsApiRepository.AddCookies = () => _investagramsApiRepository.ParseCookie(GetCookie());
+            _investagramsApiRepository = new StockApiRepository(_cookieProviderService);
         }
 
         [Test]

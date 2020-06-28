@@ -3,7 +3,7 @@ using Lychee.Stocks.InvestagramsApi.Models.Calendar;
 
 namespace Lychee.Stocks.InvestagramsApi.Interfaces
 {
-    public interface ICalendarApiRepository : IInvestagramsRestSharpBaseRepository
+    public interface ICalendarApiRepository
     {
         Task<CalendarOverview> GetCalendarOverview();
     }

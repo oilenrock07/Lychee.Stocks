@@ -179,3 +179,11 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Newtonsoft.Json
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Omu.ValueInjecter.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Omu.ValueInjecter.xml
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.CommonHelper.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.Models.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.Stocks.InvestagramsApi.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\RestSharp.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Utf8Json.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\RestSharp.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Utf8Json.xml
