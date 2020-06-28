@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lychee.Stocks.InvestagramsApi", "Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.csproj", "{273498E1-0613-4BAA-927F-EEE07B2B839A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lychee.Stocks.InvestagramsApi.Test", "Lychee.Stocks.InvestagramsApi.Test\Lychee.Stocks.InvestagramsApi.Test.csproj", "{A869AE3D-209F-4AE7-8B24-127E9A96256D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{273498E1-0613-4BAA-927F-EEE07B2B839A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{273498E1-0613-4BAA-927F-EEE07B2B839A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{273498E1-0613-4BAA-927F-EEE07B2B839A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{273498E1-0613-4BAA-927F-EEE07B2B839A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A869AE3D-209F-4AE7-8B24-127E9A96256D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A869AE3D-209F-4AE7-8B24-127E9A96256D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A869AE3D-209F-4AE7-8B24-127E9A96256D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A869AE3D-209F-4AE7-8B24-127E9A96256D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6CAE329D-761D-4ADE-A867-E3AC07FE5050}
+	EndGlobalSection
+EndGlobal
