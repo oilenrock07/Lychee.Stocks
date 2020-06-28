@@ -120,3 +120,4 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Om
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Omu.ValueInjecter.xml
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.CommonHelper.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\RestSharp.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.Models.dll

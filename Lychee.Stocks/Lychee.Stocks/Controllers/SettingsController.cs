@@ -1,21 +1,29 @@
-﻿using System.Web.Mvc;
+﻿using System.Net;
+using System.Web.Mvc;
 using Lychee.Domain.Interfaces;
 
 namespace Lychee.Stocks.Controllers
 {
     public class SettingsController : Controller
     {
-        private readonly ISettingRepository _settingRepository;
+        private readonly ISettingService _settingService;
 
-        public SettingsController(ISettingRepository settingRepository)
+        public SettingsController(ISettingService settingService)
         {
-            _settingRepository = settingRepository;
+            _settingService = settingService;
         }
 
         public ActionResult Index()
         {
-            var settings = _settingRepository.GetAllSettings();
+            var settings = _settingService.GetAllSettings();
             return View(settings);
+        }
+
+        [HttpPost]
+        public HttpStatusCodeResult UpdateSetting(int settingId, string value)
+        {
+            _settingService.UpdateValue(settingId, value);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
     }
 }

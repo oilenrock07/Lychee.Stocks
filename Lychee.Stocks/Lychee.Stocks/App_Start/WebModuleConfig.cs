@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using Lychee.Caching;
 using Lychee.Caching.Interfaces;
+using Lychee.Domain;
 using Lychee.Domain.Interfaces;
 using Lychee.HttpClientService;
 using Lychee.Infrastructure;
@@ -43,7 +44,6 @@ namespace Lychee.Stocks
 
 
             //Repositories
-            container.Register<ISettingRepository, SettingRepository>(Lifestyle.Scoped);
             container.RegisterSingleton<IScrappedSettingRepository, ScrappedSettingRepository>();
             container.RegisterSingleton<IHeaderRequestRepository, HeaderRequestRepository>();
             container.RegisterSingleton<IColumnDefinitionRepository, ColumnDefinitionRepository>();
@@ -63,8 +63,9 @@ namespace Lychee.Stocks
 
             //Lychee Packages
             container.RegisterLycheeHttpClientService(UrlConstants.InvestagramsWebApiBaseUrl);
+            container.RegisterLycheeDomainServiceModule();
             container.RegisterInvestagramsApi();
-            
+
             container.Verify();
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
         }

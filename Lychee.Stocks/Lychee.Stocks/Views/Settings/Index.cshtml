@@ -11,7 +11,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Key)
         </th>
-        <th>
+        <th width="50%">
             @Html.DisplayNameFor(model => model.Value)
         </th>
         <th>
@@ -20,22 +20,27 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Key)
-        </td>
-        <td>
-            @Html.TextAreaFor(modelItem => item.Value, new {@class = "form-control"})
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("Update", "Update", new { id=item.SettingId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.SettingId })
-        </td>
-    </tr>
-}
-
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Key)
+            </td>
+            <td>
+                @Html.TextBoxFor(modelItem => item.Value, new { @class = "form-control" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="js-update" data-id="@item.SettingId">Update</a> |
+                @Html.ActionLink("Delete", "Delete", new {id = item.SettingId})
+            </td>
+        </tr>
+    }
 </table>
+
+@section scripts
+{
+    <script src="~/Scripts/Custom/Setting.js"></script>
+}
