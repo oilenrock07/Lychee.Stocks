@@ -9,16 +9,6 @@ namespace Lychee.Stocks.InvestagramsApi.Services
     {
         private string _cookie = string.Empty;
 
-        public CookieProviderService()
-        {
-            
-        }
-
-        public CookieProviderService(string cookie)
-        {
-            _cookie = cookie;
-        }
-
         public virtual void SetCookie(string cookie)
         {
             _cookie = cookie;

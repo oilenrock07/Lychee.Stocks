@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>Lychee.Stocks.InvestagramsApi</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>Lychee.Stocks.InvestagramsApi</title>
     <authors>Cornelio Cawicaan Jr.</authors>
     <owners>Cornelio Cawicaan Jr.</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <description>Api wrapper to connect to Investagrams api</description>
-    <releaseNotes>Added simple injector</releaseNotes>
+    <releaseNotes>Cookie Provider</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <tags>Lychee Stock Investagrams</tags>
     <dependencies>

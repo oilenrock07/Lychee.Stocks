@@ -1,22 +1,20 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using Lychee.Infrastructure.Interfaces;
-using Lychee.Scrapper.Entities.Entities;
+﻿using System.Web.Mvc;
+using Lychee.Domain.Interfaces;
 
 namespace Lychee.Stocks.Controllers
 {
     public class SettingsController : Controller
     {
-        private readonly IRepository<Setting> _settingRepository;
+        private readonly ISettingRepository _settingRepository;
 
-        public SettingsController(IRepository<Setting> settingRepository)
+        public SettingsController(ISettingRepository settingRepository)
         {
             _settingRepository = settingRepository;
         }
 
         public ActionResult Index()
         {
-            var settings = _settingRepository.GetAll().ToList();
+            var settings = _settingRepository.GetAllSettings();
             return View(settings);
         }
     }

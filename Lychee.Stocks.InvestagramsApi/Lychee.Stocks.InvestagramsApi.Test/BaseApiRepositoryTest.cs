@@ -14,7 +14,8 @@ namespace Lychee.Stocks.InvestagramsApi.Test
 
         public BaseApiRepositoryTest()
         {
-            _cookieProviderService = new CookieProviderService(GetCookie());
+            _cookieProviderService = new CookieProviderService();
+            _cookieProviderService.SetCookie(GetCookie());
         }
         protected string GetCookie()
         {

@@ -39,7 +39,6 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IRepository<TechnicalAnalysis> _technicalAnalysis;
         private readonly IRepository<StockHistory> _stockHistoryRepository;
         private readonly IAppCache _cache;
-        private readonly IInvestagramsApiRepository _investagramsApiRepository;
         private readonly ISuspendedStockRepository _suspendedStockRepository;
         private readonly IBlockSaleStockRepository _blockSaleStockRepository;
 
@@ -51,7 +50,7 @@ namespace Lychee.Stocks.Domain.Services
             IColumnDefinitionRepository columnDefinitionRepository,
             IRepository<Stock> stockRepository,
             IRepository<TechnicalAnalysis> technicalAnalysis,
-            IRepository<StockHistory> stockHistoryRepository, ICachingFactory cacheFactory, IInvestagramsApiRepository investagramsApiRepository, ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository)
+            IRepository<StockHistory> stockHistoryRepository, ICachingFactory cacheFactory, ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository)
         {
             _databaseFactory = databaseFactory;
             _settingRepository = settingRepository;
@@ -63,7 +62,6 @@ namespace Lychee.Stocks.Domain.Services
             _stockRepository = stockRepository;
             _technicalAnalysis = technicalAnalysis;
             _stockHistoryRepository = stockHistoryRepository;
-            _investagramsApiRepository = investagramsApiRepository;
             _suspendedStockRepository = suspendedStockRepository;
             _blockSaleStockRepository = blockSaleStockRepository;
             _cache = cacheFactory.GetCacheService();
@@ -202,18 +200,19 @@ namespace Lychee.Stocks.Domain.Services
 
         public virtual async Task<ICollection<SuspendedStock>> GetSuspendedStocks()
         {
-            var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
-            if (data != null)
-                return data.StockSuspensionList;
+            //var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
+            //if (data != null)
+            //    return data.StockSuspensionList;
 
             
-            var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
-            result.SetSuspendedStockDate();
-            var stockSuspensionList = result.StockSuspensionList.ToList();
+            //var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
+            //result.SetSuspendedStockDate();
+            //var stockSuspensionList = result.StockSuspensionList.ToList();
 
-            _cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
+            //_cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
 
-            return stockSuspensionList;
+            //return stockSuspensionList;
+            return null;
         }
 
 
@@ -231,17 +230,18 @@ namespace Lychee.Stocks.Domain.Services
 
         public virtual async Task<ICollection<StockBlockSale>> GetBlockSaleStocks()
         {
-            var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
-            if (data != null)
-                return data.StockBlockSaleList;
+            //var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
+            //if (data != null)
+            //    return data.StockBlockSaleList;
 
 
-            var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
-            var blockSaleList = result.StockBlockSaleList.ToList();
+            //var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
+            //var blockSaleList = result.StockBlockSaleList.ToList();
 
-            _cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
+            //_cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
 
-            return blockSaleList;
+            //return blockSaleList;
+            return null;
         }
 
         /// <summary>
@@ -261,19 +261,19 @@ namespace Lychee.Stocks.Domain.Services
 
         public virtual async Task UpdateStocks(IEnumerable<string> stockCodes)
         {
-            var stockList = new List<ViewStock>();
-            var suspendedStocksToday = new List<string>();
+            //var stockList = new List<ViewStock>();
+            //var suspendedStocksToday = new List<string>();
 
-            //todo: exclude the suspended stocks from getting details in api
+            ////todo: exclude the suspended stocks from getting details in api
 
-            var tasks = new List<Task<ViewStock>>();
-            foreach (var code in stockCodes)
-            {
-                tasks.Add(_investagramsApiRepository.ViewStock(code));
-            }
+            //var tasks = new List<Task<ViewStock>>();
+            //foreach (var code in stockCodes)
+            //{
+            //    tasks.Add(_investagramsApiRepository.ViewStock(code));
+            //}
 
-            await Task.WhenAll(tasks);
-            stockList = tasks.Select(x => x.Result).ToList();
+            //await Task.WhenAll(tasks);
+            //stockList = tasks.Select(x => x.Result).ToList();
         }
 
         private void SaveTechnicalAnalysis(List<ScrappedData> data)

@@ -29,7 +29,7 @@ namespace Lychee.Stocks.Controllers
             _stockService.SaveStocks(stocks);
 
             TempData["FetchRealTimeData"] = "Success";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         public async Task<ActionResult> UpdateLoginCookie()
@@ -73,7 +73,7 @@ namespace Lychee.Stocks.Controllers
             await _stockService.UpdateBlockSaleStocks();
 
             TempData["FetchRealTimeData"] = "Success";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         public ActionResult LastDataUpdates()

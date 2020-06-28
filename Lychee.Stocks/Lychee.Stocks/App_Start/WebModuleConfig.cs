@@ -19,6 +19,7 @@ using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Repositories;
 using Lychee.Stocks.Domain.Services;
 using Lychee.Stocks.Entities;
+using Lychee.Stocks.InvestagramsApi;
 using Serilog;
 using Serilog.Core;
 using SimpleInjector;
@@ -47,7 +48,6 @@ namespace Lychee.Stocks
             container.RegisterSingleton<IHeaderRequestRepository, HeaderRequestRepository>();
             container.RegisterSingleton<IColumnDefinitionRepository, ColumnDefinitionRepository>();
             container.RegisterSingleton<IScrappedDataRepository, ScrappedDataRepository>();
-            container.Register<IInvestagramsApiRepository, InvestagramsApiRepository>(Lifestyle.Scoped);
             container.Register<ISuspendedStockRepository, SuspendedStockRepository>(Lifestyle.Scoped);
             container.Register<IBlockSaleStockRepository, BlockSaleStockRepository>(Lifestyle.Scoped);
 
@@ -59,10 +59,12 @@ namespace Lychee.Stocks
             container.Register<IResultCollectionService, ResultCollectionService>(Lifestyle.Scoped);
             container.RegisterSingleton<ICachingFactory, CachingFactory>();
 
-
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
-            container.RegisterLycheeHttpClientService(UrlConstants.InvestagramsWebApiBaseUrl);
 
+            //Lychee Packages
+            container.RegisterLycheeHttpClientService(UrlConstants.InvestagramsWebApiBaseUrl);
+            container.RegisterInvestagramsApi();
+            
             container.Verify();
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
         }
