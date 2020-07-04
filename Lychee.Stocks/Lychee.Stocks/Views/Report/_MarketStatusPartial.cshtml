@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Lychee.Stocks.InvestagramsApi.Models.Stocks.MarketStatusModel>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Stock</th>
+            <th>Last</th>
+            <th>Chg (%)</th>
+            <th>Value</th>
+            <th>Volume</th>
+        </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.StockCode</td>
+                <td>@item.Last</td>
+                <td>@item.ChangePercentage</td>
+                <td>@item.Value</td>
+                <td>@item.Volume</td>
+            </tr>
+            }
+        </tbody>
+    </table>
