@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Lychee.Stocks.Domain.Interfaces.Services;
+using Lychee.Stocks.InvestagramsApi.Interfaces;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Lychee.Stocks.Models.Reports;
+using Omu.ValueInjecter;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -10,11 +14,14 @@ namespace Lychee.Stocks.Controllers
     {
         private readonly IStockService _stockService;
         private readonly IPredictionService _predictionService;
+        private readonly IInvestagramsApiService _investagramsApi;
 
-        public ReportController(IStockService stockService, IPredictionService predictionService)
+        public ReportController(IStockService stockService, IPredictionService predictionService,
+            IInvestagramsApiService investagramsApi)
         {
             _stockService = stockService;
             _predictionService = predictionService;
+            _investagramsApi = investagramsApi;
         }
 
         public ActionResult DownTrends()
@@ -65,7 +72,45 @@ namespace Lychee.Stocks.Controllers
             {
 
             }
+
             return null;
+        }
+
+        public async Task<ActionResult> MarketStatus()
+        {
+            var status = await _investagramsApi.GetMarketStatus(DateTime.Now);
+            var viewModel = new MarketStatusViewModel
+            {
+                TopGainer = status.TopGainer.Select(x => MapMarketStatusTopGainers(x, status.MostActive)).ToArray(),
+                TopLoser = status.TopGainer.Select(x => MapMarketStatusTopGainers(x, status.MostActive)).ToArray(),
+                MostActive = status.MostActive.Select(x => MapMarketStatusMostActive(x, status)).ToArray()
+            };
+
+            return View(viewModel);
+        }
+
+        private MarketStatusItemViewModel MapMarketStatusTopGainers(MarketStatusModel source, MarketStatusModel[] arr)
+        {
+            var item = Mapper.Map<MarketStatusItemViewModel>(source);
+            item.Badge = arr.Any(a => a.StockCode == source.StockCode) ? "most-active" : string.Empty;
+            item.BadgeClass = !string.IsNullOrEmpty(item.Badge) ? "default" : string.Empty;
+            return item;
+        }
+
+        private MarketStatusItemViewModel MapMarketStatusMostActive(MarketStatusModel source, MarketStatus status)
+        {
+            var item = Mapper.Map<MarketStatusItemViewModel>(source);
+            item.Badge = status.TopGainer.Any(a => a.StockCode == source.StockCode) ? "top-gainer" : string.Empty;
+            item.BadgeClass = !string.IsNullOrEmpty(item.Badge) ? "success" : string.Empty;
+
+            if (string.IsNullOrEmpty(item.Badge))
+            {
+                item.Badge = status.TopLoser.Any(a => a.StockCode == source.StockCode) ? "top-loser" : string.Empty;
+                item.BadgeClass = !string.IsNullOrEmpty(item.Badge) ? "danger" : string.Empty;
+            }
+                
+
+            return item;
         }
 
     }

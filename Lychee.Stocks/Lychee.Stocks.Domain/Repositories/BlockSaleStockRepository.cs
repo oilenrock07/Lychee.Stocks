@@ -4,6 +4,7 @@ using System.Linq;
 using Lychee.Infrastructure.Interfaces;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Entities;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Omu.ValueInjecter;
 
 namespace Lychee.Stocks.Domain.Repositories
@@ -17,7 +18,7 @@ namespace Lychee.Stocks.Domain.Repositories
             _blockSaleStockRepository = suspendedStockRepository;
         }
 
-        public void SaveBlockSaleStocks(ICollection<Models.Investagrams.StockBlockSale> suspendedStocks)
+        public void SaveBlockSaleStocks(ICollection<StockBlockSale> suspendedStocks)
         {
             foreach (var stocks in suspendedStocks)
             {

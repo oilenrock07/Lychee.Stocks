@@ -32,6 +32,11 @@ namespace Lychee.Stocks.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+        public async Task<ActionResult> GetEodStockUpdate()
+        {
+            return View();
+        }
+
         public async Task<ActionResult> UpdateLoginCookie()
         {
             var stocks = await _stockService.FetchRealTimeStocks();

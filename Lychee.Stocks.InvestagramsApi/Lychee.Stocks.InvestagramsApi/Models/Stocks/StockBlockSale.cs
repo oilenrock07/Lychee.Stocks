@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lychee.Stocks.InvestagramsApi.Models.Investagrams
+namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
 {
     public class StockBlockSale
     {

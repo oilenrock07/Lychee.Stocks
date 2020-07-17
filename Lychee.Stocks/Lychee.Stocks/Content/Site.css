@@ -32,6 +32,10 @@ textarea {
     color: red;
 }
 
+.color-even {
+    color: inherit;
+}
+
 .color-uptrend {
     color: green;
 }

@@ -5,9 +5,10 @@ $(function () {
         e.preventDefault();
         var value = $(this).closest('tr').find('input').val();
         var id = $(this).data('id');
+        var name = $(this).data('name');
 
-        var data = { settingId: id, value: value };
-        $.post('/Settings/UpdateSetting', data);
+        var data = {  name: name, settingId: id, value: value };
+        $.post('/Settings/UpdateSetting', data );
     }
 
     function init() {

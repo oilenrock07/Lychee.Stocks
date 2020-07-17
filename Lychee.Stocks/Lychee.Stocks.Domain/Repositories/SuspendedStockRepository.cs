@@ -17,7 +17,7 @@ namespace Lychee.Stocks.Domain.Repositories
             _suspendedStockRepository = suspendedStockRepository;
         }
 
-        public void SaveSuspendedStocks(ICollection<Models.Investagrams.SuspendedStock> suspendedStocks)
+        public void SaveSuspendedStocks(ICollection<Lychee.Stocks.InvestagramsApi.Models.Stocks.SuspendedStock> suspendedStocks)
         {
             foreach (var stocks in suspendedStocks)
             {

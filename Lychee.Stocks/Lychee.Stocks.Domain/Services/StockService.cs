@@ -20,9 +20,10 @@ using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Models.Investagrams;
 using Lychee.Stocks.Entities;
+using Lychee.Stocks.InvestagramsApi.Interfaces;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Newtonsoft.Json.Linq;
 using PuppeteerSharp;
-using SuspendedStock = Lychee.Stocks.Domain.Models.Investagrams.SuspendedStock;
 
 namespace Lychee.Stocks.Domain.Services
 {
@@ -41,6 +42,9 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IAppCache _cache;
         private readonly ISuspendedStockRepository _suspendedStockRepository;
         private readonly IBlockSaleStockRepository _blockSaleStockRepository;
+        private readonly IInvestagramsApiService _investagramsApiService;
+        private readonly ICookieProviderService _cookieProviderService;
+        private readonly IStockScoreService _stockScoreService;
 
         private readonly string _investaCookie = "cache:investa-cookie";
 
@@ -50,7 +54,7 @@ namespace Lychee.Stocks.Domain.Services
             IColumnDefinitionRepository columnDefinitionRepository,
             IRepository<Stock> stockRepository,
             IRepository<TechnicalAnalysis> technicalAnalysis,
-            IRepository<StockHistory> stockHistoryRepository, ICachingFactory cacheFactory, ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository)
+            IRepository<StockHistory> stockHistoryRepository, ICachingFactory cacheFactory, ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository, ICookieProviderService cookieProviderService, IInvestagramsApiService investagramsApiService, IStockScoreService stockScoreService)
         {
             _databaseFactory = databaseFactory;
             _settingRepository = settingRepository;
@@ -64,6 +68,9 @@ namespace Lychee.Stocks.Domain.Services
             _stockHistoryRepository = stockHistoryRepository;
             _suspendedStockRepository = suspendedStockRepository;
             _blockSaleStockRepository = blockSaleStockRepository;
+            _cookieProviderService = cookieProviderService;
+            _investagramsApiService = investagramsApiService;
+            _stockScoreService = stockScoreService;
             _cache = cacheFactory.GetCacheService();
         }
 
@@ -198,7 +205,7 @@ namespace Lychee.Stocks.Domain.Services
         }
 
 
-        public virtual async Task<ICollection<SuspendedStock>> GetSuspendedStocks()
+        public virtual async Task<ICollection<InvestagramsApi.Models.Stocks.SuspendedStock>> GetSuspendedStocks()
         {
             //var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
             //if (data != null)
@@ -218,14 +225,14 @@ namespace Lychee.Stocks.Domain.Services
 
         public virtual async Task UpdateSuspendedStocks()
         {
-            var suspendedStocks = await GetSuspendedStocks();
-            if (!suspendedStocks.Any())
-                return;
+            //var suspendedStocks = await GetSuspendedStocks();
+            //if (!suspendedStocks.Any())
+            //    return;
 
-            var lastSuspensionDate = _suspendedStockRepository.GetLastStockSuspensionDate();
+            //var lastSuspensionDate = _suspendedStockRepository.GetLastStockSuspensionDate();
 
-            if (lastSuspensionDate != suspendedStocks.First().Date)
-                _suspendedStockRepository.SaveSuspendedStocks(suspendedStocks);
+            //if (lastSuspensionDate != suspendedStocks.First().Date)
+            //    _suspendedStockRepository.SaveSuspendedStocks(suspendedStocks);
         }
 
         public virtual async Task<ICollection<StockBlockSale>> GetBlockSaleStocks()
@@ -249,14 +256,14 @@ namespace Lychee.Stocks.Domain.Services
         /// </summary>
         public virtual async Task UpdateBlockSaleStocks()
         {
-            var blockSaleStocks = await GetBlockSaleStocks();
-            if (!blockSaleStocks.Any())
-                return;
+            //var blockSaleStocks = await GetBlockSaleStocks();
+            //if (!blockSaleStocks.Any())
+            //    return;
 
-            var lastBlockSaleDate = _blockSaleStockRepository.GetLastBlockSaleStocksDate();
+            //var lastBlockSaleDate = _blockSaleStockRepository.GetLastBlockSaleStocksDate();
 
-            if (lastBlockSaleDate != blockSaleStocks.First().Date)
-                _blockSaleStockRepository.SaveBlockSaleStocks(blockSaleStocks);
+            //if (lastBlockSaleDate != blockSaleStocks.First().Date)
+                //_blockSaleStockRepository.SaveBlockSaleStocks(blockSaleStocks);
         }
 
         public virtual async Task UpdateStocks(IEnumerable<string> stockCodes)
@@ -433,5 +440,104 @@ namespace Lychee.Stocks.Domain.Services
 
         #endregion
 
+        public async Task ShouldIBuyStock(string stockCode)
+        {
+            decimal totalScore = 0;
+
+            var stock = await _investagramsApiService.ViewStockWithoutFundamentalAnalysis(stockCode);
+            var chartHistory = await _investagramsApiService.GetChartHistoryByDate(stock.StockInfo.StockId, DateTime.Now);
+
+            totalScore += _stockScoreService.GetBreakingResistanceScore(stock).TotalScore;
+            totalScore += _stockScoreService.GetTradeScore(stock).TotalScore;
+
+            var higherSellersScore = await _stockScoreService.GetBidAndAskScore(stock);
+            totalScore += higherSellersScore.TotalScore;
+
+
+            _stockScoreService.GetMa9Score(stock);
+            _stockScoreService.GetMa20Score(stock);
+
+            //2/2 winner
+            //8/10 loser 
+
+            await _stockScoreService.GetRecentlySuspendedAndBlockSaleScore(stockCode);
+            await _stockScoreService.GetTrendingStockScore(stockCode);
+
+            totalScore += await _stockScoreService.GetMostActiveAndGainerScore(stockCode);
+
+            //Reached cap/max buying - matic 100 %
+            //has a really steep down recently 20%
+            await _stockScoreService.GetDividendScore(stockCode);
+
+            _stockScoreService.GetVolumeScore(chartHistory, stock);
+
+            //get passing score from setting
+            var passingScore = 70m;
+            if (totalScore >= passingScore)
+                return;
+        }
+
+        public void EodStockUpdate()
+        {
+            var marketActivity = _investagramsApiService.GetLatestStockMarketActivity();
+            UpdateBlockSale(marketActivity.Result.StockBlockSaleList);
+            UpdateSuspendedStocks(marketActivity.Result.StockSuspensionList);
+
+            //get stock list
+        }
+
+        public void UpdateInvestagramsCookie(string value)
+        {
+            _cookieProviderService.SetCookie(value);
+        }
+
+        public virtual DateTime GetLastTradingDate()
+        {
+            var lastTradingDate = _cache.Get<DateTime>(CacheNames.LastTradingDateCacheKey);
+            if (lastTradingDate != DateTime.Now)
+            {
+                if (lastTradingDate == DateTime.MinValue)
+                    lastTradingDate = DateTime.Now;
+                
+                if (lastTradingDate.DayOfWeek == DayOfWeek.Sunday)
+                    lastTradingDate = lastTradingDate.AddDays(-2);
+                if (lastTradingDate.DayOfWeek == DayOfWeek.Saturday)
+                    lastTradingDate = lastTradingDate.AddDays(-1);
+
+                //consider holiday
+
+                _cache.Add(CacheNames.LastTradingDateCacheKey, lastTradingDate, TimeSpan.FromDays(1));
+            }
+
+
+            return lastTradingDate.Date;
+        }
+
+        private void UpdateBlockSale(ICollection<StockBlockSale> stockBlockSales)
+        {
+            if (!stockBlockSales.Any())
+                return;
+
+            var date = stockBlockSales.First().Date;
+            var lastSuspendedDate = _blockSaleStockRepository.GetLastBlockSaleStocksDate();
+
+            if (date.Date != lastSuspendedDate?.Date)
+                _blockSaleStockRepository.SaveBlockSaleStocks(stockBlockSales);
+        }
+
+        private void UpdateSuspendedStocks(ICollection<InvestagramsApi.Models.Stocks.SuspendedStock> suspendedStocks)
+        {
+            if (!suspendedStocks.Any())
+                return;
+
+            var date = suspendedStocks.First().Date;
+            var lastSuspendedDate = _suspendedStockRepository.GetLastStockSuspensionDate();
+
+            if (date.Date != lastSuspendedDate?.Date)
+                _suspendedStockRepository.SaveSuspendedStocks(suspendedStocks);
+        }
+
+
     }
 }
+

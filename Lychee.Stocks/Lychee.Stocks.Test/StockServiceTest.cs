@@ -62,40 +62,5 @@ namespace Lychee.Stocks.Test
             await _stockService.UpdateStocks(stockCodes);
         }
 
-        //[Test]
-        //public void ExistsOnAllTest()
-        //{
-        //    //Arrange
-        //    var stockService = new StockService(_databaseFactory.Object, _settingRepository.Object,
-        //        _loggingService.Object, _websQueryService.Object, _scrappedSettingRepository.Object,
-        //        _resultCollectionService.Object, _columnDefinitionRepository.Object, _stockRepository.Object,
-        //        _technicalAnalysis.Object, _stockHistoryRepository.Object, _predictionRepository.Object);
-
-        //    var fiveOverFive = new List<StockTrendReportModel>
-        //    {
-        //        new StockTrendReportModel {StockCode = "JFC"},
-        //        new StockTrendReportModel {StockCode = "ALI"}
-        //    };
-        //    var tenOverEight = new List<StockTrendReportModel>
-        //    {
-        //        new StockTrendReportModel {StockCode = "MWC"},
-        //        new StockTrendReportModel {StockCode = "JFC"}
-        //    };
-        //    var twentyOverFifteen = new List<StockTrendReportModel>
-        //    {
-        //        new StockTrendReportModel {StockCode = "MWC"},
-        //        new StockTrendReportModel {StockCode = "JFC"},
-        //        new StockTrendReportModel {StockCode = "AXLM"}
-        //    };
-
-        //    //Act
-        //    var list = stockService.ExistsOnAll(fiveOverFive, tenOverEight, twentyOverFifteen);
-
-        //    //Asserts
-        //    Assert.That(list, Is.Not.Null);
-        //    Assert.That(list.Count, Is.EqualTo(1));
-        //    Assert.That(list.First(), Is.EqualTo("JFC"));
-
-        //}
     }
 }

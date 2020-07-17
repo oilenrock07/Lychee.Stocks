@@ -81,6 +81,16 @@ namespace Lychee.Stocks.InvestagramsApi.Services
         {
             return await _socialApiRepository.GetTrendingStocks();
         }
+
+        public async Task<ChartHistory> GetChartHistoryByDate(int stockId, DateTime date)
+        {
+            return await _stockApiRepository.GetChartHistoryByDate(stockId, date);
+        }
+
+        public async Task<BullBearData> GetBullBearData(int stockId)
+        {
+            return await _stockApiRepository.GetBullBearData(stockId);
+        }
     }
 
 

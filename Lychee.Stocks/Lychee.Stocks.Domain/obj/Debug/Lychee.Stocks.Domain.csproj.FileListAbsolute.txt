@@ -121,3 +121,9 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Om
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.CommonHelper.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\RestSharp.xml
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.Models.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.Stocks.InvestagramsApi.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\RestSharp.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Utf8Json.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Utf8Json.xml

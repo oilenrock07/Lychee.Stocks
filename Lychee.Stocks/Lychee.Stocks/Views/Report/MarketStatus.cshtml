@@ -1,26 +1,27 @@
-﻿@model Lychee.Stocks.InvestagramsApi.Models.Stocks.MarketStatus
+﻿@model Lychee.Stocks.Models.Reports.MarketStatusViewModel
 @{
     ViewBag.Title = "Market Status Report";
 }
 
 <h2>Market Status</h2>
 
-<div class="col-md-3 col-xs-12">
-    <h1>Most Active</h1>
-    @Html.Partial("_MarketStatusPartial", Model.MostActive)
+<div class="row">
+    <div class="col-md-4 col-xs-12">
+        <h1>Most Active</h1>
+        @Html.Partial("_MarketStatusPartial", Model.MostActive)
+    </div>
+
+
+    <div class="col-md-4 col-xs-12">
+        <h1>Top Gainers</h1>
+        @Html.Partial("_MarketStatusPartial", Model.TopGainer)
+    </div>
+
+    <div class="col-md-4 col-xs-12">
+        <h1>Top Losers</h1>
+        @Html.Partial("_MarketStatusPartial", Model.TopLoser)
+    </div>
 </div>
-
-
-<div class="col-md-3 col-xs-12">
-    <h1>Top Gainers</h1>
-    @Html.Partial("_MarketStatusPartial", Model.TopGainer)
-</div>
-
-<div class="col-md-3 col-xs-12">
-    <h1>Top Losers</h1>
-    @Html.Partial("_MarketStatusPartial", Model.TopLoser)
-</div>
-
 
 
 

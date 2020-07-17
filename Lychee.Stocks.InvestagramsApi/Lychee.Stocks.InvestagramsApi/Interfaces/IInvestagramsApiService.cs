@@ -27,5 +27,7 @@ namespace Lychee.Stocks.InvestagramsApi.Interfaces
         Task<List<TrendingStock>> GetTrendingStocks();
 
         Task<CalendarOverview> GetCalendarOverview();
+
+        Task<ChartHistory> GetChartHistoryByDate(int stockId, DateTime date);
     }
 }

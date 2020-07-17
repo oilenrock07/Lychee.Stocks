@@ -63,6 +63,24 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
             var result = await PostToApi<TechnicalAnalysisInfo>($"{_stockApiPath}/GetLatestStockTechnicalAnalysisByStockCode?stockCode=PSE:{stockCode}", Method.POST);
             return result.Data;
         }
+
+        public async Task<ChartHistory> GetChartHistoryByDate(int stockId, DateTime date)
+        {
+            var data = new
+            {
+                stockId,
+                Date = date.ToString("yyyy/MM/dd")
+            };
+
+            var result = await PostToApi<ChartHistory>(data, $"{_stockApiPath}/getStockChartHistoryByStockIdAndDate", Method.POST);
+            return result.Data;
+        }
+
+        public async Task<BullBearData> GetBullBearData(int stockId)
+        {
+            var result = await PostToApi<BullBearData>($"{_stockApiPath}/GetBullBearDataByStockId?stockId={stockId}&type=1&order=1", Method.POST);
+            return result.Data;
+        }
     }
 
 

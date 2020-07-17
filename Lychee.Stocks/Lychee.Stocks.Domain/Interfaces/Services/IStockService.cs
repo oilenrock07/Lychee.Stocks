@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lychee.Scrapper.Domain.Models.Scrappers;
-using Lychee.Stocks.Domain.Models.Investagrams;
 using Lychee.Stocks.Entities;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 
 namespace Lychee.Stocks.Domain.Interfaces.Services
 {
@@ -22,7 +22,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         ICollection<StockTrendReportModel> GetStockTrendReport(int days, int losingWinningStreak,
             string trend = "Bearish");
 
-        Task<ICollection<Models.Investagrams.SuspendedStock>> GetSuspendedStocks();
+        Task<ICollection<InvestagramsApi.Models.Stocks.SuspendedStock>> GetSuspendedStocks();
         Task UpdateSuspendedStocks();
 
         Task<ICollection<StockBlockSale>> GetBlockSaleStocks();
@@ -30,6 +30,9 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
 
         Task UpdateStocks(IEnumerable<string> stockCodes);
 
+        void UpdateInvestagramsCookie(string value);
+
+        DateTime GetLastTradingDate();
 
     }
 }

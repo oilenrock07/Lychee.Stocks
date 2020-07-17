@@ -21,11 +21,13 @@ using Lychee.Stocks.Domain.Repositories;
 using Lychee.Stocks.Domain.Services;
 using Lychee.Stocks.Entities;
 using Lychee.Stocks.InvestagramsApi;
+using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Serilog;
 using Serilog.Core;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
+using SimpleInjector.Lifestyles;
 
 namespace Lychee.Stocks
 {
@@ -68,6 +70,22 @@ namespace Lychee.Stocks
 
             container.Verify();
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+
+            SetCookieFunc(container);
+        }
+
+
+        private static void SetCookieFunc(Container container)
+        {
+            using (var scope = AsyncScopedLifestyle.BeginScope(container))
+            {
+                if (scope.Container != null)
+                {
+                    var cookieProviderService = scope.Container.GetInstance<ICookieProviderService>();
+                    var settingService = scope.Container.GetInstance<ISettingService>();
+                    cookieProviderService.SetCookieFunc = () => settingService.GetSettingValue<string>(SettingNames.InvestagramsCookieName);
+                }
+            }
         }
     }
 }

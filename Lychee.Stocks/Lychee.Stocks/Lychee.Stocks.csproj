@@ -80,7 +80,7 @@
       <HintPath>..\packages\Lychee.CommonHelper.1.0.0\lib\net40\Lychee.CommonHelper.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Domain.1.0.6\lib\net40\Lychee.Domain.dll</HintPath>
+      <HintPath>..\packages\Lychee.Domain.1.1.1\lib\net40\Lychee.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Entities.1.0.0\lib\net40\Lychee.Entities.dll</HintPath>
@@ -104,7 +104,7 @@
       <HintPath>..\packages\LycheeScrapper.Domain.1.2.7\lib\net40\Lychee.Scrapper.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Stocks.InvestagramsApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.2.0\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
+      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.4.1\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
@@ -414,8 +414,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\StockUIHelper.cs" />
     <Compile Include="Models\LastDataUpdateViewModel.cs" />
     <Compile Include="Models\Reports\DownTrendReportViewModel.cs" />
+    <Compile Include="Models\Reports\MarketStatusViewModel.cs" />
     <Compile Include="Models\Reports\TrendReportBaseClass.cs" />
     <Compile Include="Models\Reports\UpTrendReportViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -468,6 +470,8 @@
     <Content Include="Views\Report\DownTrends.cshtml" />
     <Content Include="Views\Report\UpTrends.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Report\MarketStatus.cshtml" />
+    <Content Include="Views\Report\_MarketStatusPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

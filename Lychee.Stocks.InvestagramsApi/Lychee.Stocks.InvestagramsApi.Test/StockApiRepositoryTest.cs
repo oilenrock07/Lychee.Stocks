@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lychee.Stocks.InvestagramsApi.Models.Investagrams;
 using Lychee.Stocks.InvestagramsApi.Repositories;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -34,7 +33,7 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         public async Task CanViewStock()
         {
             //Act
-            var result = await _investagramsApiRepository.ViewStock("MWC");
+            var result = await _investagramsApiRepository.ViewStock("GMA7");
 
             //Asserts
             Assert.That(result, Is.Not.Null);
@@ -58,12 +57,16 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         public async Task CanGetAskAndBidByStockId()
         {
             //Act
-            var result = await _investagramsApiRepository.GetAskAndBidByStockId(34);
+            var result = await _investagramsApiRepository.GetAskAndBidByStockId(142);
+
+            var buyers = result.Buyers.OrderByDescending(x => x.Volume);
+            var sellers = result.Sellers.OrderByDescending(x => x.Volume);
 
             //Asserts
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Buyers.Length, Is.GreaterThan(1));
         }
+
 
         [Test]
         public async Task CanGetMarketStatus()
@@ -91,6 +94,29 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         {
             //Act
             var result = await _investagramsApiRepository.GetLatestStockHistoryByStockId(81);
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task CanGetChartHistory()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetChartHistoryByDate(142, DateTime.Now);
+
+            var ave = result.Volumes.Take(20).Average();
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task CanGetBullBearData()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetBullBearData(142);
+
 
             //Asserts
             Assert.That(result, Is.Not.Null);

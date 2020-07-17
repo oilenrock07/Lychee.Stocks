@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lychee.Stocks.InvestagramsApi.Models.Investagrams;
 
 namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
 {

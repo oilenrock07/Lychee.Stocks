@@ -1,15 +1,13 @@
-﻿namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
+﻿namespace Lychee.Stocks.Models.Reports
 {
-    public class MarketStatus
+    public class MarketStatusViewModel
     {
-        public int ExchangeType { get; set; }
-        public MarketStatusModel[] MostActive { get; set; }
-        public MarketStatusModel[] TopGainer { get; set; }
-        public MarketStatusModel[] TopLoser { get; set; }
-        public object LeastActive { get; set; }
+        public MarketStatusItemViewModel[] MostActive { get; set; }
+        public MarketStatusItemViewModel[] TopGainer { get; set; }
+        public MarketStatusItemViewModel[] TopLoser { get; set; }
     }
 
-    public class MarketStatusModel
+    public class MarketStatusItemViewModel
     {
         public int StockId { get; set; }
         public string StockCode { get; set; }
@@ -20,5 +18,8 @@
         public decimal ChangePercentage { get; set; }
         public decimal Volume { get; set; }
         public decimal Value { get; set; }
+
+        public string Badge { get; set; }
+        public string BadgeClass { get; set; }
     }
 }
