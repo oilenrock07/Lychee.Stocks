@@ -371,6 +371,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebModuleConfig.cs" />
+    <Compile Include="Controllers\PredictionController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\StockController.cs" />
@@ -384,6 +385,7 @@
     <Compile Include="Models\Reports\MarketStatusViewModel.cs" />
     <Compile Include="Models\Reports\TrendReportBaseClass.cs" />
     <Compile Include="Models\Reports\UpTrendReportViewModel.cs" />
+    <Compile Include="Models\Stocks\ShouldIBuyStockViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -425,9 +427,9 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Stock\Prediction.cshtml" />
-    <Content Include="Views\Stock\EditPrediction.cshtml" />
-    <Content Include="Views\Stock\CreatePrediction.cshtml" />
+    <Content Include="Views\Prediction\Prediction.cshtml" />
+    <Content Include="Views\Prediction\EditPrediction.cshtml" />
+    <Content Include="Views\Prediction\CreatePrediction.cshtml" />
     <Content Include="Views\Shared\LastDataUpdates.cshtml" />
     <Content Include="Views\Shared\StockTrendReport.cshtml" />
     <Content Include="Views\Report\DownTrends.cshtml" />

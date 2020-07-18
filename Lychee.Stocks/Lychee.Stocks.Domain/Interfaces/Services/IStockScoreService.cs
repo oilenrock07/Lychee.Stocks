@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Lychee.Stocks.Domain.Models.Investagrams;
+using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using ViewStock = Lychee.Stocks.InvestagramsApi.Models.Stocks.ViewStock;
 
@@ -13,7 +13,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         StockScore GetTradeScore(ViewStock viewStock);
         StockScore GetRsiScore(ViewStock viewStock);
         Task<StockScore> GetBidAndAskScore(ViewStock stock);
-        Task<decimal> GetMostActiveAndGainerScore(string stockCode);
+        Task<StockScore> GetMostActiveAndGainerScore(string stockCode);
 
         Task<StockScore> GetRecentlySuspendedAndBlockSaleScore(string stockCode);
 

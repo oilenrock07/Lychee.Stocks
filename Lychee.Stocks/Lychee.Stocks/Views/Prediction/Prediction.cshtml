@@ -36,7 +36,7 @@
         <td>
             @if (string.IsNullOrEmpty(item.Comments))
             {
-                @Html.ActionLink("Edit", "EditPrediction", "Stock", new {id = item.Id }, null)
+                @Html.ActionLink("Edit", "EditPrediction", "Prediction", new {id = item.Id }, null)
             }
             else
             {

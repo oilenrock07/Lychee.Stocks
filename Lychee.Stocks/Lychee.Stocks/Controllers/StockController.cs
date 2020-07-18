@@ -1,26 +1,22 @@
-﻿using System;
-using System.Net.Configuration;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
-using Lychee.Infrastructure.Interfaces;
+using Lychee.Domain.Interfaces;
+using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Interfaces.Services;
-using Lychee.Stocks.Entities;
 using Lychee.Stocks.Models;
-using Microsoft.Ajax.Utilities;
+using Lychee.Stocks.Models.Stocks;
 
 namespace Lychee.Stocks.Controllers
 {
     public class StockController : Controller
     {
-        private readonly IRepository<MyPrediction> _predictionRepository;
-        private readonly IPredictionService _predictionService;
         private readonly IStockService _stockService;
+        private readonly ISettingService _settingService;
 
-        public StockController(IStockService stockService, IRepository<MyPrediction> predictionRepository, IPredictionService predictionService)
+        public StockController(IStockService stockService, ISettingService settingService)
         {
             _stockService = stockService;
-            _predictionRepository = predictionRepository;
-            _predictionService = predictionService;
+            _settingService = settingService;
         }
 
         public async Task<ActionResult> FetchRealTimeData()
@@ -34,35 +30,21 @@ namespace Lychee.Stocks.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        public async Task<ActionResult> GetEodStockUpdate()
-        {
-            return View();
-        }
 
-        //[OutputCache(Duration = 300)] //5 minutes cache
-        public PartialViewResult Prediction()
+        public async Task<ActionResult> ShouldIBuyStock(string stockCode = "")
         {
-            var predictions = _predictionService.GetLast5DaysPredictions();
-            return PartialView(predictions);
-        }
+            var viewModel = new ShouldIBuyStockViewModel { StockCode = stockCode};
+            if (string.IsNullOrEmpty(stockCode))
+                return View(viewModel);
 
-        public ActionResult EditPrediction(int id)
-        {
-            var prediction = _predictionRepository.GetById(id);
-            return View(prediction);
-        }
+            var score = await _stockService.GetStockTotalScore(stockCode);
 
-        [HttpPost]
-        public ActionResult EditPrediction(MyPrediction model)
-        {
-            _predictionRepository.Update(model);
-            _predictionRepository.SaveChanges();
-            return RedirectToAction("Index", "Home");
-        }
+            var passingScore = _settingService.GetSettingValue<decimal>(SettingNames.Score_ShouldIBuyStockPassingScore);
+            viewModel.ShouldIBuyStock = score.TotalScore >= passingScore || score.HasSignificantUptrendReason ? "Yes" : "No";
+            viewModel.UpTrendReasons = score.UpTrendReasons;
+            viewModel.DownTrendReasons = score.DownTrendReasons;
 
-        public ActionResult CreatePrediction()
-        {
-            return View(new MyPrediction());
+            return View(viewModel);
         }
 
         public async Task<ActionResult> GetDataUpdates()
@@ -88,16 +70,6 @@ namespace Lychee.Stocks.Controllers
         {
             var result = _stockService.GetStockTrendReport(days, losingWinningStreak, trend);
             return PartialView(result);
-        }
-
-
-        [HttpPost]
-        public ActionResult CreatePrediction(MyPrediction model)
-        {
-            model.DateCreated = DateTime.Now;
-            _predictionRepository.Add(model);
-            _predictionRepository.SaveChanges();
-            return RedirectToAction("Index", "Home");
         }
     }
 }

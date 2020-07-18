@@ -6,7 +6,7 @@ using Lychee.Domain.Interfaces;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Enums;
 using Lychee.Stocks.Domain.Interfaces.Services;
-using Lychee.Stocks.Domain.Models.Investagrams;
+using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using ViewStock = Lychee.Stocks.InvestagramsApi.Models.Stocks.ViewStock;
@@ -31,24 +31,22 @@ namespace Lychee.Stocks.Domain.Services
         /// </summary>
         /// <param name="stockCode"></param>
         /// <returns></returns>
-        public async Task<decimal> GetMostActiveAndGainerScore(string stockCode)
+        public async Task<StockScore> GetMostActiveAndGainerScore(string stockCode)
         {
+            var score = new StockScore();
             var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_MostActiveAndTopGainer);
 
             var marketStatus = await _investagramsApiService.GetMarketStatus(DateTime.Now);
             var isInMostActive = marketStatus.MostActive.Any(x => x.StockCode == stockCode);
             var isInTopGainer = marketStatus.TopGainer.Any(x => x.StockCode == stockCode);
 
-            if (isInTopGainer && isInMostActive)
-                return perfectScore;
-
             if (isInMostActive)
-                return perfectScore / 2;
+                score.AddReason(perfectScore / 2, "Is in most active");
 
             if (isInTopGainer)
-                return perfectScore / 2;
+                score.AddReason(perfectScore / 2, "Is in top gainer");
 
-            return 0;
+            return score;
         }
 
         public async Task<StockScore> GetTrendingStockScore(string stockCode)
@@ -61,7 +59,7 @@ namespace Lychee.Stocks.Domain.Services
             //maybe add how frequent this stock is already on the market. if more than 3 days then give less score
             if (trendingStocks.Any(x => x.Stock.StockCode == stockCode))
             {
-                score.AddBreakdown(perfectScore, "Trending stock");
+                score.AddReason(perfectScore, "Trending stock");
             }
 
             return score;
@@ -70,13 +68,13 @@ namespace Lychee.Stocks.Domain.Services
         public async Task<StockScore> GetDividendScore(string stockCode)
         {
             var score = new StockScore();
-            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Trending);
+            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Dividend);
 
             var calendar = await _investagramsApiService.GetCalendarOverview();
             var dividend = calendar.Dividends.FirstOrDefault(x => x.StockCode == stockCode);
             if (dividend != null)
             {
-                score.AddBreakdown(perfectScore, $"Will be giving dividend soon Ex Date: {dividend.ExDate} Payment Date: {dividend.PaymentDate}");
+                score.AddReason(perfectScore, $"Will be giving dividend soon Ex Date: {dividend.ExDate} Payment Date: {dividend.PaymentDate}");
             }
 
             return score;
@@ -88,7 +86,7 @@ namespace Lychee.Stocks.Domain.Services
             var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Ma9);
 
             if (viewStock.LatestStockHistory.Last > viewStock.StockTechnicalAnalysisInfo.Ma9)
-                score.AddBreakdown(perfectScore, "Bullish MA 9");
+                score.AddReason(perfectScore, "Bullish MA 9");
 
             return score;
         }
@@ -99,7 +97,7 @@ namespace Lychee.Stocks.Domain.Services
             var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Ma20);
 
             if (viewStock.LatestStockHistory.Last > viewStock.StockTechnicalAnalysisInfo.Ma20)
-                score.AddBreakdown(perfectScore, "Bullish MA 20");
+                score.AddReason(perfectScore, "Bullish MA 20");
 
             return score;
         }
@@ -111,7 +109,7 @@ namespace Lychee.Stocks.Domain.Services
 
             var averageVolume20 = chartHistory.Volumes.Take(20).Average().ToDecimal();
             if (viewStock.LatestStockHistory.Volume > averageVolume20)
-                score.AddBreakdown(perfectScore, "Has volume");
+                score.AddReason(perfectScore, "Has volume");
 
             return score;
         }
@@ -119,15 +117,15 @@ namespace Lychee.Stocks.Domain.Services
         public StockScore GetBreakingResistanceScore(ViewStock viewStock)
         {
             var score = new StockScore();
-            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_MostActiveAndTopGainer);
+            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_BreakSupport1);
 
             //break resistance 1
             if (viewStock.LatestStockHistory.Last >= viewStock.StockTechnicalAnalysisInfo.Resistance1)
-                score.AddBreakdown(perfectScore * 0.65m, "Broken resistance 1");
+                score.AddReason(perfectScore * 0.65m, "Broken resistance 1");
 
             //break resistance 2
             if (viewStock.LatestStockHistory.Last >= viewStock.StockTechnicalAnalysisInfo.Resistance2)
-                score.AddBreakdown(perfectScore * 0.35m, "Broken resistance 2");
+                score.AddReason(perfectScore * 0.35m, "Broken resistance 2");
 
             return score;
         }
@@ -139,7 +137,7 @@ namespace Lychee.Stocks.Domain.Services
 
             //break resistance 2
             if (viewStock.LatestStockHistory.Last >= viewStock.StockTechnicalAnalysisInfo.Resistance2)
-                score.AddBreakdown(perfectScore, "Broken support 2");
+                score.AddReason(perfectScore, "Broken support 2");
 
             return score;
         }
@@ -147,11 +145,11 @@ namespace Lychee.Stocks.Domain.Services
         public StockScore GetTradeScore(ViewStock viewStock)
         {
             var score = new StockScore();
-            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_ReachedCap);
+            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Trade);
 
             var tradeThreshold = 1500;
             if (viewStock.LatestStockHistory.Trades > tradeThreshold)
-                score.AddBreakdown(perfectScore, $"Stock reached more than {tradeThreshold} trades");
+                score.AddReason(perfectScore, $"Stock reached more than {tradeThreshold} trades");
 
             return score;
         }
@@ -165,12 +163,12 @@ namespace Lychee.Stocks.Domain.Services
             var marketActivity = await _investagramsApiService.GetLatestStockMarketActivity();
             if (marketActivity.StockSuspensionList.Any(x => x.StockCode == stockCode))
             {
-                score.AddBreakdown(recentlySuspendedScore, "Recently added to suspended list");
+                score.AddReason(recentlySuspendedScore, "Recently added to suspended list");
             }
 
             if (marketActivity.StockBlockSaleList.Any(x => x.StockCode == stockCode))
             {
-                score.AddBreakdown(blockSaleScore, "In block sale");
+                score.AddReason(blockSaleScore, "In block sale");
             }
 
             return score;
@@ -203,13 +201,13 @@ namespace Lychee.Stocks.Domain.Services
 
             var rsi = viewStock.StockTechnicalAnalysisInfo.Rsi14;
             if (rsi > 75)
-                score.AddBreakdown(perfectScore * -1, "Already overbought"); //give negative score
+                score.AddReason(perfectScore, "Already overbought", StockTrend.Bearish); //give negative score
             else if (rsi >= 60 && rsi <= 70)
-                score.AddBreakdown(perfectScore, $"RSI is {rsi}");
+                score.AddReason(perfectScore, $"RSI is {rsi}");
             else if (rsi <= 30 && rsi > 20)
-                score.AddBreakdown(perfectScore * 0.3m, "Watch this stock"); //give 30% of perfect score
+                score.AddReason(perfectScore * 0.3m, "Watch this stock"); //give 30% of perfect score
             if (rsi < 10)
-                score.AddBreakdown(perfectScore, "Oversold");
+                score.AddReason(perfectScore, "Oversold");
 
             return score;
         }
@@ -230,14 +228,12 @@ namespace Lychee.Stocks.Domain.Services
             //There must be some good news with this stock or this is being hyped
             if (buyers.Count > 0 && sellers.Count == 0)
             {
-                score.ImportantConfirmation = true;
-                score.Trend = StockTrend.Bullish;
+                score.AddReason(perfectScore, "No one is selling the stock", isSignificant:true);
             }
             else if (buyers.Count == 0 && sellers.Count > 0)
             {
                 //ideally this shouldn't happen
-                score.ImportantConfirmation = true;
-                score.Trend = StockTrend.Bearish;
+                score.AddReason(perfectScore, "No one is buying the stock", StockTrend.Bearish, true);
             }
             else
             {
@@ -255,12 +251,12 @@ namespace Lychee.Stocks.Domain.Services
                     //if sellers are 15-30% higher than buyers give half score
                     if (percentage >= 0.15m && percentage <= 0.3m)
                     {
-                        score.AddBreakdown(perfectScore / 2, reason);
+                        score.AddReason(perfectScore / 2, reason);
                     }
                     //if sellers are 50-30% higher than the buyers give the perfect score
                     else if (percentage >= 0.3m)
                     {
-                        score.AddBreakdown(perfectScore, reason);
+                        score.AddReason(perfectScore, reason);
                     }
                 }
             }

@@ -10,6 +10,7 @@ using Lychee.Infrastructure.Interfaces;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
+using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.Entities;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
@@ -187,41 +188,37 @@ namespace Lychee.Stocks.Domain.Services
             //stockList = tasks.Select(x => x.Result).ToList();
         }
 
-        public async Task ShouldIBuyStock(string stockCode)
+        public async Task<StockScore> GetStockTotalScore(string stockCode)
         {
-            decimal totalScore = 0;
-
+            var score = new StockScore();
             var stock = await _investagramsApiService.ViewStockWithoutFundamentalAnalysis(stockCode);
             var chartHistory = await _investagramsApiService.GetChartHistoryByDate(stock.StockInfo.StockId, DateTime.Now);
 
-            totalScore += _stockScoreService.GetBreakingResistanceScore(stock).TotalScore;
-            totalScore += _stockScoreService.GetTradeScore(stock).TotalScore;
+            score.AddReasons(_stockScoreService.GetBreakingResistanceScore(stock));
+            score.AddReasons(_stockScoreService.GetTradeScore(stock));
+            score.AddReasons(_stockScoreService.GetMa9Score(stock));
+            score.AddReasons(_stockScoreService.GetMa20Score(stock));
+            score.AddReasons(_stockScoreService.GetVolumeScore(chartHistory, stock));
 
             var higherSellersScore = await _stockScoreService.GetBidAndAskScore(stock);
-            totalScore += higherSellersScore.TotalScore;
+            var suspendedAndBlockSaleScore = await _stockScoreService.GetRecentlySuspendedAndBlockSaleScore(stockCode);
+            var trendingStockScore = await _stockScoreService.GetTrendingStockScore(stockCode);
+            var mostActiveAndGainerScore = await _stockScoreService.GetMostActiveAndGainerScore(stockCode);
+            var givingDividendScore = await _stockScoreService.GetDividendScore(stockCode);
 
-
-            _stockScoreService.GetMa9Score(stock);
-            _stockScoreService.GetMa20Score(stock);
+            score.AddReasons(higherSellersScore);
+            score.AddReasons(suspendedAndBlockSaleScore);
+            score.AddReasons(trendingStockScore);
+            score.AddReasons(mostActiveAndGainerScore);
+            score.AddReasons(givingDividendScore);
 
             //2/2 winner
             //8/10 loser 
 
-            await _stockScoreService.GetRecentlySuspendedAndBlockSaleScore(stockCode);
-            await _stockScoreService.GetTrendingStockScore(stockCode);
-
-            totalScore += await _stockScoreService.GetMostActiveAndGainerScore(stockCode);
-
             //Reached cap/max buying - matic 100 %
             //has a really steep down recently 20%
-            await _stockScoreService.GetDividendScore(stockCode);
 
-            _stockScoreService.GetVolumeScore(chartHistory, stock);
-
-            //get passing score from setting
-            var passingScore = 70m;
-            if (totalScore >= passingScore)
-                return;
+            return score;
         }
 
         public void EodStockUpdate()
