@@ -81,6 +81,13 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
             var result = await PostToApi<BullBearData>($"{_stockApiPath}/GetBullBearDataByStockId?stockId={stockId}&type=1&order=1", Method.POST);
             return result.Data;
         }
+
+        public async Task<List<ScreenerResponse>> GetAllLatestStocks()
+        {
+            var data = new Screener();
+            var result = await PostToApi<List<ScreenerResponse>>(data, $"{_stockApiPath}/FilterStocksForScreenerPlus", Method.POST);
+            return result.Data;
+        }
     }
 
 

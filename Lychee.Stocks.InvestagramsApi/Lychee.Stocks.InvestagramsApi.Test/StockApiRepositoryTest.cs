@@ -117,6 +117,15 @@ namespace Lychee.Stocks.InvestagramsApi.Test
             //Act
             var result = await _investagramsApiRepository.GetBullBearData(142);
 
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task CanGetAllLatestStocks()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetAllLatestStocks();
 
             //Asserts
             Assert.That(result, Is.Not.Null);

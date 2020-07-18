@@ -86,6 +86,8 @@
     <Compile Include="Models\Stocks\MarketStatus.cs" />
     <Compile Include="Models\Stocks\MarketStatusRequest.cs" />
     <Compile Include="Models\Stocks\RealTimePrice.cs" />
+    <Compile Include="Models\Stocks\Screener.cs" />
+    <Compile Include="Models\Stocks\ScreenerResponse.cs" />
     <Compile Include="Models\Stocks\StockBlockSale.cs" />
     <Compile Include="Models\Stocks\StockInfo.cs" />
     <Compile Include="Models\Stocks\SuspendedStock.cs" />

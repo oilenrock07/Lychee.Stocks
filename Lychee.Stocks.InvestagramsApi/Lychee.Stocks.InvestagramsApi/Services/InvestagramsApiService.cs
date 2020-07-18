@@ -91,6 +91,11 @@ namespace Lychee.Stocks.InvestagramsApi.Services
         {
             return await _stockApiRepository.GetBullBearData(stockId);
         }
+
+        public async Task<List<ScreenerResponse>> GetAllLatestStocks()
+        {
+            return await _stockApiRepository.GetAllLatestStocks();
+        }
     }
 
 
