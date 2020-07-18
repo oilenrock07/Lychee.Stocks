@@ -25,8 +25,10 @@ namespace Lychee.Stocks.Controllers
 
         public async Task<ActionResult> FetchRealTimeData()
         {
-            var stocks = await _stockService.FetchRealTimeStocks();
-            _stockService.SaveStocks(stocks);
+            //make this an ajax request and return json. Maybe publish the changes as toast.
+            //at the moment this will just display the yellow page of death
+            //when you have time, convert this to use bootstrap 4 and use toast https://getbootstrap.com/docs/4.3/components/toasts/
+            await _stockService.SaveLatestStockUpdate();
 
             TempData["FetchRealTimeData"] = "Success";
             return RedirectToAction(nameof(HomeController.Index), "Home");
@@ -35,15 +37,6 @@ namespace Lychee.Stocks.Controllers
         public async Task<ActionResult> GetEodStockUpdate()
         {
             return View();
-        }
-
-        public async Task<ActionResult> UpdateLoginCookie()
-        {
-            var stocks = await _stockService.FetchRealTimeStocks();
-            _stockService.SaveStocks(stocks);
-
-            TempData["FetchRealTimeData"] = "Success";
-            return RedirectToAction("Index", "Home");
         }
 
         //[OutputCache(Duration = 300)] //5 minutes cache

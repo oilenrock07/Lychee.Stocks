@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
-using Lychee.Scrapper.Domain.Helpers;
+using Lychee.CommonHelper.Extensions;
 
 namespace Lychee.Stocks.Domain.Helpers
 {

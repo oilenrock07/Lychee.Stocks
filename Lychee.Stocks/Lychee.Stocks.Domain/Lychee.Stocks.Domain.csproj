@@ -35,44 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=12.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.12.1.2\lib\net45\CsvHelper.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Fizzler, Version=1.2.0.0, Culture=neutral, PublicKeyToken=4ebff4844e382110, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fizzler.1.2.0\lib\netstandard2.0\Fizzler.dll</HintPath>
-    </Reference>
-    <Reference Include="Fizzler.Systems.HtmlAgilityPack, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fizzler.Systems.HtmlAgilityPack.1.2.0\lib\netstandard1.3\Fizzler.Systems.HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="FSharp.Core, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FSharp.Core.4.5.2\lib\net45\FSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis, Version=1.43.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.43.0\lib\net45\Google.Apis.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Auth, Version=1.43.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.43.0\lib\net45\Google.Apis.Auth.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.43.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.43.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Core, Version=1.43.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Core.1.43.0\lib\net45\Google.Apis.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.PlatformServices, Version=1.43.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.43.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Sheets.v4, Version=1.43.0.1832, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Sheets.v4.1.43.0.1832\lib\net45\Google.Apis.Sheets.v4.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.11.12.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.11.12\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="LazyCache, Version=2.0.4.140, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LazyCache.2.0.4\lib\netstandard2.0\LazyCache.dll</HintPath>
@@ -81,16 +48,13 @@
       <HintPath>..\packages\Lychee.Caching.1.0.1\lib\net40\Lychee.Caching.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.CommonHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.CommonHelper.1.0.0\lib\net40\Lychee.CommonHelper.dll</HintPath>
+      <HintPath>..\packages\Lychee.CommonHelper.2.0.0\lib\net40\Lychee.CommonHelper.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Domain.1.1.1\lib\net40\Lychee.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Entities.1.0.0\lib\net40\Lychee.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Lychee.GoogleAPI.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LycheeScrapper.GoogleAPI.Sheet.1.0.0\lib\net40\Lychee.GoogleAPI.Common.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.HttpClientService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.HttpClientService.1.4.0\lib\net40\Lychee.HttpClientService.dll</HintPath>
@@ -101,17 +65,8 @@
     <Reference Include="Lychee.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Models.1.0.0\lib\net40\Lychee.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Lychee.Scrapper.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LycheeScrapper.Domain.1.2.6\lib\net40\Lychee.Scrapper.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="Lychee.Scrapper.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LycheeScrapper.Domain.1.2.6\lib\net40\Lychee.Scrapper.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Lychee.Scrapper.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LycheeScrapper.Domain.1.2.6\lib\net40\Lychee.Scrapper.Repository.dll</HintPath>
-    </Reference>
     <Reference Include="Lychee.Stocks.InvestagramsApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.4.1\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
+      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.4.2\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
@@ -159,15 +114,6 @@
     </Reference>
     <Reference Include="Omu.ValueInjecter, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5692a4ecdffbe736, processorArchitecture=MSIL">
       <HintPath>..\packages\ValueInjecter.3.2.0\lib\net45\Omu.ValueInjecter.dll</HintPath>
-    </Reference>
-    <Reference Include="PuppeteerSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PuppeteerSharp.1.20.0\lib\netstandard2.0\PuppeteerSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="PuppeteerSharp.Contrib.Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PuppeteerSharp.Contrib.Extensions.1.0.0\lib\netstandard2.0\PuppeteerSharp.Contrib.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="PuppeteerSharp.Contrib.Should, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PuppeteerSharp.Contrib.Should.1.0.0\lib\netstandard2.0\PuppeteerSharp.Contrib.Should.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=106.11.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.11.2\lib\net452\RestSharp.dll</HintPath>
@@ -355,12 +301,14 @@
     <Compile Include="Enums\StockTypes.cs" />
     <Compile Include="Exception\InvestagramsException.cs" />
     <Compile Include="Helpers\StockExtension.cs" />
+    <Compile Include="Interfaces\Repositories\IStockHistoryRepository.cs" />
     <Compile Include="Interfaces\Repositories\IStockDataRepository.cs" />
     <Compile Include="Interfaces\Repositories\IBlockSaleStockRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISuspendedStockRepository.cs" />
     <Compile Include="Interfaces\Services\IPredictionService.cs" />
     <Compile Include="Interfaces\Services\IStockScoreService.cs" />
     <Compile Include="Interfaces\Services\IStockService.cs" />
+    <Compile Include="StockDomainModule.cs" />
     <Compile Include="Models\Investagrams\FundamentalAnalysisInfo.cs" />
     <Compile Include="Models\Investagrams\InvestagramsResponseBase.cs" />
     <Compile Include="Models\Investagrams\LatestStockMarketActivityVM.cs" />
@@ -372,7 +320,7 @@
     <Compile Include="Models\InvestaViewStockResponse.cs" />
     <Compile Include="Models\InvestaBaseApiResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\StocksScrappedSettingRepository.cs" />
+    <Compile Include="Repositories\StockHistoryRepository.cs" />
     <Compile Include="Repositories\BlockSaleStockRepository.cs" />
     <Compile Include="Repositories\SuspendedStockRepository.cs" />
     <Compile Include="Services\PredictionService.cs" />
@@ -381,7 +329,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="chromium-78.0.3882.0.br" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

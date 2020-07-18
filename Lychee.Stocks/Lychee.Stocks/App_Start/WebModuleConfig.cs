@@ -7,17 +7,11 @@ using Lychee.Caching;
 using Lychee.Caching.Interfaces;
 using Lychee.Domain;
 using Lychee.Domain.Interfaces;
-using Lychee.HttpClientService;
 using Lychee.Infrastructure;
 using Lychee.Infrastructure.Interfaces;
-using Lychee.Scrapper.Domain.Interfaces;
-using Lychee.Scrapper.Domain.Services;
-using Lychee.Scrapper.Repository.Interfaces;
-using Lychee.Scrapper.Repository.Repositories;
+using Lychee.Stocks.Domain;
 using Lychee.Stocks.Domain.Constants;
-using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
-using Lychee.Stocks.Domain.Repositories;
 using Lychee.Stocks.Domain.Services;
 using Lychee.Stocks.Entities;
 using Lychee.Stocks.InvestagramsApi;
@@ -45,28 +39,17 @@ namespace Lychee.Stocks
             container.Register<IDatabaseFactory, DatabaseFactory>(Lifestyle.Scoped);
 
 
-            //Repositories
-            container.RegisterSingleton<IScrappedSettingRepository, ScrappedSettingRepository>();
-            container.RegisterSingleton<IHeaderRequestRepository, HeaderRequestRepository>();
-            container.RegisterSingleton<IColumnDefinitionRepository, ColumnDefinitionRepository>();
-            container.RegisterSingleton<IScrappedDataRepository, ScrappedDataRepository>();
-            container.Register<ISuspendedStockRepository, SuspendedStockRepository>(Lifestyle.Scoped);
-            container.Register<IBlockSaleStockRepository, BlockSaleStockRepository>(Lifestyle.Scoped);
-
             //Services
-            container.RegisterSingleton<ILoggingService, LoggingService>();
-            container.RegisterSingleton<IWebQueryService, WebQueryService>();
             container.Register<IStockService, StockService>(Lifestyle.Scoped);
             container.Register<IPredictionService, PredictionService>(Lifestyle.Scoped);
-            container.Register<IResultCollectionService, ResultCollectionService>(Lifestyle.Scoped);
             container.RegisterSingleton<ICachingFactory, CachingFactory>();
 
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
             //Lychee Packages
-            container.RegisterLycheeHttpClientService(UrlConstants.InvestagramsWebApiBaseUrl);
             container.RegisterLycheeDomainServiceModule();
             container.RegisterInvestagramsApi();
+            container.RegisterStocksDomain();
 
             container.Verify();
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));

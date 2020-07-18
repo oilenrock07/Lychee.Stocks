@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using Lychee.CommonHelper.Extensions;
 using Lychee.Domain.Interfaces;
-using Lychee.Scrapper.Domain.Helpers;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Enums;
 using Lychee.Stocks.Domain.Interfaces.Services;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Lychee.Scrapper.Domain.Models.Scrappers;
 using Lychee.Stocks.Entities;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 
@@ -9,11 +8,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
 {
     public interface IStockService
     {
-        Task UpdateAllStocks();
-
-        Task<ResultCollection<ResultItemCollection>> FetchRealTimeStocks();
-
-        void SaveStocks(ResultCollection<ResultItemCollection> collections);
+        Task SaveLatestStockUpdate();
 
         bool HasStockData(DateTime date);
 
