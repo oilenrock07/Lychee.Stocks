@@ -72,3 +72,7 @@ textarea {
 .navbar-stocks {
     background-color: #1e4324;
 }
+
+.should-i-buy .search {
+    height: 45px;
+}

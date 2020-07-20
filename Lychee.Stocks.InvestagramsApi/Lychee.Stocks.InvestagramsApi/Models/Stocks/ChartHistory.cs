@@ -21,12 +21,12 @@ namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
         public decimal[] Changes { get; set; }
 
         [DataMember(Name = "V")]
-        public int[] Volumes { get; set; }
+        public decimal[] Volumes { get; set; }
 
         [DataMember(Name = "NF")]
-        public int[] NetForeigns { get; set; }
+        public decimal[] NetForeigns { get; set; }
 
-        public int[] Rsi14 { get; set; }
+        public decimal[] Rsi14 { get; set; }
     }
 
 

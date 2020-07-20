@@ -15,6 +15,8 @@ using Lychee.Stocks.Entities;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Omu.ValueInjecter;
+using Serilog;
+using Serilog.Core;
 
 namespace Lychee.Stocks.Domain.Services
 {
@@ -23,7 +25,6 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IDatabaseFactory _databaseFactory;
         private readonly ISettingRepository _settingRepository;
         private readonly IRepository<Stock> _stockRepository;
-        private readonly IRepository<TechnicalAnalysis> _technicalAnalysis;
         private readonly IAppCache _cache;
         private readonly ISuspendedStockRepository _suspendedStockRepository;
         private readonly IBlockSaleStockRepository _blockSaleStockRepository;
@@ -33,17 +34,16 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IStockHistoryRepository _stockHistoryRepository;
 
 
-        private readonly string _investaCookie = "cache:investa-cookie";
-
         public StockService(IDatabaseFactory databaseFactory, ISettingRepository settingRepository,
             IRepository<Stock> stockRepository,
-            IRepository<TechnicalAnalysis> technicalAnalysis,
-            IStockHistoryRepository stockHistoryRepository, ICachingFactory cacheFactory, ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository, ICookieProviderService cookieProviderService, IInvestagramsApiService investagramsApiService, IStockScoreService stockScoreService)
+            IStockHistoryRepository stockHistoryRepository, ICachingFactory cacheFactory,
+            ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository,
+            ICookieProviderService cookieProviderService, IInvestagramsApiService investagramsApiService,
+            IStockScoreService stockScoreService)
         {
             _databaseFactory = databaseFactory;
             _settingRepository = settingRepository;
             _stockRepository = stockRepository;
-            _technicalAnalysis = technicalAnalysis;
             _stockHistoryRepository = stockHistoryRepository;
             _suspendedStockRepository = suspendedStockRepository;
             _blockSaleStockRepository = blockSaleStockRepository;
@@ -192,32 +192,34 @@ namespace Lychee.Stocks.Domain.Services
         {
             var score = new StockScore();
             var stock = await _investagramsApiService.ViewStockWithoutFundamentalAnalysis(stockCode);
-            var chartHistory = await _investagramsApiService.GetChartHistoryByDate(stock.StockInfo.StockId, DateTime.Now);
 
             score.AddReasons(_stockScoreService.GetBreakingResistanceScore(stock));
+            score.AddReasons(_stockScoreService.GetBreakingSupport2Score(stock));
             score.AddReasons(_stockScoreService.GetTradeScore(stock));
             score.AddReasons(_stockScoreService.GetMa9Score(stock));
             score.AddReasons(_stockScoreService.GetMa20Score(stock));
-            score.AddReasons(_stockScoreService.GetVolumeScore(chartHistory, stock));
+            score.AddReasons(_stockScoreService.GetRsiScore(stock));
+            score.AddReasons(_stockScoreService.GetVolume15Score(stock));
 
-            var higherSellersScore = await _stockScoreService.GetBidAndAskScore(stock);
-            var suspendedAndBlockSaleScore = await _stockScoreService.GetRecentlySuspendedAndBlockSaleScore(stockCode);
-            var trendingStockScore = await _stockScoreService.GetTrendingStockScore(stockCode);
-            var mostActiveAndGainerScore = await _stockScoreService.GetMostActiveAndGainerScore(stockCode);
-            var givingDividendScore = await _stockScoreService.GetDividendScore(stockCode);
-
-            score.AddReasons(higherSellersScore);
-            score.AddReasons(suspendedAndBlockSaleScore);
-            score.AddReasons(trendingStockScore);
-            score.AddReasons(mostActiveAndGainerScore);
-            score.AddReasons(givingDividendScore);
+            var tasks = new List<Task>
+            {
+                Task.Run(async () => await _stockScoreService.GetBidAndAskScore(stock)).ContinueWith(x => score.AddReasons(x.Result)),
+                Task.Run(async () => await _stockScoreService.GetRecentlySuspendedAndBlockSaleScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                Task.Run(async () => await _stockScoreService.GetTrendingStockScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                Task.Run(async () => await _stockScoreService.GetMostActiveAndGainerScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+            };
+            Task.WaitAll(tasks.ToArray());
 
             //2/2 winner
             //8/10 loser 
 
             //Reached cap/max buying - matic 100 %
             //has a really steep down recently 20%
-
+            //dormant volume then suddenly spiked
+            //candle stick movement.
+            //trades to be average 20 not fixed to 1500
             return score;
         }
 

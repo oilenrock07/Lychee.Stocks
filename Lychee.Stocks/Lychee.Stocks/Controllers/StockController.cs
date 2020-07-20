@@ -43,6 +43,7 @@ namespace Lychee.Stocks.Controllers
             viewModel.ShouldIBuyStock = score.TotalScore >= passingScore || score.HasSignificantUptrendReason ? "Yes" : "No";
             viewModel.UpTrendReasons = score.UpTrendReasons;
             viewModel.DownTrendReasons = score.DownTrendReasons;
+            viewModel.TotalScore = score.TotalScore;
 
             return View(viewModel);
         }

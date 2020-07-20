@@ -1,0 +1,57 @@
+﻿@using Lychee.Stocks.InvestagramsApi.Constants
+@model Lychee.Stocks.Models.Stocks.ShouldIBuyStockViewModel
+@{
+    ViewBag.Title = "Should I Buy Stock";
+}
+
+
+<div class="container-fluid should-i-buy">
+    @using (Html.BeginForm("ShouldIBuyStock", "Stock", FormMethod.Get))
+    {
+    <div class="row">
+        <h1>Should I buy <a href="@string.Format(UrlConstants.InvestagramsStockUrl, Model.StockCode)" target="_blank">@Model.StockCode</a></h1>
+        
+        <div class="input-group">
+            @Html.TextBoxFor(m => m.StockCode, new { placeholder = "Stock code", @class = "form-control search" })
+            <span class="input-group-addon glyphicon glyphicon-search"></span>
+        </div>
+    </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.StockCode))
+    {
+        var isYes = string.Equals(Model.ShouldIBuyStock, "yes", StringComparison.InvariantCultureIgnoreCase);
+        var trendColour = isYes ? "color-uptrend" : "color-downtrend";
+
+        <div class="row">
+            <h1 class="@trendColour">@Model.ShouldIBuyStock</h1>
+        </div>
+
+        if (Model.UpTrendReasons.Any())
+        {
+            <div class="row">
+                <h3>Why you should buy</h3>
+                @foreach (var item in Model.UpTrendReasons)
+                {
+                    <p>@item.Reason: @item.Score </p>
+                }
+            </div>
+        }
+
+
+        if (Model.DownTrendReasons.Any())
+        {
+            <div class="row">
+                <h3>Why you should NOT buy</h3>
+                @foreach (var item in Model.DownTrendReasons)
+                {
+                    <p>@item.Reason: @item.Score </p>
+                }
+            </div>
+        }
+
+        <div class="row @trendColour">
+            <h2>Total Score: @Model.TotalScore</h2>
+        </div>
+    }
+</div>

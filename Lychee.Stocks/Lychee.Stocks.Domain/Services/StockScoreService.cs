@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Lychee.CommonHelper.Extensions;
@@ -102,13 +103,12 @@ namespace Lychee.Stocks.Domain.Services
             return score;
         }
 
-        public StockScore GetVolumeScore(ChartHistory chartHistory, ViewStock viewStock)
+        public StockScore GetVolume15Score(ViewStock viewStock)
         {
             var score = new StockScore();
             var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Volume);
 
-            var averageVolume20 = chartHistory.Volumes.Take(20).Average().ToDecimal();
-            if (viewStock.LatestStockHistory.Volume > averageVolume20)
+            if (viewStock.LatestStockHistory.Volume > viewStock.StockTechnicalAnalysisInfo.VolumeAvg15)
                 score.AddReason(perfectScore, "Has volume");
 
             return score;
@@ -117,7 +117,7 @@ namespace Lychee.Stocks.Domain.Services
         public StockScore GetBreakingResistanceScore(ViewStock viewStock)
         {
             var score = new StockScore();
-            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_BreakSupport1);
+            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_BreakResistance);
 
             //break resistance 1
             if (viewStock.LatestStockHistory.Last >= viewStock.StockTechnicalAnalysisInfo.Resistance1)
@@ -197,7 +197,7 @@ namespace Lychee.Stocks.Domain.Services
         public StockScore GetRsiScore(ViewStock viewStock)
         {
             var score = new StockScore();
-            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_OverSold);
+            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Rsi);
 
             var rsi = viewStock.StockTechnicalAnalysisInfo.Rsi14;
             if (rsi > 75)
@@ -262,6 +262,35 @@ namespace Lychee.Stocks.Domain.Services
             }
 
             return score;
+        }
+
+        public decimal GetBuyStockPassingScore()
+        {
+            var passingScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_ShouldIBuyStockPassingScore);
+            if (passingScore > 0)
+                return passingScore;
+
+
+            return 75;
+
+            //var scores = new List<decimal>
+            //{
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Trending), //5
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_BreakResistance), //30
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_BreakSupport1), //5
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_BreakSupport2), //10
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Trade), //5
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_AskAndBid), //10
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Rsi), //15
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_MostActiveAndTopGainer), //10
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_RecentlySuspended), //25
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Volume), //25
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Ma9), //15
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Ma20), //15
+            //    _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Dividend), //30
+            //};
+
+            //return scores.Sum();
         }
     }
 }

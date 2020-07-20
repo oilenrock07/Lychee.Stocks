@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
-using ViewStock = Lychee.Stocks.InvestagramsApi.Models.Stocks.ViewStock;
 
 namespace Lychee.Stocks.Domain.Interfaces.Services
 {
@@ -17,11 +16,13 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
 
         Task<StockScore> GetRecentlySuspendedAndBlockSaleScore(string stockCode);
 
-        StockScore GetVolumeScore(ChartHistory chartHistory, ViewStock viewStock);
+        StockScore GetVolume15Score(ViewStock viewStock);
 
         StockScore GetMa9Score(ViewStock viewStock);
         StockScore GetMa20Score(ViewStock viewStock);
 
         Task<StockScore> GetDividendScore(string stockCode);
+
+        decimal GetBuyStockPassingScore();
     }
 }

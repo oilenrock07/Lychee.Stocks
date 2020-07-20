@@ -82,7 +82,7 @@ namespace Lychee.Stocks.Controllers
             var viewModel = new MarketStatusViewModel
             {
                 TopGainer = status.TopGainer.Select(x => MapMarketStatusTopGainers(x, status.MostActive)).ToArray(),
-                TopLoser = status.TopGainer.Select(x => MapMarketStatusTopGainers(x, status.MostActive)).ToArray(),
+                TopLoser = status.TopLoser.Select(x => MapMarketStatusTopGainers(x, status.MostActive)).ToArray(),
                 MostActive = status.MostActive.Select(x => MapMarketStatusMostActive(x, status)).ToArray()
             };
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Lychee.Stocks.InvestagramsApi.Repositories;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -83,7 +84,7 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         public async Task CanGetLatestTechnicalAnalysis()
         {
             //Act
-            var result = await _investagramsApiRepository.GetLatestTechnicalAnalysis("NOW");
+            var result = await _investagramsApiRepository.GetLatestTechnicalAnalysis("MAC");
 
             //Asserts
             Assert.That(result, Is.Not.Null);
@@ -105,7 +106,7 @@ namespace Lychee.Stocks.InvestagramsApi.Test
             //Act
             var result = await _investagramsApiRepository.GetChartHistoryByDate(142, DateTime.Now);
 
-            var ave = result.Volumes.Take(20).Average();
+            var ave = result.Volumes.Take(15).Average();
 
             //Asserts
             Assert.That(result, Is.Not.Null);
@@ -129,6 +130,32 @@ namespace Lychee.Stocks.InvestagramsApi.Test
 
             //Asserts
             Assert.That(result, Is.Not.Null);
+        }
+
+
+        [Test]
+        public async Task TplTest()
+        {
+            //5.29
+            var startTime = DateTime.Now;
+            var technicalAnalysis = await _investagramsApiRepository.GetLatestTechnicalAnalysis("NOW");
+            var latestStock = await _investagramsApiRepository.GetAllLatestStocks();
+            var bullBear = await _investagramsApiRepository.GetBullBearData(142);
+
+            //1 seconds
+            var task1 = Task.Factory.StartNew(() => _investagramsApiRepository.GetLatestTechnicalAnalysis("NOW"));
+            var task2 = Task.Factory.StartNew(() => _investagramsApiRepository.GetAllLatestStocks());
+            var task3 = Task.Factory.StartNew(() => _investagramsApiRepository.GetBullBearData(142));
+
+            //3.38
+            var totalScore = 0m;
+            var tasks = new List<Task>();
+            tasks.Add(Task.Run(async () => await _investagramsApiRepository.GetLatestTechnicalAnalysis("NOW")).ContinueWith((a) => totalScore += a.Result.VolumeAvg10));
+            tasks.Add(Task.Run(async () => await _investagramsApiRepository.GetAllLatestStocks()).ContinueWith((a) => totalScore += a.Result.Count));
+            tasks.Add(Task.Run(async () => await _investagramsApiRepository.GetBullBearData(142)).ContinueWith((a) => totalScore += a.Result.BuyingAvePrice));
+            Task.WaitAll(tasks.ToArray());
+
+            var endTime = DateTime.Now.Subtract(startTime).TotalSeconds;
         }
     }
 }

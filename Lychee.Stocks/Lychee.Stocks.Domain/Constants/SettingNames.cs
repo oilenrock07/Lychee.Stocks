@@ -13,6 +13,8 @@
         public const string Score_BlockSale = "Score:BlockSale";
         public const string Score_Trade = "Score:Trade";
         public const string Score_OverSold = "Score:OverSold";
+        public const string Score_Rsi = "Score:Rsi";
+        public const string Score_BreakResistance = "Score:BreakResistance";
         public const string Score_BreakSupport1 = "Score:BreakSupport1";
         public const string Score_BreakSupport2 = "Score:BreakSupport2";
         public const string Score_Trending = "Score:Trending";
