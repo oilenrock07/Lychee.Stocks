@@ -33,6 +33,7 @@ namespace Lychee.Stocks
 
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+            container.Options.AllowOverridingRegistrations = true;
             container.Register<DbContext>(() => new StockContext(), Lifestyle.Scoped);
             container.Register<Logger>(() => new LoggerConfiguration().WriteTo.File(loggingPath).CreateLogger(), Lifestyle.Singleton);
             container.Register(typeof(IRepository<>), typeof(Repository<>), Lifestyle.Scoped);

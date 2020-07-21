@@ -1,0 +1,17 @@
+﻿@model Lychee.Stocks.InvestagramsApi.Models.Stocks.LatestStockMarketActivityVm
+@{
+    ViewBag.Title = "Suspended And On Sale Stock";
+}
+
+
+<div class="row">
+    <div class="col-md-3 col-xs-12">
+        <h1>Suspended</h1>
+        @Html.Partial("_SuspendedStocks", Model.StockSuspensionList)
+    </div>
+
+    <div class="col-md-9 col-xs-12">
+        <h1>Block Sales</h1>
+        @Html.Partial("_BlockSalePartial", Model.StockBlockSaleList)
+    </div>
+</div>

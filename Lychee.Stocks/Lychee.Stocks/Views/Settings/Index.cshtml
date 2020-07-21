@@ -33,7 +33,7 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                <a href="javascript:void(0)" class="js-update" data-id="@item.SettingId">Update</a> |
+                <a href="javascript:void(0)" class="js-update" data-id="@item.SettingId" data-name="@item.Key">Update</a> |
                 @Html.ActionLink("Delete", "Delete", new {id = item.SettingId})
             </td>
         </tr>

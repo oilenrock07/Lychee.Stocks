@@ -25,7 +25,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stocks <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Stock List", "DownTrends", "Report")</li>
+                            <li>@Html.ActionLink("Stock List", "TrendingNow", "Report")</li>
                             <li role="separator" class="divider"></li>
                             <li>@Html.ActionLink("Should I buy this stock?", "ShouldIBuyStock", "Stock")</li>
                         </ul>
@@ -33,6 +33,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Trending Now", "TrendingNow", "Report")</li>
                             <li>@Html.ActionLink("DownTrends", "DownTrends", "Report")</li>
                             <li>@Html.ActionLink("UpTrends", "UpTrends", "Report")</li>
                             <li>@Html.ActionLink("Breakouts", "UpTrends", "Report")</li>
@@ -42,7 +43,7 @@
                             <li>@Html.ActionLink("Top Volume/Losers/Winners", "MarketStatus", "Report")</li>
                             <li role="separator" class="divider"></li>
                             <li>@Html.ActionLink("Recommended Stocks", "UpTrends", "Report")</li>
-                            <li>@Html.ActionLink("Suspended And On Sale", "UpTrends", "Report")</li>
+                            <li>@Html.ActionLink("Suspended And On Sale", "SuspendedAndOnSale", "Report")</li>
                             <li>@Html.ActionLink("Oversold And Overbought", "UpTrends", "Report")</li>
                         </ul>
                     </li>

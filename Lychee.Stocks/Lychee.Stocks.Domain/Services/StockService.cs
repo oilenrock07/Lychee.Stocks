@@ -17,6 +17,7 @@ using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Omu.ValueInjecter;
 using Serilog;
 using Serilog.Core;
+using SuspendedStock = Lychee.Stocks.InvestagramsApi.Models.Stocks.SuspendedStock;
 
 namespace Lychee.Stocks.Domain.Services
 {
@@ -32,6 +33,7 @@ namespace Lychee.Stocks.Domain.Services
         private readonly ICookieProviderService _cookieProviderService;
         private readonly IStockScoreService _stockScoreService;
         private readonly IStockHistoryRepository _stockHistoryRepository;
+        private readonly IStockMarketStatusRepository _stockMarketStatusRepository;
 
 
         public StockService(IDatabaseFactory databaseFactory, ISettingRepository settingRepository,
@@ -39,7 +41,7 @@ namespace Lychee.Stocks.Domain.Services
             IStockHistoryRepository stockHistoryRepository, ICachingFactory cacheFactory,
             ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository,
             ICookieProviderService cookieProviderService, IInvestagramsApiService investagramsApiService,
-            IStockScoreService stockScoreService)
+            IStockScoreService stockScoreService, IStockMarketStatusRepository stockMarketStatusRepository)
         {
             _databaseFactory = databaseFactory;
             _settingRepository = settingRepository;
@@ -50,6 +52,7 @@ namespace Lychee.Stocks.Domain.Services
             _cookieProviderService = cookieProviderService;
             _investagramsApiService = investagramsApiService;
             _stockScoreService = stockScoreService;
+            _stockMarketStatusRepository = stockMarketStatusRepository;
             _cache = cacheFactory.GetCacheService();
         }
 
@@ -65,7 +68,7 @@ namespace Lychee.Stocks.Domain.Services
 
         protected void SaveStocks(List<ScreenerResponse> stocks)
         {
-            var date = GetLastTradingDate();
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
             var allStocks = _stockHistoryRepository.GetAllStocksByDate(date);
 
             foreach (var item in stocks)
@@ -109,22 +112,15 @@ namespace Lychee.Stocks.Domain.Services
                 paramLosingWinningStreak, paramTrend).ToList();
         }
 
-
-        public virtual async Task<ICollection<InvestagramsApi.Models.Stocks.SuspendedStock>> GetSuspendedStocks()
+        public Task<ICollection<SuspendedStock>> GetSuspendedStocks()
         {
-            //var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
-            //if (data != null)
-            //    return data.StockSuspensionList;
+            throw new NotImplementedException();
+        }
 
-            
-            //var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
-            //result.SetSuspendedStockDate();
-            //var stockSuspensionList = result.StockSuspensionList.ToList();
 
-            //_cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
-
-            //return stockSuspensionList;
-            return null;
+        public virtual async Task<LatestStockMarketActivityVm> GetSuspendedAndBlockSaleStocks()
+        {
+            return await _investagramsApiService.GetLatestStockMarketActivity();
         }
 
 
@@ -223,40 +219,9 @@ namespace Lychee.Stocks.Domain.Services
             return score;
         }
 
-        public void EodStockUpdate()
-        {
-            var marketActivity = _investagramsApiService.GetLatestStockMarketActivity();
-            UpdateBlockSale(marketActivity.Result.StockBlockSaleList);
-            UpdateSuspendedStocks(marketActivity.Result.StockSuspensionList);
-
-            //get stock list
-        }
-
         public void UpdateInvestagramsCookie(string value)
         {
             _cookieProviderService.SetCookie(value);
-        }
-
-        public virtual DateTime GetLastTradingDate()
-        {
-            var lastTradingDate = _cache.Get<DateTime>(CacheNames.LastTradingDateCacheKey);
-            if (lastTradingDate != DateTime.Now)
-            {
-                if (lastTradingDate == DateTime.MinValue)
-                    lastTradingDate = DateTime.Now;
-                
-                if (lastTradingDate.DayOfWeek == DayOfWeek.Sunday)
-                    lastTradingDate = lastTradingDate.AddDays(-2);
-                if (lastTradingDate.DayOfWeek == DayOfWeek.Saturday)
-                    lastTradingDate = lastTradingDate.AddDays(-1);
-
-                //consider holiday
-
-                _cache.Add(CacheNames.LastTradingDateCacheKey, lastTradingDate, TimeSpan.FromDays(1));
-            }
-
-
-            return lastTradingDate.Date;
         }
 
         private void UpdateBlockSale(ICollection<StockBlockSale> stockBlockSales)

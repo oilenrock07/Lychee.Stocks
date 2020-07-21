@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Constants\UrlConstants.cs" />
     <Compile Include="Enums\OrderVerb.cs" />
+    <Compile Include="Exceptions\InvestagramApiException.cs" />
     <Compile Include="Interfaces\ICalendarApiRepository.cs" />
     <Compile Include="Interfaces\ICookieProviderService.cs" />
     <Compile Include="Interfaces\ISocialApiRepository.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lychee.Stocks.InvestagramsApi.Exceptions;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Calendar;
 using Lychee.Stocks.InvestagramsApi.Models.Social;
@@ -15,6 +16,8 @@ namespace Lychee.Stocks.InvestagramsApi.Services
         private readonly ISocialApiRepository _socialApiRepository;
         private readonly ICalendarApiRepository _calendarApiRepository;
 
+        private readonly string _investaCookieExpiredErrorMessage = "Please update investa cookie";
+
         public InvestagramsApiService(IStockApiRepository apiRepository, ISocialApiRepository socialApiRepository, ICalendarApiRepository calendarApiRepository)
         {
             _stockApiRepository = apiRepository;
@@ -22,42 +25,70 @@ namespace Lychee.Stocks.InvestagramsApi.Services
             _calendarApiRepository = calendarApiRepository;
         }
 
-        public async Task<LatestStockMarketActivityVm> GetLatestStockMarketActivity()
+        public virtual async Task<LatestStockMarketActivityVm> GetLatestStockMarketActivity()
         {
-            return await _stockApiRepository.GetLatestStockMarketActivity();
+            var data = await _stockApiRepository.GetLatestStockMarketActivity();
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<ViewStock> ViewStock(string stockCode)
+        public virtual async Task<ViewStock> ViewStock(string stockCode)
         {
-            return await _stockApiRepository.ViewStock(stockCode);
+            var data = await _stockApiRepository.ViewStock(stockCode);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<ViewStock> ViewStockWithoutFundamentalAnalysis(string stockCode)
+        public virtual async Task<ViewStock> ViewStockWithoutFundamentalAnalysis(string stockCode)
         {
-            return await _stockApiRepository.ViewStockWithoutFundamentalAnalysis(stockCode);
+            var data = await _stockApiRepository.ViewStockWithoutFundamentalAnalysis(stockCode);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<AskAndBid> GetAskAndBidByStockId(int investagramStockId)
+        public virtual async Task<AskAndBid> GetAskAndBidByStockId(int investagramStockId)
         {
-            return await _stockApiRepository.GetAskAndBidByStockId(investagramStockId);
+            var data = await _stockApiRepository.GetAskAndBidByStockId(investagramStockId);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<MarketStatus> GetMarketStatus(DateTime date)
+        public virtual async Task<MarketStatus> GetMarketStatus(DateTime date)
         {
-            return await _stockApiRepository.GetMarketStatus(date);
+            var data = await _stockApiRepository.GetMarketStatus(date);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<LatestStockHistory> GetLatestStockHistoryByStockId(int stockId)
+        public virtual async Task<LatestStockHistory> GetLatestStockHistoryByStockId(int stockId)
         {
-            return await _stockApiRepository.GetLatestStockHistoryByStockId(stockId);
+            var data = await _stockApiRepository.GetLatestStockHistoryByStockId(stockId);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<TechnicalAnalysisInfo> GetLatestTechnicalAnalysis(string stockCode)
+        public virtual async Task<TechnicalAnalysisInfo> GetLatestTechnicalAnalysis(string stockCode)
         {
-            return await _stockApiRepository.GetLatestTechnicalAnalysis(stockCode);
+            var data = await _stockApiRepository.GetLatestTechnicalAnalysis(stockCode);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<List<RealTimePrice>> GetAllActiveStockPriceRealTime()
+        public virtual async Task<List<RealTimePrice>> GetAllActiveStockPriceRealTime()
         {
             var result = new List<RealTimePrice>();
             List<RealTimePrice> prices;
@@ -72,29 +103,49 @@ namespace Lychee.Stocks.InvestagramsApi.Services
             return result;
         }
 
-        public async Task<CalendarOverview> GetCalendarOverview()
+        public virtual async Task<CalendarOverview> GetCalendarOverview()
         {
-            return await _calendarApiRepository.GetCalendarOverview();
+            var data = await _calendarApiRepository.GetCalendarOverview();
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<List<TrendingStock>> GetTrendingStocks()
+        public virtual async Task<List<TrendingStock>> GetTrendingStocks()
         {
-            return await _socialApiRepository.GetTrendingStocks();
+            var data = await _socialApiRepository.GetTrendingStocks();
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<ChartHistory> GetChartHistoryByDate(int stockId, DateTime date)
+        public virtual async Task<ChartHistory> GetChartHistoryByDate(int stockId, DateTime date)
         {
-            return await _stockApiRepository.GetChartHistoryByDate(stockId, date);
+            var data = await _stockApiRepository.GetChartHistoryByDate(stockId, date);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<BullBearData> GetBullBearData(int stockId)
+        public virtual async Task<BullBearData> GetBullBearData(int stockId)
         {
-            return await _stockApiRepository.GetBullBearData(stockId);
+            var data = await _stockApiRepository.GetBullBearData(stockId);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
 
-        public async Task<List<ScreenerResponse>> GetAllLatestStocks()
+        public virtual async Task<List<ScreenerResponse>> GetAllLatestStocks()
         {
-            return await _stockApiRepository.GetAllLatestStocks();
+            var data = await _stockApiRepository.GetAllLatestStocks();
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
         }
     }
 

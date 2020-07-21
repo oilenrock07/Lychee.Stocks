@@ -328,7 +328,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="chromium-78.0.3882.0.br" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

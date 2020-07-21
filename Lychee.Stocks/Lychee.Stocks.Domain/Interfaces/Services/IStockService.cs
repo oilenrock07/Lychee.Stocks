@@ -11,7 +11,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
     {
         Task SaveLatestStockUpdate();
 
-        bool HasStockData(DateTime date);
+        Task<LatestStockMarketActivityVm> GetSuspendedAndBlockSaleStocks();
 
         DateTime GetLastDataUpdates();
 
@@ -27,9 +27,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         Task UpdateStocks(IEnumerable<string> stockCodes);
 
         void UpdateInvestagramsCookie(string value);
-
-        DateTime GetLastTradingDate();
-
+        
         Task<StockScore> GetStockTotalScore(string stockCode);
 
     }

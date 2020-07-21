@@ -77,7 +77,7 @@
       <HintPath>..\packages\Lychee.Models.1.0.0\lib\net40\Lychee.Models.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Stocks.InvestagramsApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.5.0\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
+      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.5.2\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
@@ -438,6 +438,10 @@
     <Content Include="Views\Report\MarketStatus.cshtml" />
     <Content Include="Views\Report\_MarketStatusPartial.cshtml" />
     <Content Include="Views\Stock\ShouldIBuyStock.cshtml" />
+    <Content Include="Views\Report\TrendingNow.cshtml" />
+    <Content Include="Views\Report\SuspendedAndOnSale.cshtml" />
+    <Content Include="Views\Report\_BlockSalePartial.cshtml" />
+    <Content Include="Views\Report\_SuspendedStocks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

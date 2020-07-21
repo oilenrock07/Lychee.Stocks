@@ -1,0 +1,29 @@
+﻿@using Lychee.Stocks.Domain.Helpers
+@using Lychee.Stocks.InvestagramsApi.Constants
+@model ICollection<Lychee.Stocks.InvestagramsApi.Models.Stocks.StockBlockSale>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Value</th>
+            <th>Volume</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+                </td>
+                <td>@item.Price</td>
+                <td>@item.Date</td>
+                <td>@item.Value.ConvertToShortHand()</td>
+                <td>@item.Volume.ConvertToShortHand()</td>
+            </tr>
+        }
+    </tbody>
+</table>

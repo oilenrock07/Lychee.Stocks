@@ -1,0 +1,26 @@
+﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Social.TrendingStock>
+@{
+    ViewBag.Title = "TrendingNow";
+}
+
+<h1>Trending Stocks</h1>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Trending Date</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.Stock.StockCode</td>
+            <td>@item.Stock.StockName</td>
+            <td>@item.TrendingDate</td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -4,6 +4,9 @@
     {
         public const string InvestagramsCookieName = "Setting:InvestagramsCookie";
 
+        public const string TradingOpeningTime = "TradingSetting:OpeningTime";
+        public const string TradingClosingTime = "TradingSetting:ClosingTime";
+
         //Scores
         public const string Score_ShouldIBuyStockPassingScore = "Score:ShouldIBuyStockPassingScore";
         public const string Score_MostActiveAndTopGainer = "Score:MostActiveAndTopGainer";
@@ -24,6 +27,7 @@
         public const string Score_Ma20 = "Score:Ma20";
     }
 }
+
 
 
 

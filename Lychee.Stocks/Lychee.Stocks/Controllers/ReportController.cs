@@ -24,6 +24,12 @@ namespace Lychee.Stocks.Controllers
             _investagramsApi = investagramsApi;
         }
 
+        public async Task<ActionResult> TrendingNow()
+        {
+            var model = await _investagramsApi.GetTrendingStocks();
+            return View(model);
+        }
+
         public ActionResult DownTrends()
         {
             var fiveOverFive = _stockService.GetStockTrendReport(5, 5).ToList();
@@ -62,18 +68,10 @@ namespace Lychee.Stocks.Controllers
             return View(viewModel);
         }
 
-        public ActionResult SuspendedAndOnSale()
+        public async Task<ActionResult> SuspendedAndOnSale()
         {
-            try
-            {
-                //var result = _predictionService();
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return null;
+            var model = await _investagramsApi.GetLatestStockMarketActivity();
+            return View(model);
         }
 
         public async Task<ActionResult> MarketStatus()
