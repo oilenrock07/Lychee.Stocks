@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Lychee.Stocks.Domain.Models;
 
-namespace Lychee.Stocks.Models.Stocks
+namespace Lychee.Stocks.Domain.Models
 {
-    public class ShouldIBuyStockViewModel
+    public class ShouldIBuyStockModel
     {
         public string StockCode { get; set; }
         public string ShouldIBuyStock { get; set; }

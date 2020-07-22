@@ -385,7 +385,6 @@
     <Compile Include="Models\Reports\MarketStatusViewModel.cs" />
     <Compile Include="Models\Reports\TrendReportBaseClass.cs" />
     <Compile Include="Models\Reports\UpTrendReportViewModel.cs" />
-    <Compile Include="Models\Stocks\ShouldIBuyStockViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -443,9 +442,11 @@
     <Content Include="Views\Report\_BlockSalePartial.cshtml" />
     <Content Include="Views\Report\_SuspendedStocks.cshtml" />
     <Content Include="Views\Home\TrendingStocks.cshtml" />
+    <Content Include="Views\Stock\ShouldIBuyTrendingStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Stocks\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

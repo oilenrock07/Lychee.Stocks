@@ -16,7 +16,6 @@ using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Omu.ValueInjecter;
 using Serilog;
-using Serilog.Core;
 using SuspendedStock = Lychee.Stocks.InvestagramsApi.Models.Stocks.SuspendedStock;
 
 namespace Lychee.Stocks.Domain.Services
@@ -24,7 +23,7 @@ namespace Lychee.Stocks.Domain.Services
     public class StockService : IStockService
     {
         private readonly IDatabaseFactory _databaseFactory;
-        private readonly ISettingRepository _settingRepository;
+        private readonly ISettingService _settingService;
         private readonly IRepository<Stock> _stockRepository;
         private readonly IAppCache _cache;
         private readonly ISuspendedStockRepository _suspendedStockRepository;
@@ -36,7 +35,7 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IStockMarketStatusRepository _stockMarketStatusRepository;
 
 
-        public StockService(IDatabaseFactory databaseFactory, ISettingRepository settingRepository,
+        public StockService(IDatabaseFactory databaseFactory, ISettingService settingService,
             IRepository<Stock> stockRepository,
             IStockHistoryRepository stockHistoryRepository, ICachingFactory cacheFactory,
             ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository,
@@ -44,7 +43,7 @@ namespace Lychee.Stocks.Domain.Services
             IStockScoreService stockScoreService, IStockMarketStatusRepository stockMarketStatusRepository)
         {
             _databaseFactory = databaseFactory;
-            _settingRepository = settingRepository;
+            _settingService = settingService;
             _stockRepository = stockRepository;
             _stockHistoryRepository = stockHistoryRepository;
             _suspendedStockRepository = suspendedStockRepository;
@@ -187,26 +186,36 @@ namespace Lychee.Stocks.Domain.Services
         public async Task<StockScore> GetStockTotalScore(string stockCode)
         {
             var score = new StockScore();
-            var stock = await _investagramsApiService.ViewStockWithoutFundamentalAnalysis(stockCode);
 
-            score.AddReasons(_stockScoreService.GetBreakingResistanceScore(stock));
-            score.AddReasons(_stockScoreService.GetBreakingSupport2Score(stock));
-            score.AddReasons(_stockScoreService.GetTradeScore(stock));
-            score.AddReasons(_stockScoreService.GetMa9Score(stock));
-            score.AddReasons(_stockScoreService.GetMa20Score(stock));
-            score.AddReasons(_stockScoreService.GetRsiScore(stock));
-            score.AddReasons(_stockScoreService.GetVolume15Score(stock));
-
-            var tasks = new List<Task>
+            try
             {
-                Task.Run(async () => await _stockScoreService.GetBidAndAskScore(stock)).ContinueWith(x => score.AddReasons(x.Result)),
-                Task.Run(async () => await _stockScoreService.GetRecentlySuspendedAndBlockSaleScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
-                Task.Run(async () => await _stockScoreService.GetTrendingStockScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
-                Task.Run(async () => await _stockScoreService.GetMostActiveAndGainerScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
-                Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
-                //Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
-            };
-            Task.WaitAll(tasks.ToArray());
+                var stock = await _investagramsApiService.ViewStockWithoutFundamentalAnalysis(stockCode);
+
+                score.AddReasons(_stockScoreService.GetBreakingResistanceScore(stock));
+                score.AddReasons(_stockScoreService.GetBreakingSupport2Score(stock));
+                score.AddReasons(_stockScoreService.GetTradeScore(stock));
+                score.AddReasons(_stockScoreService.GetMa9Score(stock));
+                score.AddReasons(_stockScoreService.GetMa20Score(stock));
+                score.AddReasons(_stockScoreService.GetRsiScore(stock));
+                score.AddReasons(_stockScoreService.GetVolume15Score(stock));
+
+                var tasks = new List<Task>
+                {
+                    Task.Run(async () => await _stockScoreService.GetBidAndAskScore(stock)).ContinueWith(x => score.AddReasons(x.Result)),
+                    Task.Run(async () => await _stockScoreService.GetRecentlySuspendedAndBlockSaleScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                    Task.Run(async () => await _stockScoreService.GetTrendingStockScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                    Task.Run(async () => await _stockScoreService.GetMostActiveAndGainerScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                    Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                    //Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                };
+                Task.WaitAll(tasks.ToArray());
+            }
+            catch (System.Exception ex)
+            {
+                Log.Logger.Error($"{nameof(GetStockTotalScore)} StockCode:{stockCode} Exception:{ex.ToString()}");
+            }
+            
+            
 
             //2/2 winner
             //8/10 loser 
@@ -217,6 +226,35 @@ namespace Lychee.Stocks.Domain.Services
             //candle stick movement.
             //trades to be average 20 not fixed to 1500
             return score;
+        }
+
+        public async Task<ShouldIBuyStockModel> ShouldIBuyStock(string stockCode)
+        {
+            var model = new ShouldIBuyStockModel { StockCode = stockCode};
+            var score = await GetStockTotalScore(stockCode);
+
+            var passingScore = _settingService.GetSettingValue<decimal>(SettingNames.Score_ShouldIBuyStockPassingScore);
+            model.ShouldIBuyStock = score.TotalScore >= passingScore || score.HasSignificantUptrendReason ? "Yes" : "No";
+            model.UpTrendReasons = score.UpTrendReasons;
+            model.DownTrendReasons = score.DownTrendReasons;
+            model.TotalScore = score.TotalScore;
+
+            return model;
+        }
+
+        public async Task<List<ShouldIBuyStockModel>> ShouldIBuyTrendingStocks()
+        {
+            var trendingStocks = await _investagramsApiService.GetTrendingStocks();
+            var result = new List<ShouldIBuyStockModel>();
+
+            var tasks = new List<Task>();
+            foreach (var trendingStock in trendingStocks)
+            {
+                tasks.Add(Task.Run(async () => await ShouldIBuyStock(trendingStock.Stock.StockCode)).ContinueWith(x => result.Add(x.Result)));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+            return result;
         }
 
         public void UpdateInvestagramsCookie(string value)

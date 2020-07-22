@@ -1,0 +1,50 @@
+﻿@using Lychee.Stocks.InvestagramsApi.Constants
+@model List<Lychee.Stocks.Domain.Models.ShouldIBuyStockModel>
+@{
+    ViewBag.Title = "Should I Buy Trending Stocks";
+}
+
+<h2>Trending Stocks</h2>
+
+<div class="container-fluid should-i-buy">
+    @foreach (var item in Model)
+    {
+        var isYes = string.Equals(item.ShouldIBuyStock, "yes", StringComparison.InvariantCultureIgnoreCase);
+        var trendColour = isYes ? "color-uptrend" : "color-downtrend";
+
+        <div class="row">
+            <h1 class="@trendColour">Should I buy <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a> @item.ShouldIBuyStock?</h1>
+
+            @if (item.UpTrendReasons.Any())
+            {
+                <div>
+                    <h3>Why you should buy</h3>
+                    @foreach (var reason in item.UpTrendReasons)
+                    {
+                        <p>@reason.Reason: @reason.Score </p>
+                    }
+                </div>
+            }
+
+
+            @if (item.DownTrendReasons.Any())
+            {
+                <div>
+                    <h3>Why you should NOT buy</h3>
+                    @foreach (var reason in item.DownTrendReasons)
+                    {
+                        <p>@reason.Reason: @reason.Score </p>
+                    }
+                </div>
+            }
+
+            <div class="@trendColour">
+                <h2>Total Score: @item.TotalScore</h2>
+            </div>
+
+        </div>
+
+        <hr/>
+    }
+
+</div>

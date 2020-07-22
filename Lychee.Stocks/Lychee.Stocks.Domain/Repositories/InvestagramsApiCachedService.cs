@@ -7,6 +7,7 @@ using Lychee.Domain.Interfaces;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
+using Lychee.Stocks.InvestagramsApi.Models.Calendar;
 using Lychee.Stocks.InvestagramsApi.Models.Social;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Lychee.Stocks.InvestagramsApi.Services;
@@ -54,20 +55,33 @@ namespace Lychee.Stocks.Domain.Repositories
         public override async Task<List<TrendingStock>> GetTrendingStocks()
         {
             var cacheKey = $"TrendingStocks-{DateTime.Now:MMdd}";
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetTrendingStocks(), TimeSpan.FromDays(1));
+        }
+
+        public override async Task<MarketStatus> GetMarketStatus(DateTime date)
+        {
+            var cacheKey = $"MarketStatus-{DateTime.Now:MMdd}";
 
             //if within trading day and time, always fetch the data
             if (IsTradingHours())
             {
-                var data = await base.GetTrendingStocks();
+                var data = await base.GetMarketStatus(date);
 
-                if (_cache.Get<List<TrendingStock>>(cacheKey) != null)
+                if (_cache.Get<MarketStatus>(cacheKey) != null)
                     _cache.Remove(cacheKey);
 
                 return data;
             }
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetTrendingStocks(), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetMarketStatus(date), TimeSpan.FromDays(1));
         }
+
+        public override async Task<CalendarOverview> GetCalendarOverview()
+        {
+            var cacheKey = $"CalendarOverview-{DateTime.Now:MMdd}";
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetCalendarOverview(), TimeSpan.FromDays(1));
+        }
+
 
         private bool IsTradingHours()
         {

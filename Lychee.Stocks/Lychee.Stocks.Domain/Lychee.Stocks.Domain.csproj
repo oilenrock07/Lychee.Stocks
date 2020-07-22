@@ -309,6 +309,7 @@
     <Compile Include="Interfaces\Services\IStockScoreService.cs" />
     <Compile Include="Interfaces\Services\IStockService.cs" />
     <Compile Include="Models\ReasonScore.cs" />
+    <Compile Include="Models\ShouldIBuyStockModel.cs" />
     <Compile Include="Repositories\InvestagramsApiCachedService.cs" />
     <Compile Include="Repositories\StockMarketStatusRepository.cs" />
     <Compile Include="StockDomainModule.cs" />

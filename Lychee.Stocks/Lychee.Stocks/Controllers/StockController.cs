@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using Lychee.Domain.Interfaces;
-using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Interfaces.Services;
+using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.Models;
-using Lychee.Stocks.Models.Stocks;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -33,18 +32,17 @@ namespace Lychee.Stocks.Controllers
 
         public async Task<ActionResult> ShouldIBuyStock(string stockCode = "")
         {
-            var viewModel = new ShouldIBuyStockViewModel { StockCode = stockCode};
+            var viewModel = new ShouldIBuyStockModel { StockCode = stockCode};
             if (string.IsNullOrEmpty(stockCode))
                 return View(viewModel);
 
-            var score = await _stockService.GetStockTotalScore(stockCode);
+            viewModel = await _stockService.ShouldIBuyStock(stockCode);
+            return View(viewModel);
+        }
 
-            var passingScore = _settingService.GetSettingValue<decimal>(SettingNames.Score_ShouldIBuyStockPassingScore);
-            viewModel.ShouldIBuyStock = score.TotalScore >= passingScore || score.HasSignificantUptrendReason ? "Yes" : "No";
-            viewModel.UpTrendReasons = score.UpTrendReasons;
-            viewModel.DownTrendReasons = score.DownTrendReasons;
-            viewModel.TotalScore = score.TotalScore;
-
+        public async Task<ActionResult> ShouldIBuyTrendingStock()
+        {
+            var viewModel = await _stockService.ShouldIBuyTrendingStocks();
             return View(viewModel);
         }
 

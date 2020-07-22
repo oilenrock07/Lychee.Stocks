@@ -237,8 +237,8 @@ namespace Lychee.Stocks.Domain.Services
             }
             else
             {
-                var highestVolumeOfBuyers = buyers.First();
-                var highestVolumeOfSellers = sellers.First();
+                var highestVolumeOfBuyers = buyers.Any()? buyers.First() : new Buyer();
+                var highestVolumeOfSellers = sellers.Any()? sellers.First() : new Seller();
 
                 //My Own metrics.
                 //Inverse law of supply and demand

@@ -30,5 +30,9 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         
         Task<StockScore> GetStockTotalScore(string stockCode);
 
+        Task<ShouldIBuyStockModel> ShouldIBuyStock(string stockCode);
+
+        Task<List<ShouldIBuyStockModel>> ShouldIBuyTrendingStocks();
+
     }
 }
