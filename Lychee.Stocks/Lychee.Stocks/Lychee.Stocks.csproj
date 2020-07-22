@@ -442,6 +442,7 @@
     <Content Include="Views\Report\SuspendedAndOnSale.cshtml" />
     <Content Include="Views\Report\_BlockSalePartial.cshtml" />
     <Content Include="Views\Report\_SuspendedStocks.cshtml" />
+    <Content Include="Views\Home\TrendingStocks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

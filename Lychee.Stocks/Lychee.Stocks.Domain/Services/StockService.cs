@@ -204,7 +204,7 @@ namespace Lychee.Stocks.Domain.Services
                 Task.Run(async () => await _stockScoreService.GetTrendingStockScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
                 Task.Run(async () => await _stockScoreService.GetMostActiveAndGainerScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
                 Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
-                Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                //Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
             };
             Task.WaitAll(tasks.ToArray());
 
