@@ -33,5 +33,17 @@ namespace Lychee.Stocks.InvestagramsApi.Interfaces
         Task<BullBearData> GetBullBearData(int stockId);
 
         Task<List<ScreenerResponse>> GetAllLatestStocks();
+
+        Task<List<News>> GetDisclosureNews(int lastStockNewsId = -1);
+
+
+        Task<List<News>> GetFinancialReportNews(int lastStockNewsId = -1);
+
+
+        Task<List<News>> GetBusinessNews(int lastStockNewsId = -1);
+
+        Task<List<News>> GetNewsByStockId(int stockId, int lastStockNewsId = -1);
+
+        Task<ChartByMinute> GetChartByMinutes(string stockCode, int minute);
     }
 }

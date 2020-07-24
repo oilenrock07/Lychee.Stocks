@@ -130,6 +130,15 @@ namespace Lychee.Stocks.InvestagramsApi.Services
             return data;
         }
 
+        public virtual async Task<ChartByMinute> GetChartByMinutes(string stockCode, int minute)
+        {
+            var data = await _stockApiRepository.GetChartByMinutes(stockCode, minute);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
+        }
+
         public virtual async Task<BullBearData> GetBullBearData(int stockId)
         {
             var data = await _stockApiRepository.GetBullBearData(stockId);
@@ -147,6 +156,43 @@ namespace Lychee.Stocks.InvestagramsApi.Services
 
             return data;
         }
+
+        public virtual async Task<List<News>> GetDisclosureNews(int lastStockNewsId = -1)
+        {
+            var data = await _stockApiRepository.GetDisclosureNews(lastStockNewsId);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
+        }
+
+        public virtual async Task<List<News>> GetFinancialReportNews(int lastStockNewsId = -1)
+        {
+            var data = await _stockApiRepository.GetFinancialReportNews(lastStockNewsId);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
+        }
+
+        public virtual async Task<List<News>> GetBusinessNews(int lastStockNewsId = -1)
+        {
+            var data = await _stockApiRepository.GetBusinessNews(lastStockNewsId);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
+        }
+
+        public virtual async Task<List<News>> GetNewsByStockId(int stockId, int lastStockNewsId = -1)
+        {
+            var data = await _stockApiRepository.GetNewsByStockId(stockId, lastStockNewsId);
+            if (data == null)
+                throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
+
+            return data;
+        }
+
     }
 
 

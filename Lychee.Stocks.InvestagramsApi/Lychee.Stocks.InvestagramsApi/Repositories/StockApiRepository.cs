@@ -76,6 +76,19 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
             return result.Data;
         }
 
+        public async Task<ChartByMinute> GetChartByMinutes(string stockCode, int minute)
+        {
+            var baseDate = new DateTime(1970, 1, 1);
+            var to = DateTime.UtcNow - baseDate;
+            var from = DateTime.UtcNow.AddMinutes(-10) - baseDate;
+            var toMilliSec = (long) to.TotalMilliseconds / 1000;
+            var fromMilliSec = (long)from.TotalMilliseconds / 1000;
+
+
+            var result = await PostToApi<ChartByMinute>($"/InvestaApi/TradingViewChart/history?symbol=PSE:{stockCode}&resolution={minute}&from={fromMilliSec}&to={toMilliSec}", Method.POST);
+            return result.Data;
+        }
+
         public async Task<BullBearData> GetBullBearData(int stockId)
         {
             var result = await PostToApi<BullBearData>($"{_stockApiPath}/GetBullBearDataByStockId?stockId={stockId}&type=1&order=1", Method.POST);
@@ -86,6 +99,40 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
         {
             var data = new Screener();
             var result = await PostToApi<List<ScreenerResponse>>(data, $"{_stockApiPath}/FilterStocksForScreenerPlus", Method.POST);
+            return result.Data;
+        }
+
+        public async Task<List<News>> GetDisclosureNews(int lastStockNewsId = -1)
+        {
+            return await GetNews(2, lastStockNewsId);
+        }
+
+        public async Task<List<News>> GetFinancialReportNews(int lastStockNewsId = -1)
+        {
+            return await GetNews(3, lastStockNewsId);
+        }
+
+        public async Task<List<News>> GetStockNews(int lastStockNewsId = -1)
+        {
+            return await GetNews(-1, lastStockNewsId);
+        }
+
+        public async Task<List<News>> GetBusinessNews(int lastStockNewsId = -1)
+        {
+            var result = await PostToApi<List<News>>($"{_stockApiPath}/GetNewBusinessNewsPost?lastStockNewsId={lastStockNewsId}", Method.POST);
+            return result.Data;
+        }
+
+        public async Task<List<News>> GetNewsByStockId(int stockId, int lastStockNewsId = -1)
+        {
+            var getNew = lastStockNewsId > 0;
+            var result = await PostToApi<List<News>>($"{_stockApiPath}/GetAllStockNewsByStockId?stockId={stockId}&&lastStockNewsId={lastStockNewsId}&getNew={getNew}", Method.POST);
+            return result.Data;
+        }
+
+        private async Task<List<News>> GetNews(int sourceType, int lastStockNewsId)
+        {
+            var result = await PostToApi<List<News>>($"{_stockApiPath}/GetNewStockNewsPost?stockId=-1&sourceType={sourceType}&lastStockNewsId={lastStockNewsId}", Method.POST);
             return result.Data;
         }
     }

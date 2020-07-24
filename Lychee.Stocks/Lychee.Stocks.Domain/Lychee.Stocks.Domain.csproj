@@ -66,7 +66,7 @@
       <HintPath>..\packages\Lychee.Models.1.0.0\lib\net40\Lychee.Models.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Stocks.InvestagramsApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.5.2\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
+      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.6.3\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
@@ -306,12 +306,14 @@
     <Compile Include="Interfaces\Repositories\IStockMarketStatusRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISuspendedStockRepository.cs" />
     <Compile Include="Interfaces\Services\IPredictionService.cs" />
+    <Compile Include="Interfaces\Services\IStockNewsService.cs" />
     <Compile Include="Interfaces\Services\IStockScoreService.cs" />
     <Compile Include="Interfaces\Services\IStockService.cs" />
     <Compile Include="Models\ReasonScore.cs" />
     <Compile Include="Models\ShouldIBuyStockModel.cs" />
     <Compile Include="Repositories\InvestagramsApiCachedService.cs" />
     <Compile Include="Repositories\StockMarketStatusRepository.cs" />
+    <Compile Include="Services\StockNewsService.cs" />
     <Compile Include="StockDomainModule.cs" />
     <Compile Include="Models\StockScore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -80,12 +80,14 @@
     <Compile Include="Models\Social\TrendingStocks.cs" />
     <Compile Include="Models\Stocks\AskAndBid.cs" />
     <Compile Include="Models\Stocks\BullBearData.cs" />
+    <Compile Include="Models\Stocks\ChartByMinute.cs" />
     <Compile Include="Models\Stocks\ChartHistory.cs" />
     <Compile Include="Models\Stocks\FundamentalAnalysisInfo.cs" />
     <Compile Include="Models\Stocks\LatestStockHistory.cs" />
     <Compile Include="Models\Stocks\LatestStockMarketActivityVM.cs" />
     <Compile Include="Models\Stocks\MarketStatus.cs" />
     <Compile Include="Models\Stocks\MarketStatusRequest.cs" />
+    <Compile Include="Models\Stocks\News.cs" />
     <Compile Include="Models\Stocks\RealTimePrice.cs" />
     <Compile Include="Models\Stocks\Screener.cs" />
     <Compile Include="Models\Stocks\ScreenerResponse.cs" />

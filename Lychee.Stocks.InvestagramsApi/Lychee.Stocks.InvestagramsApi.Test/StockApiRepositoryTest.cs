@@ -34,7 +34,7 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         public async Task CanViewStock()
         {
             //Act
-            var result = await _investagramsApiRepository.ViewStock("GMA7");
+            var result = await _investagramsApiRepository.ViewStock("BDO");
 
             //Asserts
             Assert.That(result, Is.Not.Null);
@@ -113,6 +113,16 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         }
 
         [Test]
+        public async Task CanGetChartByMinute()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetChartByMinutes("FNI", 5);
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
         public async Task CanGetBullBearData()
         {
             //Act
@@ -127,6 +137,47 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         {
             //Act
             var result = await _investagramsApiRepository.GetAllLatestStocks();
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+
+        [Test]
+        public async Task CanGetDisclosureNews()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetDisclosureNews();
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task CanGetBusinessNews()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetBusinessNews();
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task CanGetFinancialReportNews()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetFinancialReportNews();
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task CanGetNewsByStockId()
+        {
+            //Act
+            var result = await _investagramsApiRepository.GetNewsByStockId(158);
 
             //Asserts
             Assert.That(result, Is.Not.Null);

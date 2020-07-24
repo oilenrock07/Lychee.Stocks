@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using LazyCache;
 using Lychee.Caching.Interfaces;
 using Lychee.Domain.Interfaces;
 using Lychee.Infrastructure.Interfaces;
@@ -14,6 +17,7 @@ using NUnit.Framework;
 using Lychee.HttpClientService;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
+using Lychee.Stocks.Domain.Models;
 
 namespace Lychee.Stocks.Test
 {
@@ -58,8 +62,22 @@ namespace Lychee.Stocks.Test
         [Test]
         public async Task CanGetStocksFromInvestagramApiUsingParallelTask()
         {
+            IAppCache cache = new CachingService();
+            cache.Remove("test");
+            var data = cache.GetOrAdd<StockScore>("test", GetName);
+
+            cache.Remove("test");
+            //cache.Add("test", new StockScore() { DownTrendReasons = { new ReasonScore { IsSignificant = true}}});
+
+            var isUpdated = cache.GetOrAdd<StockScore>("test", GetName);
+
             var stockCodes = new List<string> {"MWC", "JFC"};
             await _stockService.UpdateStocks(stockCodes);
+        }
+
+        private StockScore GetName()
+        {
+            return new StockScore { Reasons = { new ReasonScore()}};
         }
 
     }
