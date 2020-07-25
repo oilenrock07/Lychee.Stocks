@@ -148,9 +148,9 @@ namespace Lychee.Stocks.InvestagramsApi.Services
             return data;
         }
 
-        public virtual async Task<List<ScreenerResponse>> GetAllLatestStocks()
+        public virtual async Task<List<ScreenerResponse>> GetScreenerResponse(Screener screener)
         {
-            var data = await _stockApiRepository.GetAllLatestStocks();
+            var data = await _stockApiRepository.GetScreenerResponse(screener);
             if (data == null)
                 throw new InvestagramApiException(_investaCookieExpiredErrorMessage);
 

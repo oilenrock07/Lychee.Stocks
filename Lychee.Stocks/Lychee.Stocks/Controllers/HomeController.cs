@@ -6,6 +6,9 @@ using Lychee.Stocks.InvestagramsApi.Interfaces;
 
 namespace Lychee.Stocks.Controllers
 {
+    ////Takeaways and self note
+    /// Only allow 2% of your total capital to be your loss
+
     public class HomeController : Controller
     {
         private readonly IStockService _stockService;

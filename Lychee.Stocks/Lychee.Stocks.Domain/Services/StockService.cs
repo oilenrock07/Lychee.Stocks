@@ -28,7 +28,7 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IAppCache _cache;
         private readonly ISuspendedStockRepository _suspendedStockRepository;
         private readonly IBlockSaleStockRepository _blockSaleStockRepository;
-        private readonly IInvestagramsApiService _investagramsApiService;
+        private readonly IInvestagramsApiCachedService _investagramsApiService;
         private readonly ICookieProviderService _cookieProviderService;
         private readonly IStockScoreService _stockScoreService;
         private readonly IStockHistoryRepository _stockHistoryRepository;
@@ -39,7 +39,7 @@ namespace Lychee.Stocks.Domain.Services
             IRepository<Stock> stockRepository,
             IStockHistoryRepository stockHistoryRepository, ICachingFactory cacheFactory,
             ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository,
-            ICookieProviderService cookieProviderService, IInvestagramsApiService investagramsApiService,
+            ICookieProviderService cookieProviderService, IInvestagramsApiCachedService investagramsApiService,
             IStockScoreService stockScoreService, IStockMarketStatusRepository stockMarketStatusRepository)
         {
             _databaseFactory = databaseFactory;

@@ -2,7 +2,6 @@
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Repositories;
 using Lychee.Stocks.Domain.Services;
-using Lychee.Stocks.InvestagramsApi.Interfaces;
 using SimpleInjector;
 
 namespace Lychee.Stocks.Domain
@@ -18,7 +17,7 @@ namespace Lychee.Stocks.Domain
 
 
             container.Register<IStockScoreService, StockScoreService>(Lifestyle.Scoped);
-            container.Register<IInvestagramsApiService, InvestagramsApiCachedService>(Lifestyle.Scoped);
+            container.Register<IInvestagramsApiCachedService, InvestagramsApiCachedService>(Lifestyle.Scoped);
         }
     }
 }

@@ -95,9 +95,8 @@ namespace Lychee.Stocks.InvestagramsApi.Repositories
             return result.Data;
         }
 
-        public async Task<List<ScreenerResponse>> GetAllLatestStocks()
+        public async Task<List<ScreenerResponse>> GetScreenerResponse(Screener data)
         {
-            var data = new Screener();
             var result = await PostToApi<List<ScreenerResponse>>(data, $"{_stockApiPath}/FilterStocksForScreenerPlus", Method.POST);
             return result.Data;
         }

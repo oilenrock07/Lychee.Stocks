@@ -32,7 +32,7 @@ namespace Lychee.Stocks.InvestagramsApi.Interfaces
 
         Task<BullBearData> GetBullBearData(int stockId);
 
-        Task<List<ScreenerResponse>> GetAllLatestStocks();
+        Task<List<ScreenerResponse>> GetScreenerResponse(Screener screener);
 
         Task<List<News>> GetDisclosureNews(int lastStockNewsId = -1);
 

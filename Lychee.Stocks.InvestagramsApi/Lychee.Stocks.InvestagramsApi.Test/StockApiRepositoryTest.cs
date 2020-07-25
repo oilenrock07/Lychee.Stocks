@@ -136,7 +136,7 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         public async Task CanGetAllLatestStocks()
         {
             //Act
-            var result = await _investagramsApiRepository.GetAllLatestStocks();
+            var result = await _investagramsApiRepository.GetScreenerResponse(new Screener());
 
             //Asserts
             Assert.That(result, Is.Not.Null);
@@ -190,19 +190,19 @@ namespace Lychee.Stocks.InvestagramsApi.Test
             //5.29
             var startTime = DateTime.Now;
             var technicalAnalysis = await _investagramsApiRepository.GetLatestTechnicalAnalysis("NOW");
-            var latestStock = await _investagramsApiRepository.GetAllLatestStocks();
+            var latestStock = await _investagramsApiRepository.GetScreenerResponse(new Screener());
             var bullBear = await _investagramsApiRepository.GetBullBearData(142);
 
             //1 seconds
             var task1 = Task.Factory.StartNew(() => _investagramsApiRepository.GetLatestTechnicalAnalysis("NOW"));
-            var task2 = Task.Factory.StartNew(() => _investagramsApiRepository.GetAllLatestStocks());
+            var task2 = Task.Factory.StartNew(() => _investagramsApiRepository.GetScreenerResponse(new Screener()));
             var task3 = Task.Factory.StartNew(() => _investagramsApiRepository.GetBullBearData(142));
 
             //3.38
             var totalScore = 0m;
             var tasks = new List<Task>();
             tasks.Add(Task.Run(async () => await _investagramsApiRepository.GetLatestTechnicalAnalysis("NOW")).ContinueWith((a) => totalScore += a.Result.VolumeAvg10));
-            tasks.Add(Task.Run(async () => await _investagramsApiRepository.GetAllLatestStocks()).ContinueWith((a) => totalScore += a.Result.Count));
+            tasks.Add(Task.Run(async () => await _investagramsApiRepository.GetScreenerResponse(new Screener()).ContinueWith((a) => totalScore += a.Result.Count)));
             tasks.Add(Task.Run(async () => await _investagramsApiRepository.GetBullBearData(142)).ContinueWith((a) => totalScore += a.Result.BuyingAvePrice));
             Task.WaitAll(tasks.ToArray());
 
