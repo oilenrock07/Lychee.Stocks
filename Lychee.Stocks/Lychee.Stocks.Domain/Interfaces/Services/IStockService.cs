@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.Entities;
+using Lychee.Stocks.InvestagramsApi.Models.Calendar;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 
 namespace Lychee.Stocks.Domain.Interfaces.Services
@@ -30,9 +31,11 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         
         Task<StockScore> GetStockTotalScore(string stockCode);
 
-        Task<ShouldIBuyStockModel> ShouldIBuyStock(string stockCode);
+        Task<StockAnalysisModel> AnalyzeStock(string stockCode);
 
-        Task<List<ShouldIBuyStockModel>> ShouldIBuyTrendingStocks();
+        Task<List<StockAnalysisModel>> AnalyzeTrendingStock();
+
+        Task<List<Dividend>> GetStocksGivingDividends();
 
     }
 }

@@ -47,5 +47,11 @@ namespace Lychee.Stocks.Controllers
             var model = Task.Run(async () => await _investagramsApiService.GetTrendingStocks()).Result;
             return PartialView(model);
         }
+
+        public PartialViewResult Dividends()
+        {
+            var model = Task.Run(async () => await _stockService.GetStocksGivingDividends()).Result;
+            return PartialView(model);
+        }
     }
 }

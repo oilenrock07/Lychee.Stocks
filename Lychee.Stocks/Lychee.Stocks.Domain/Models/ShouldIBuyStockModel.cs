@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 
 namespace Lychee.Stocks.Domain.Models
 {
-    public class ShouldIBuyStockModel
+    public class StockAnalysisModel
     {
+        public int StockId { get; set; }
         public string StockCode { get; set; }
         public string ShouldIBuyStock { get; set; }
 
@@ -11,5 +13,7 @@ namespace Lychee.Stocks.Domain.Models
 
         public List<ReasonScore> UpTrendReasons { get; set; }
         public List<ReasonScore> DownTrendReasons { get; set; }
+
+        public string ChartHistory { get; set; }
     }
 }

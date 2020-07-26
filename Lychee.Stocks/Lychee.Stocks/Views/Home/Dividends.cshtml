@@ -1,0 +1,20 @@
+﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Calendar.Dividend>
+
+@if (Model.Any())
+{
+    foreach (var dividend in Model)
+    {
+        <div>
+            <h2>
+                <a href="@dividend.SourceUrl" target="_blank">@dividend.StockCode</a>
+            </h2>
+        </div>
+        <div>
+            <p>Dividend Type: @dividend.DividendTypeString</p>
+            <p>Value: @dividend.DividendValue</p>
+            <p>Ex Date: @dividend.ExDate.ToShortDateString()</p>
+            <p>Record Date: @dividend.RecordDate.ToShortDateString()</p>
+            <p>Payment Date: @dividend.PaymentDate.ToShortDateString()</p>
+        </div>
+    }
+}

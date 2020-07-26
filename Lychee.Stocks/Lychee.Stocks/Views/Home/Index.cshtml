@@ -22,29 +22,35 @@
 </header>
 
 <div class="row">
-    <div class="col-md-1">
+    <div class="col-md-2">
         <h2>Trending</h2>
         <p>
             @{ Html.RenderAction("TrendingStocks", "Home");}
         </p>
     </div>
-    <div class="col-md-3">
-        <h2>Predictions</h2>
+    <div class="col-md-2">
+        <h2>Dividends</h2>
         <p>
-            @{ Html.RenderAction("Prediction", "Prediction");}
+            @{ Html.RenderAction("Dividends", "Home");}
         </p>
-        <p><a class="btn btn-default" href="/Stock/CreatePrediction">Create Prediction &raquo;</a></p>
     </div>
+    @*<div class="col-md-3">
+            <h2>Predictions</h2>
+            <p>
+                @{ Html.RenderAction("Prediction", "Prediction");}
+            </p>
+            <p><a class="btn btn-default" href="/Stock/CreatePrediction">Create Prediction &raquo;</a></p>
+        </div>*@
     <div class="col-md-4">
         <h2 class="color-downtrend">8/10 Down Trends</h2>
         <p>
-            @{ Html.RenderAction("StockTrendReport", "Stock", new {days = 10, losingWinningStreak = 8, trend = "Bearish"});}
+            @{ Html.RenderAction("StockTrendReport", "Stock", new { days = 10, losingWinningStreak = 8, trend = "Bearish" });}
         </p>
     </div>
     <div class="col-md-4">
         <h2 class="color-uptrend">3/3 Up Trends</h2>
         <p>
-            @{ Html.RenderAction("StockTrendReport", "Stock", new {days = 3, losingWinningStreak = 3, trend = "Bullish"});}
+            @{ Html.RenderAction("StockTrendReport", "Stock", new { days = 3, losingWinningStreak = 3, trend = "Bullish" });}
         </p>
     </div>
 </div>

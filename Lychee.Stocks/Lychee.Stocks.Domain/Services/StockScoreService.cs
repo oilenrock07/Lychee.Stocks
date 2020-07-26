@@ -16,10 +16,10 @@ namespace Lychee.Stocks.Domain.Services
 {
     public class StockScoreService : IStockScoreService
     {
-        private readonly IInvestagramsApiService _investagramsApiService;
+        private readonly IInvestagramsApiCachedService _investagramsApiService;
         private readonly ISettingRepository _settingRepository;
 
-        public StockScoreService(IInvestagramsApiService investagramsApiService, ISettingRepository settingRepository)
+        public StockScoreService(IInvestagramsApiCachedService investagramsApiService, ISettingRepository settingRepository)
         {
             _investagramsApiService = investagramsApiService;
             _settingRepository = settingRepository;
@@ -174,6 +174,35 @@ namespace Lychee.Stocks.Domain.Services
             return score;
         }
 
+        public async Task<StockScore> GetMacdAboutToCrossFromBelowBullishScore(string stockCode)
+        {
+            var score = new StockScore();
+            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_MACDAboutToCrossBullish);
+
+            var stocks = await _investagramsApiService.GetMacdAboutToCrossFromBelowBullish();
+            var dividend = stocks.FirstOrDefault(x => x.StockCode == stockCode);
+            if (dividend != null)
+            {
+                score.AddReason(perfectScore, "MACD is about to cross");
+            }
+
+            return score;
+        }
+
+        public async Task<StockScore> GetMacdCrossingSignalFromBelowBullishScore(string stockCode)
+        {
+            var score = new StockScore();
+            var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_MACDCrossingSignalBullish);
+
+            var stocks = await _investagramsApiService.GetMacdCrossingSignalFromBelowBullish();
+            var dividend = stocks.FirstOrDefault(x => x.StockCode == stockCode);
+            if (dividend != null)
+            {
+                score.AddReason(perfectScore, "MACD cross from below");
+            }
+
+            return score;
+        }
 
         public StockScore GetReachedCapScore(ViewStock viewStock)
         {
@@ -198,10 +227,11 @@ namespace Lychee.Stocks.Domain.Services
         {
             var score = new StockScore();
             var perfectScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Rsi);
+            var overBoughtScore = _settingRepository.GetSettingValue<decimal>(SettingNames.Score_Overbought);
 
             var rsi = viewStock.StockTechnicalAnalysisInfo.Rsi14;
-            if (rsi > 75)
-                score.AddReason(perfectScore, "Already overbought", StockTrend.Bearish); //give negative score
+            if (rsi > 70)
+                score.AddReason(overBoughtScore, "Already overbought", StockTrend.Bearish); //give negative score
             else if (rsi >= 60 && rsi <= 70)
                 score.AddReason(perfectScore, $"RSI is {rsi}");
             else if (rsi <= 30 && rsi > 20)
@@ -212,8 +242,7 @@ namespace Lychee.Stocks.Domain.Services
             return score;
         }
 
-
-
+        
         public async Task<StockScore> GetBidAndAskScore(ViewStock stock)
         {
             var score = new StockScore();

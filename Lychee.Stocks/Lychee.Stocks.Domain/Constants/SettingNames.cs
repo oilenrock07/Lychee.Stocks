@@ -16,6 +16,7 @@
         public const string Score_BlockSale = "Score:BlockSale";
         public const string Score_Trade = "Score:Trade";
         public const string Score_OverSold = "Score:OverSold";
+        public const string Score_Overbought = "Score:Overbought";
         public const string Score_Rsi = "Score:Rsi";
         public const string Score_BreakResistance = "Score:BreakResistance";
         public const string Score_BreakSupport1 = "Score:BreakSupport1";
@@ -25,6 +26,8 @@
         public const string Score_Volume = "Score:Volume";
         public const string Score_Ma9 = "Score:Ma9";
         public const string Score_Ma20 = "Score:Ma20";
+        public const string Score_MACDAboutToCrossBullish = "Score:MACDAboutToCrossBullish";
+        public const string Score_MACDCrossingSignalBullish = "Score:MACDCrossingSignalBullish";
     }
 }
 

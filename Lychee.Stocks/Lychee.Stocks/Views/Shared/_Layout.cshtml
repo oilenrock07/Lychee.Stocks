@@ -27,8 +27,8 @@
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Stock List", "TrendingNow", "Report")</li>
                             <li role="separator" class="divider"></li>
-                            <li>@Html.ActionLink("Should I buy this stock?", "ShouldIBuyStock", "Stock")</li>
-                            <li>@Html.ActionLink("Should I buy trending stock?", "ShouldIBuyTrendingStock", "Stock")</li>
+                            <li>@Html.ActionLink("Stock Analysis", "StockAnalysis", "Stock")</li>
+                            <li>@Html.ActionLink("Trending Stock Analysis", "StockAnalysisTrending", "Stock")</li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -47,7 +47,20 @@
                             <li>@Html.ActionLink("Suspended And On Sale", "SuspendedAndOnSale", "Report")</li>
                             <li>@Html.ActionLink("Oversold And Overbought", "UpTrends", "Report")</li>
                             <li role="separator" class="divider"></li>
-                            <li>@Html.ActionLink("News", "UpTrends", "Report")</li>
+                            <li>@Html.ActionLink("Oversold", "UpTrends", "Report")</li>
+                            <li>@Html.ActionLink("Oversold Below 10 RSI", "UpTrends", "Report")</li>
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("MACD About To Cross From Below (Bullish)", "MacdAboutToCrossFromBelowBullish", "Report")</li>
+                            <li>@Html.ActionLink("MACD Crossing Signal From Below (Bullish)", "MacdCrossingSignalFromBelowBullish", "Report")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">News <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Disclosure", "TrendingNow", "Report")</li>
+                            <li>@Html.ActionLink("Financial Report", "DownTrends", "Report")</li>
+                            <li>@Html.ActionLink("Stock News", "UpTrends", "Report")</li>
+                            <li>@Html.ActionLink("Business News", "UpTrends", "Report")</li>
                         </ul>
                     </li>
                     <li>@Html.ActionLink("Settings", "Index", "Settings")</li>

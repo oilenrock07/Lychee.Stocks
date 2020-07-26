@@ -14,10 +14,10 @@ namespace Lychee.Stocks.Controllers
     {
         private readonly IStockService _stockService;
         private readonly IPredictionService _predictionService;
-        private readonly IInvestagramsApiService _investagramsApi;
+        private readonly IInvestagramsApiCachedService _investagramsApi;
 
         public ReportController(IStockService stockService, IPredictionService predictionService,
-            IInvestagramsApiService investagramsApi)
+            IInvestagramsApiCachedService investagramsApi)
         {
             _stockService = stockService;
             _predictionService = predictionService;
@@ -27,6 +27,18 @@ namespace Lychee.Stocks.Controllers
         public async Task<ActionResult> TrendingNow()
         {
             var model = await _investagramsApi.GetTrendingStocks();
+            return View(model);
+        }
+
+        public async Task<ActionResult> MacdAboutToCrossFromBelowBullish()
+        {
+            var model = await _investagramsApi.GetMacdAboutToCrossFromBelowBullish();
+            return View(model);
+        }
+
+        public async Task<ActionResult> MacdCrossingSignalFromBelowBullish()
+        {
+            var model = await _investagramsApi.GetMacdCrossingSignalFromBelowBullish();
             return View(model);
         }
 

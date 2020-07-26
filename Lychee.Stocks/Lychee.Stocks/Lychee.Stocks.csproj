@@ -400,6 +400,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Chart\chartjs-chart-financial.js" />
+    <Content Include="Scripts\Chart\chart.js" />
     <Content Include="Scripts\Custom\Setting.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -436,13 +438,18 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Report\MarketStatus.cshtml" />
     <Content Include="Views\Report\_MarketStatusPartial.cshtml" />
-    <Content Include="Views\Stock\ShouldIBuyStock.cshtml" />
+    <Content Include="Views\Stock\StockAnalysis.cshtml" />
     <Content Include="Views\Report\TrendingNow.cshtml" />
     <Content Include="Views\Report\SuspendedAndOnSale.cshtml" />
     <Content Include="Views\Report\_BlockSalePartial.cshtml" />
     <Content Include="Views\Report\_SuspendedStocks.cshtml" />
     <Content Include="Views\Home\TrendingStocks.cshtml" />
-    <Content Include="Views\Stock\ShouldIBuyTrendingStock.cshtml" />
+    <Content Include="Views\Stock\StockAnalysisTrending.cshtml" />
+    <Content Include="Views\Report\MacdAboutToCrossFromBelowBullish.cshtml" />
+    <Content Include="Views\Shared\_ScreenerResponseMACD.cshtml" />
+    <Content Include="Views\Report\MacdCrossingSignalFromBelowBullish.cshtml" />
+    <Content Include="Views\Home\Dividends.cshtml" />
+    <Content Include="Views\Stock\ChartTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

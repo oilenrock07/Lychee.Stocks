@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using Lychee.Stocks.Domain.Enums;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 
 namespace Lychee.Stocks.Domain.Models
 {
@@ -10,6 +12,10 @@ namespace Lychee.Stocks.Domain.Models
         {
             Reasons = new List<ReasonScore>();
         }
+
+        public int StockId { get; set; }
+
+        public ChartHistory ChartHistory { get; set; }
 
         public decimal TotalScore => Reasons.Sum(x => x.Score);
         public List<ReasonScore> Reasons { get; }

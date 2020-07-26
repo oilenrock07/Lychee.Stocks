@@ -8,7 +8,9 @@ $(function () {
         var name = $(this).data('name');
 
         var data = {  name: name, settingId: id, value: value };
-        $.post('/Settings/UpdateSetting', data );
+        $.post('/Settings/UpdateSetting', data).done(() => {
+            alert('Setting has been successfully updated');
+        });
     }
 
     function init() {

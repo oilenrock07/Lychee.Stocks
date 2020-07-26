@@ -1,9 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using Antlr.Runtime.Misc;
 using Lychee.Domain.Interfaces;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.Models;
+using Newtonsoft.Json;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -30,19 +34,19 @@ namespace Lychee.Stocks.Controllers
         }
 
 
-        public async Task<ActionResult> ShouldIBuyStock(string stockCode = "")
+        public async Task<ActionResult> StockAnalysis(string stockCode = "")
         {
-            var viewModel = new ShouldIBuyStockModel { StockCode = stockCode};
+            var viewModel = new StockAnalysisModel { StockCode = stockCode};
             if (string.IsNullOrEmpty(stockCode))
                 return View(viewModel);
 
-            viewModel = await _stockService.ShouldIBuyStock(stockCode);
+            viewModel = await _stockService.AnalyzeStock(stockCode);
             return View(viewModel);
         }
 
-        public async Task<ActionResult> ShouldIBuyTrendingStock()
+        public async Task<ActionResult> StockAnalysisTrending()
         {
-            var viewModel = await _stockService.ShouldIBuyTrendingStocks();
+            var viewModel = await _stockService.AnalyzeTrendingStock();
             return View(viewModel);
         }
 

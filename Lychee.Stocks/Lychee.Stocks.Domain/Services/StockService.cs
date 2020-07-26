@@ -13,6 +13,7 @@ using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.Entities;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
+using Lychee.Stocks.InvestagramsApi.Models.Calendar;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Omu.ValueInjecter;
 using Serilog;
@@ -87,11 +88,6 @@ namespace Lychee.Stocks.Domain.Services
             }
 
             _databaseFactory.SaveChanges();
-        }
-
-        public bool HasStockData(DateTime date)
-        {
-            return false;
         }
 
         public DateTime GetLastDataUpdates()
@@ -190,6 +186,7 @@ namespace Lychee.Stocks.Domain.Services
             try
             {
                 var stock = await _investagramsApiService.ViewStockWithoutFundamentalAnalysis(stockCode);
+                score.StockId = stock.StockInfo.StockId;
 
                 score.AddReasons(_stockScoreService.GetBreakingResistanceScore(stock));
                 score.AddReasons(_stockScoreService.GetBreakingSupport2Score(stock));
@@ -206,17 +203,19 @@ namespace Lychee.Stocks.Domain.Services
                     Task.Run(async () => await _stockScoreService.GetTrendingStockScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
                     Task.Run(async () => await _stockScoreService.GetMostActiveAndGainerScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
                     Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
-                    //Task.Run(async () => await _stockScoreService.GetDividendScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                    Task.Run(async () => await _stockScoreService.GetMacdAboutToCrossFromBelowBullishScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+                    Task.Run(async () => await _stockScoreService.GetMacdCrossingSignalFromBelowBullishScore(stockCode)).ContinueWith(x => score.AddReasons(x.Result)),
+
+                    Task.Run(async () => await _investagramsApiService.GetChartHistoryByDate(stock.StockInfo.StockId, DateTime.Now))
+                        .ContinueWith(x => score.ChartHistory = x.Result)
                 };
                 Task.WaitAll(tasks.ToArray());
             }
             catch (System.Exception ex)
             {
-                Log.Logger.Error($"{nameof(GetStockTotalScore)} StockCode:{stockCode} Exception:{ex.ToString()}");
+                Log.Logger.Error($"{nameof(GetStockTotalScore)} StockCode:{stockCode} Exception:{ex}");
             }
             
-            
-
             //2/2 winner
             //8/10 loser 
 
@@ -228,9 +227,15 @@ namespace Lychee.Stocks.Domain.Services
             return score;
         }
 
-        public async Task<ShouldIBuyStockModel> ShouldIBuyStock(string stockCode)
+        public async Task<List<Dividend>> GetStocksGivingDividends()
         {
-            var model = new ShouldIBuyStockModel { StockCode = stockCode};
+            var calendar = await _investagramsApiService.GetCalendarOverview();
+            return calendar.Dividends.ToList();
+        }
+
+        public async Task<StockAnalysisModel> AnalyzeStock(string stockCode)
+        {
+            var model = new StockAnalysisModel { StockCode = stockCode};
             var score = await GetStockTotalScore(stockCode);
 
             var passingScore = _settingService.GetSettingValue<decimal>(SettingNames.Score_ShouldIBuyStockPassingScore);
@@ -238,19 +243,21 @@ namespace Lychee.Stocks.Domain.Services
             model.UpTrendReasons = score.UpTrendReasons;
             model.DownTrendReasons = score.DownTrendReasons;
             model.TotalScore = score.TotalScore;
+            model.StockId = score.StockId;
+            model.ChartHistory = Utf8Json.JsonSerializer.ToJsonString(score.ChartHistory);
 
             return model;
         }
 
-        public async Task<List<ShouldIBuyStockModel>> ShouldIBuyTrendingStocks()
+        public async Task<List<StockAnalysisModel>> AnalyzeTrendingStock()
         {
             var trendingStocks = await _investagramsApiService.GetTrendingStocks();
-            var result = new List<ShouldIBuyStockModel>();
+            var result = new List<StockAnalysisModel>();
 
             var tasks = new List<Task>();
             foreach (var trendingStock in trendingStocks)
             {
-                tasks.Add(Task.Run(async () => await ShouldIBuyStock(trendingStock.Stock.StockCode)).ContinueWith(x => result.Add(x.Result)));
+                tasks.Add(Task.Run(async () => await AnalyzeStock(trendingStock.Stock.StockCode)).ContinueWith(x => result.Add(x.Result)));
             }
 
             Task.WaitAll(tasks.ToArray());

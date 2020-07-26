@@ -1,21 +1,28 @@
 ﻿@using Lychee.Stocks.InvestagramsApi.Constants
-@model Lychee.Stocks.Domain.Models.ShouldIBuyStockModel
+@model Lychee.Stocks.Domain.Models.StockAnalysisModel
 @{
     ViewBag.Title = "Should I Buy Stock";
 }
 
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.24.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0-alpha/dist/Chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
+<script src="~/Scripts/Chart/chartjs-chart-financial.js"></script>
+<script src="~/Scripts/Chart/chart.js"></script>
 
 <div class="container-fluid should-i-buy">
-    @using (Html.BeginForm("ShouldIBuyStock", "Stock", FormMethod.Get))
+    @using (Html.BeginForm("StockAnalysis", "Stock", FormMethod.Get))
     {
-    <div class="row">
-        <h1>Should I buy <a href="@string.Format(UrlConstants.InvestagramsStockUrl, Model.StockCode)" target="_blank">@Model.StockCode</a></h1>
-        
-        <div class="input-group">
-            @Html.TextBoxFor(m => m.StockCode, new { placeholder = "Stock code", @class = "form-control search" })
-            <span class="input-group-addon glyphicon glyphicon-search"></span>
+        <div class="row">
+            <h1>Should I buy <a href="@string.Format(UrlConstants.InvestagramsStockUrl, Model.StockCode)" target="_blank">@Model.StockCode</a></h1>
+
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.StockCode, new { placeholder = "Stock code", @class = "form-control" })
+                <span class="input-group-btn">
+                    <button class="btn btn-default glyphicon glyphicon-search" type="submit"></button>
+                </span>
+            </div>
         </div>
-    </div>
     }
 
     @if (!string.IsNullOrEmpty(Model.StockCode))
@@ -53,5 +60,14 @@
         <div class="row @trendColour">
             <h2>Total Score: @Model.TotalScore</h2>
         </div>
+
+        <div style="width:1000px">
+            <canvas id="chart"></canvas>
+        </div>
+
     }
 </div>
+
+<script>
+    renderChart('chart', '15 Days Chart For @Model.StockCode', @Html.Raw(Model.ChartHistory))
+</script>

@@ -24,5 +24,9 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         Task<StockScore> GetDividendScore(string stockCode);
 
         decimal GetBuyStockPassingScore();
+
+        Task<StockScore> GetMacdAboutToCrossFromBelowBullishScore(string stockCode);
+
+        Task<StockScore> GetMacdCrossingSignalFromBelowBullishScore(string stockCode);
     }
 }

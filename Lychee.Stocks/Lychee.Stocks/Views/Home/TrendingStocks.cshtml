@@ -1,19 +1,8 @@
-﻿@using Lychee.Stocks.InvestagramsApi.Constants
-@model List<Lychee.Stocks.InvestagramsApi.Models.Social.TrendingStock>
+﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Social.TrendingStock>
 
-<table class="table table-hover">
-    <tr>
-        <th>
-            Code
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.Stock.StockCode)" target="_blank">@item.Stock.StockCode</a>
-            </td>
-        </tr>
-    }
-</table>
+@foreach (var item in Model)
+{
+    <p>
+        @Html.ActionLink(item.Stock.StockCode, "StockAnalysis", "Stock", new {stockCode = item.Stock.StockCode}, new {target= "_blank"})
+    </p>
+}
