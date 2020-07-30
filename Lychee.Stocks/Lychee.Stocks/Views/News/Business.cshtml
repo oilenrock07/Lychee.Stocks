@@ -1,0 +1,11 @@
+﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.News>
+@{
+    ViewBag.Title = "BusinessNews";
+}
+
+<h2>Business News</h2>
+
+<div class="news-content">
+    @Html.Partial("_News", Model)
+</div>
+

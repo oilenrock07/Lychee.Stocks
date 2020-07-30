@@ -76,9 +76,6 @@
     <Reference Include="Lychee.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Models.1.0.0\lib\net40\Lychee.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Lychee.Stocks.InvestagramsApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.8.0\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
     </Reference>
@@ -371,11 +368,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebModuleConfig.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\PredictionController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="CustomHelper\AsyncPartialLoaderHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -402,6 +401,7 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart\chartjs-chart-financial.js" />
     <Content Include="Scripts\Chart\chart.js" />
+    <Content Include="Scripts\Custom\PartialLoader.js" />
     <Content Include="Scripts\Custom\Setting.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -450,6 +450,11 @@
     <Content Include="Views\Report\MacdCrossingSignalFromBelowBullish.cshtml" />
     <Content Include="Views\Home\Dividends.cshtml" />
     <Content Include="Views\Stock\ChartTest.cshtml" />
+    <Content Include="Views\News\Disclosure.cshtml" />
+    <Content Include="Views\Shared\_News.cshtml" />
+    <Content Include="Views\News\Stock.cshtml" />
+    <Content Include="Views\News\FinancialReport.cshtml" />
+    <Content Include="Views\News\Business.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -469,6 +474,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.csproj">
+      <Project>{273498e1-0613-4baa-927f-eee07b2b839a}</Project>
+      <Name>Lychee.Stocks.InvestagramsApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lychee.Stocks.Domain\Lychee.Stocks.Domain.csproj">
       <Project>{737824e5-8102-4457-9331-e6681fa72609}</Project>
       <Name>Lychee.Stocks.Domain</Name>

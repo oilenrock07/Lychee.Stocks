@@ -65,9 +65,6 @@
     <Reference Include="Lychee.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Models.1.0.0\lib\net40\Lychee.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Lychee.Stocks.InvestagramsApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Stocks.InvestagramsApi.1.8.0\lib\net40\Lychee.Stocks.InvestagramsApi.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
     </Reference>
@@ -330,6 +327,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.csproj">
+      <Project>{273498e1-0613-4baa-927f-eee07b2b839a}</Project>
+      <Name>Lychee.Stocks.InvestagramsApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lychee.Stocks.Entities\Lychee.Stocks.Entities.csproj">
       <Project>{ab216ec2-7a03-4b97-a8d8-f3d7b47d8850}</Project>
       <Name>Lychee.Stocks.Entities</Name>

@@ -21,6 +21,8 @@ namespace Lychee.Stocks.Domain.Services
         private readonly ISettingService _settingService;
         private readonly IStockMarketStatusRepository _marketStatusRepository;
 
+        private readonly int _newsCacheExpiry = 20; //in minutes
+
         public InvestagramsApiCachedService(IStockApiRepository apiRepository, 
             ISocialApiRepository socialApiRepository,
             ICalendarApiRepository calendarApiRepository, 
@@ -249,6 +251,32 @@ namespace Lychee.Stocks.Domain.Services
         }
         #endregion
 
+
+        #region News
+        public override async Task<List<News>> GetFinancialReportNews(int lastStockNewsId = -1)
+        {
+            var cacheKey = $"FinancialReportNews-{lastStockNewsId}";
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetFinancialReportNews(lastStockNewsId), TimeSpan.FromMinutes(_newsCacheExpiry));
+        }
+
+        public override async Task<List<News>> GetBusinessNews(int lastStockNewsId = -1)
+        {
+            var cacheKey = $"BusinessNews-{lastStockNewsId}";
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetBusinessNews(lastStockNewsId), TimeSpan.FromMinutes(_newsCacheExpiry));
+        }
+
+        public override async Task<List<News>> GetDisclosureNews(int lastStockNewsId = -1)
+        {
+            var cacheKey = $"DisclosureNews-{lastStockNewsId}";
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetDisclosureNews(lastStockNewsId), TimeSpan.FromMinutes(_newsCacheExpiry));
+        }
+
+        public override async Task<List<News>> GetNewsByStockId(int stockId, int lastStockNewsId = -1)
+        {
+            var cacheKey = $"NewsByStockId-{stockId}-{lastStockNewsId}";
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetNewsByStockId(stockId, lastStockNewsId), TimeSpan.FromMinutes(_newsCacheExpiry));
+        }
+        #endregion
 
         private bool IsTradingHours()
         {

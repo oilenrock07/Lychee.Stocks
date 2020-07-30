@@ -254,6 +254,7 @@ namespace Lychee.Stocks.Domain.Services
             var trendingStocks = await _investagramsApiService.GetTrendingStocks();
             var result = new List<StockAnalysisModel>();
 
+            //todo:make an experiment here if making in a normal loop is faster than making it a parallel tasks. Record the time it takes
             var tasks = new List<Task>();
             foreach (var trendingStock in trendingStocks)
             {

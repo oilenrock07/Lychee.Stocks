@@ -76,3 +76,39 @@ textarea {
 .should-i-buy .search {
     height: 45px;
 }
+
+/***************************************News*/
+
+.dashboard .news-image {
+    display: none;
+}
+
+.dashboard .news-body {
+    padding-bottom: 10px;
+}
+
+.news-content .news {
+    padding-bottom: 5px;
+}
+
+.news-content .news-image {
+    float: left;
+    padding-right: 5px
+}
+
+.news-content .news-body {
+    margin-left: 75px;
+}
+
+.news-content .news-body .title .news-date {
+    font-size: small;
+}
+
+.news-body .stock-code {
+    color: #089e20;
+}
+
+.news-content .news-body .title {
+    font-size: large;
+}
+/***************************************End of News*/

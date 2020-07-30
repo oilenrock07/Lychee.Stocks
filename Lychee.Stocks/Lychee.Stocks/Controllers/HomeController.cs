@@ -9,13 +9,15 @@ namespace Lychee.Stocks.Controllers
     ////Takeaways and self note
     /// Only allow 2% of your total capital to be your loss
 
+    ////Chart.js
+    /// Clickable slice of pie chart: https://jsfiddle.net/u1szh96g/208/
     public class HomeController : Controller
     {
         private readonly IStockService _stockService;
-        private readonly IInvestagramsApiService _investagramsApiService;
+        private readonly IInvestagramsApiCachedService _investagramsApiService;
 
 
-        public HomeController(IStockService stockService, IInvestagramsApiService investagramsApiService)
+        public HomeController(IStockService stockService, IInvestagramsApiCachedService investagramsApiService)
         {
             _stockService = stockService;
             _investagramsApiService = investagramsApiService;
@@ -42,9 +44,9 @@ namespace Lychee.Stocks.Controllers
 
         //Cannot use Task<PartialViewResult> on child action
         //https://justsimplycode.com/2016/09/04/child-action-in-mvc-5-does-not-support-async/
-        public PartialViewResult TrendingStocks()
+        public async Task<PartialViewResult> TrendingStocks()
         {
-            var model = Task.Run(async () => await _investagramsApiService.GetTrendingStocks()).Result;
+            var model = await _investagramsApiService.GetTrendingStocks();
             return PartialView(model);
         }
 
@@ -52,6 +54,12 @@ namespace Lychee.Stocks.Controllers
         {
             var model = Task.Run(async () => await _stockService.GetStocksGivingDividends()).Result;
             return PartialView(model);
+        }
+
+        public async Task<PartialViewResult> News()
+        {
+            var news = await _investagramsApiService.GetNewsByStockId(-1);
+            return PartialView("_News", news);
         }
     }
 }

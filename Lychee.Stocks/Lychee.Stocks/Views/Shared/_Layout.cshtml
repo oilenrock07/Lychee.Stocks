@@ -57,10 +57,10 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">News <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Disclosure", "TrendingNow", "Report")</li>
-                            <li>@Html.ActionLink("Financial Report", "DownTrends", "Report")</li>
-                            <li>@Html.ActionLink("Stock News", "UpTrends", "Report")</li>
-                            <li>@Html.ActionLink("Business News", "UpTrends", "Report")</li>
+                            <li>@Html.ActionLink("Disclosure", "Disclosure", "News")</li>
+                            <li>@Html.ActionLink("Financial Report", "FinancialReport", "News")</li>
+                            <li>@Html.ActionLink("Stock News", "Stock", "News")</li>
+                            <li>@Html.ActionLink("Business News", "Business", "News")</li>
                         </ul>
                     </li>
                     <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
@@ -78,6 +78,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/Custom/PartialLoader.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

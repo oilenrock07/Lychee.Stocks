@@ -1,0 +1,21 @@
+﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.News>
+
+
+@foreach (var news in Model)
+{
+    <div class="row news">
+        <div class="news-image">
+            <img src="@news.ImageUrl" class="img-responsive" />
+        </div>
+        <div class="news-body">
+            <div class="title">
+                <span class="stock-code">@news.StockInfoVM.StockCode</span>
+                <span class="news-date">@news.DateString</span>
+            </div>
+
+            <div class="title">@news.Title</div>
+            <a href="@news.Url" target="_blank">Read More</a>
+        </div>
+    </div>
+}
+
