@@ -249,6 +249,18 @@ namespace Lychee.Stocks.Domain.Services
             var request = new Screener { TechnicalMovingAverage9 = 53, TechnicalRelativeStrengthIndex14 = 8};
             return await GetScreenerRequest(request, cacheKey);
         }
+
+        /// <summary>
+        /// Oversold
+        /// RSI < 10
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ScreenerResponse>> GetOversoldStocksLessThan20()
+        {
+            var cacheKey = $"OversoldStocksLessThan20-{DateTime.Now:MMdd}";
+            var request = new Screener { TechnicalRelativeStrengthIndex14 = 9 };
+            return await GetScreenerRequest(request, cacheKey);
+        }
         #endregion
 
 

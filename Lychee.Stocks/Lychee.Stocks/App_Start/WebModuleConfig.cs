@@ -36,8 +36,7 @@ namespace Lychee.Stocks
             container.Options.AllowOverridingRegistrations = true;
             container.Register<DbContext>(() => new StockContext(), Lifestyle.Scoped);
             container.Register<Logger>(() => new LoggerConfiguration().WriteTo.File(loggingPath).CreateLogger(), Lifestyle.Singleton);
-            container.Register(typeof(IRepository<>), typeof(Repository<>), Lifestyle.Scoped);
-            container.Register<IDatabaseFactory, DatabaseFactory>(Lifestyle.Scoped);
+
 
 
             //Services
@@ -48,6 +47,7 @@ namespace Lychee.Stocks
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
             //Lychee Packages
+            container.RegisterLycheeInfrastructureServiceModule();
             container.RegisterLycheeDomainServiceModule();
             container.RegisterInvestagramsApi();
             container.RegisterStocksDomain();

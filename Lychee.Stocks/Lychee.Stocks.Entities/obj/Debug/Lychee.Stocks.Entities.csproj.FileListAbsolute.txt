@@ -3,11 +3,11 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\Lychee.Stocks.Entities.pdb
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\EntityFramework.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\EntityFramework.SqlServer.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\Lychee.Entities.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\EntityFramework.xml
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\EntityFramework.SqlServer.xml
-C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.csprojAssemblyReference.cache
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.csproj.CoreCompileInputs.cache
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.csproj.CopyComplete
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.pdb
-C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\Lychee.Entities.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.csprojAssemblyReference.cache

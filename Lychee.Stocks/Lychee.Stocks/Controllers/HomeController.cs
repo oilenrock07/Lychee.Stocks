@@ -8,6 +8,9 @@ namespace Lychee.Stocks.Controllers
 {
     ////Takeaways and self note
     /// Only allow 2% of your total capital to be your loss
+    
+    /// StockPrice == High && Buyers > Sellers then Price will go down
+    /// StockPrice == Low &&  Buyers > Sellers then Price will go up
 
     ////Chart.js
     /// Clickable slice of pie chart: https://jsfiddle.net/u1szh96g/208/
@@ -60,6 +63,12 @@ namespace Lychee.Stocks.Controllers
         {
             var news = await _investagramsApiService.GetNewsByStockId(-1);
             return PartialView("_News", news);
+        }
+
+        public async Task<PartialViewResult> Oversold()
+        {
+            var stocks = await _investagramsApiService.GetOversoldStocksLessThan20();
+            return PartialView(stocks);
         }
     }
 }

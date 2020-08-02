@@ -43,15 +43,17 @@
         </p>
     </div>
     <div class="col-md-4">
+        <h2 class="color-downtrend">Oversold < 20</h2>
+        <p>
+            @Html.AsyncPartialLoader("Oversold", "Home")
+        </p>
+        <hr/>
         <h2 class="color-downtrend">8/10 Down Trends</h2>
         <p>
-            @{ Html.RenderAction("StockTrendReport", "Stock", new { days = 10, losingWinningStreak = 8, trend = "Bearish" });}
+            @{ Html.RenderAction("StockTrendReport", "Stock", new {days = 10, losingWinningStreak = 8, trend = "Bearish"});}
         </p>
     </div>
     <div class="col-md-4">
-        <h2 class="color-uptrend">3/3 Up Trends</h2>
-        <p>
-            @{ Html.RenderAction("StockTrendReport", "Stock", new { days = 3, losingWinningStreak = 3, trend = "Bullish" });}
-        </p>
+
     </div>
 </div>

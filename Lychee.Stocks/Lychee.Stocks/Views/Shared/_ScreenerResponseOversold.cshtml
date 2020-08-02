@@ -1,0 +1,80 @@
+﻿@using Lychee.Stocks.Domain.Helpers
+@using Lychee.Stocks.InvestagramsApi.Constants
+@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.ScreenerResponse>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Last
+            </th>
+            <th>
+                Change %
+            </th>
+            <th>
+                Open
+            </th>
+            <th>
+                Low
+            </th>
+            <th>
+                High
+            </th>
+            <th>
+                Volume
+            </th>
+            <th>
+                Value
+            </th>
+            <th>
+                YTD
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+    @foreach (var item in Model)
+    {
+        var trendColour = item.Last > item.Open ? "color-uptrend" : item.Last < item.Open ? "color-downtrend" : "";
+        var ytdTrendColor = item.YTD >= 0 ? "color-uptrend" : "color-downtrend";
+        <tr>
+            <td>
+                <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+            </td>
+            <td class="@trendColour">
+                @item.Last
+            </td>
+            <td>
+                @item.ChangePercentage %
+            </td>
+            <td>
+                @item.Open
+            </td>
+            <td>
+                @item.Low
+            </td>
+            <td>
+                @item.High
+            </td>
+            <td>
+                @item.Volume.ConvertToShortHand()
+            </td>
+            <td>
+                @item.Value.ConvertToShortHand()
+            </td>
+            <td class="@ytdTrendColor">
+                @item.YTD
+            </td>
+            <td>
+                <a href="@Url.Action("StockAnalysis", "Stock", new { stockCode = item.StockCode})" target="_blank">Should I buy?</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+
+</table>

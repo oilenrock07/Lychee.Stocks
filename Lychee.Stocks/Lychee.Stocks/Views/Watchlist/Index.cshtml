@@ -1,0 +1,81 @@
+﻿@model Lychee.Stocks.Models.Watchlist.WatchlistViewModel
+@{
+    ViewBag.Title = "Watch List";
+}
+
+<h1>Watch List</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 col-md-offset-10">
+            @using (Html.BeginForm("AddWatchList", "WatchList", FormMethod.Post))
+            {
+                <input type="hidden" name="groupId" value="@Model.SelectedId" />
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Stock Code" name="stockCode">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Add</button>
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="list-group">
+                @foreach (var item in Model.WatchListGroups)
+                {
+                    var activeClass = item.WatchListGroupId == Model.SelectedId ? "active" : string.Empty;
+                    <li class="list-group-item @activeClass">
+                        <span class="badge">@item.WatchLists.Count</span>
+                        @Html.ActionLink(item.GroupName, "Index", new {id=item.WatchListGroupId})
+                    </li>
+                }
+            </ul>
+        </div>
+
+        @if (Model.SelectedWatchList != null)
+        {
+            <div class="col-md-10">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Entry</th>
+                            <th>Cutloss</th>
+                            <th>Target</th>
+                            <th>Note</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SelectedWatchList.WatchLists)
+                        {
+                            <tr>
+                                <td>@item.StockCode</td>
+                                <td><input type="number" value="@item.Entry" name="@nameof(item.Entry)" class="form-control" /></td>
+                                <td><input type="number" value="@item.Cutloss" name="@nameof(item.Cutloss)" class="form-control" /></td>
+                                <td><input type="number" value="@item.Target" name="@nameof(item.Target)" class="form-control" /></td>
+                                <td><input type="text" value="@item.Note" name="@nameof(item.Note)" class="form-control" /></td>
+                                <td>
+                                    <input type="hidden" name="@nameof(item.WatchListGroupId)" value="@item.WatchListGroupId" />
+                                    <input type="hidden" name="@nameof(item.WatchListId)" value="@item.WatchListId" />
+
+                                    @Html.ActionLink("Update", "Edit", new { id = item.WatchListId }, new {@class = "js-ajaxSubmitRow", data_url= "/Watchlist/UpdateWatchList" }) |
+                                    @Html.ActionLink("Delete", "Delete", new { groupId = item.WatchListGroupId, watchListId = item.WatchListId }, new { @class = "js-delete" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script src="~/Scripts/Custom/Confirmations.js"></script>
+    <script src="~/Scripts/Custom/AjaxTable.js"></script>
+}

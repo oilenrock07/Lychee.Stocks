@@ -13,10 +13,12 @@ namespace Lychee.Stocks.Domain
             container.Register<ISuspendedStockRepository, SuspendedStockRepository>(Lifestyle.Scoped);
             container.Register<IBlockSaleStockRepository, BlockSaleStockRepository>(Lifestyle.Scoped);
             container.Register<IStockHistoryRepository, StockHistoryRepository>(Lifestyle.Scoped);
+            container.Register<IWatchListRepository, WatchListRepository>(Lifestyle.Scoped);
             container.RegisterSingleton<IStockMarketStatusRepository, StockMarketStatusRepository>();
-
+            
 
             container.Register<IStockScoreService, StockScoreService>(Lifestyle.Scoped);
+            container.Register<IWatchListService, WatchListService>(Lifestyle.Scoped);
             container.Register<IInvestagramsApiCachedService, InvestagramsApiCachedService>(Lifestyle.Scoped);
         }
     }

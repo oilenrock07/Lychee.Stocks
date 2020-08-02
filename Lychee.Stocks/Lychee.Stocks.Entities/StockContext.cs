@@ -19,6 +19,8 @@ namespace Lychee.Stocks.Entities
         public virtual IDbSet<SuspendedStock> SuspendedStocks { get; set; }
         public virtual IDbSet<BlockSaleStock> BlockSaleStocks { get; set; }
 
-        
+        public virtual IDbSet<Watchlist> WatchLists { get; set; }
+
+        public virtual IDbSet<WatchListGroup> WatchListGroups { get; set; }
     }
 }

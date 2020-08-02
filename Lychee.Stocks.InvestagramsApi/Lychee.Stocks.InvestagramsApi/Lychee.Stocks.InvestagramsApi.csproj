@@ -106,7 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Lychee.Stocks.InvestagramsApi.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

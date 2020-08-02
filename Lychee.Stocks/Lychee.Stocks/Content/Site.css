@@ -77,8 +77,14 @@ textarea {
     height: 45px;
 }
 
-/***************************************News*/
+.list-group-item.active a {
+    color: white;
+}
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+    background-color: #1e4324;
+}
 
+/***************************************News*/
 .dashboard .news-image {
     display: none;
 }

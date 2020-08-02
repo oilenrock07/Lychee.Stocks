@@ -63,6 +63,8 @@
     <Compile Include="StockTrendReportModel.cs" />
     <Compile Include="SuspendedStock.cs" />
     <Compile Include="TechnicalAnalysis.cs" />
+    <Compile Include="Watchlist.cs" />
+    <Compile Include="WatchListGroup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

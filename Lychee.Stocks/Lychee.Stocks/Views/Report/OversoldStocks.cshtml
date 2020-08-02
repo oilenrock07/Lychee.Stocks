@@ -1,0 +1,9 @@
+﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.ScreenerResponse>
+
+@{
+    ViewBag.Title = "Oversold Stocks";
+}
+
+<h2>Oversold Stocks</h2>
+
+@Html.Partial("_ScreenerResponseOversold", Model)

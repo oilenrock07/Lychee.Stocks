@@ -99,6 +99,18 @@ namespace Lychee.Stocks.Controllers
             return View(viewModel);
         }
 
+        public async Task<ActionResult> OversoldStocks()
+        {
+            var stocks = await _investagramsApi.GetOversoldStocks();
+            return View(stocks);
+        }
+
+        public async Task<ActionResult> OversoldStocksBelow20()
+        {
+            var stocks = await _investagramsApi.GetOversoldStocksLessThan20();
+            return View(stocks);
+        }
+
         private MarketStatusItemViewModel MapMarketStatusTopGainers(MarketStatusModel source, MarketStatusModel[] arr)
         {
             var item = Mapper.Map<MarketStatusItemViewModel>(source);

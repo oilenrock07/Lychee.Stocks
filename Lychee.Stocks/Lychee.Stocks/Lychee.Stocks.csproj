@@ -71,7 +71,7 @@
       <HintPath>..\packages\Lychee.Entities.1.0.0\lib\net40\Lychee.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Infrastructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Infrastructure.1.4.2\lib\net40\Lychee.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\Lychee.Infrastructure.1.7.0\lib\net40\Lychee.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Lychee.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Models.1.0.0\lib\net40\Lychee.Models.dll</HintPath>
@@ -374,6 +374,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\StockController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\WatchlistController.cs" />
     <Compile Include="CustomHelper\AsyncPartialLoaderHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -384,6 +385,7 @@
     <Compile Include="Models\Reports\MarketStatusViewModel.cs" />
     <Compile Include="Models\Reports\TrendReportBaseClass.cs" />
     <Compile Include="Models\Reports\UpTrendReportViewModel.cs" />
+    <Compile Include="Models\Watchlist\WatchlistViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -401,7 +403,9 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Chart\chartjs-chart-financial.js" />
     <Content Include="Scripts\Chart\chart.js" />
+    <Content Include="Scripts\Custom\AjaxTable.js" />
     <Content Include="Scripts\Custom\PartialLoader.js" />
+    <Content Include="Scripts\Custom\Confirmations.js" />
     <Content Include="Scripts\Custom\Setting.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -413,7 +417,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\ScrapperFunctions.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -455,6 +458,11 @@
     <Content Include="Views\News\Stock.cshtml" />
     <Content Include="Views\News\FinancialReport.cshtml" />
     <Content Include="Views\News\Business.cshtml" />
+    <Content Include="Views\Report\OversoldStocksBelow20.cshtml" />
+    <Content Include="Views\Report\OversoldStocks.cshtml" />
+    <Content Include="Views\Shared\_ScreenerResponseOversold.cshtml" />
+    <Content Include="Views\Home\Oversold.cshtml" />
+    <Content Include="Views\Watchlist\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
