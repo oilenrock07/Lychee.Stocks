@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Lychee.Stocks.Domain.Interfaces.Services;
+using Lychee.Stocks.Helpers;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 
 namespace Lychee.Stocks.Controllers
@@ -18,12 +19,13 @@ namespace Lychee.Stocks.Controllers
     {
         private readonly IStockService _stockService;
         private readonly IInvestagramsApiCachedService _investagramsApiService;
+        private readonly IWatchListService _watchListService;
 
-
-        public HomeController(IStockService stockService, IInvestagramsApiCachedService investagramsApiService)
+        public HomeController(IStockService stockService, IInvestagramsApiCachedService investagramsApiService, IWatchListService watchListService)
         {
             _stockService = stockService;
             _investagramsApiService = investagramsApiService;
+            _watchListService = watchListService;
         }
 
         public async Task<ActionResult> Index()
@@ -62,12 +64,22 @@ namespace Lychee.Stocks.Controllers
         public async Task<PartialViewResult> News()
         {
             var news = await _investagramsApiService.GetNewsByStockId(-1);
-            return PartialView("_News", news);
+            var watchList = _watchListService.GetAllWatchList();
+
+            var viewModels = NewsHelper.GetNewsViewModels(news, watchList);
+
+            return PartialView("_News", viewModels);
         }
 
         public async Task<PartialViewResult> Oversold()
         {
             var stocks = await _investagramsApiService.GetOversoldStocksLessThan20();
+            return PartialView(stocks);
+        }
+
+        public PartialViewResult SteepDown()
+        {
+            var stocks = _stockService.GetStockWithSteepDown();
             return PartialView(stocks);
         }
     }

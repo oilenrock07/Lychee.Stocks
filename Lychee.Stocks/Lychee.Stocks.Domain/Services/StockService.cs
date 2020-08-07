@@ -270,6 +270,11 @@ namespace Lychee.Stocks.Domain.Services
             _cookieProviderService.SetCookie(value);
         }
 
+        public List<StockHistory> GetStockWithSteepDown()
+        {
+            return _stockHistoryRepository.GetAllStocksWithSteepDown();
+        }
+
         private void UpdateBlockSale(ICollection<StockBlockSale> stockBlockSales)
         {
             if (!stockBlockSales.Any())

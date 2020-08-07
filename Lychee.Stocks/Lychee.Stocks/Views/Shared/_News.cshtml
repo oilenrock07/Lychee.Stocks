@@ -1,4 +1,4 @@
-﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.News>
+﻿@model List<Lychee.Stocks.Models.News.NewsViewModel>
 
 
 @foreach (var news in Model)
@@ -9,7 +9,11 @@
         </div>
         <div class="news-body">
             <div class="title">
-                <span class="stock-code">@news.StockInfoVM.StockCode</span>
+                @if (news.IsInWatchList)
+                {
+                    <span class="glyphicon glyphicon-star" aria-hidden="true" style="color: gold;" title="Is in watchlist"/>
+                }
+                <span class="stock-code">@news.StockCode</span>
                 <span class="news-date">@news.DateString</span>
             </div>
 

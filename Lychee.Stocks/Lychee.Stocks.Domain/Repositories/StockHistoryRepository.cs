@@ -19,6 +19,11 @@ namespace Lychee.Stocks.Domain.Repositories
             date = date.Date;
             return Find(x => x.Date == date).ToList();
         }
+
+        public virtual List<StockHistory> GetAllStocksWithSteepDown()
+        {
+            return ExecuteSqlQuery<StockHistory>("EXEC RetrieveStockSteepDown").ToList();
+        }
     }
 
 }

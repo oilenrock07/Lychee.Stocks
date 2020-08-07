@@ -8,5 +8,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Repositories
     public interface IStockHistoryRepository : IRepository<StockHistory>
     {
         List<StockHistory> GetAllStocksByDate(DateTime date);
+
+        List<StockHistory> GetAllStocksWithSteepDown();
     }
 }
