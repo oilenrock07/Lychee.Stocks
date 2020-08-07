@@ -15,7 +15,7 @@
                 Last
             </th>
             <th>
-                Change %
+                Chg%
             </th>
             <th>
                 Open
@@ -29,12 +29,6 @@
             <th>
                 Volume
             </th>
-            <th>
-                Value
-            </th>
-            <th>
-                YTD
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -43,7 +37,6 @@
     @foreach (var item in Model)
     {
         var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
-        var ytdTrendColor = StockUIClassHelper.StockColourClass(item.YTD.ToDecimal());
         <tr>
             <td>
                 <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
@@ -52,7 +45,7 @@
                 @item.Last
             </td>
             <td>
-                @item.ChangePercentage %
+                @item.ChangePercentage%
             </td>
             <td>
                 @item.Open
@@ -67,13 +60,7 @@
                 @item.Volume.ConvertToShortHand()
             </td>
             <td>
-                @item.Value.ConvertToShortHand()
-            </td>
-            <td class="@ytdTrendColor">
-                @item.YTD
-            </td>
-            <td>
-                <a href="@Url.Action("StockAnalysis", "Stock", new { stockCode = item.StockCode})" target="_blank">Should I buy?</a>
+                <a href="@Url.Action("StockAnalysis", "Stock", new { stockCode = item.StockCode})" target="_blank">Analyze</a>
             </td>
         </tr>
     }

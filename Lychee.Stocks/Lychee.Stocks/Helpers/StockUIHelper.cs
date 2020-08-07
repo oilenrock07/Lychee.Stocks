@@ -16,11 +16,11 @@
             return _even;
         }
 
-        public static string StockColourClass(decimal prevValue, decimal value)
+        public static string StockColourClass(decimal open, decimal last)
         {
-            if (value < prevValue)
+            if (last < open)
                 return _bear;
-            if (value > prevValue)
+            if (last > open)
                 return _bull;
 
             return _even;

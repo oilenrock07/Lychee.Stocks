@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Helpers;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
+using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -63,7 +65,12 @@ namespace Lychee.Stocks.Controllers
 
         public async Task<PartialViewResult> News()
         {
-            var news = await _investagramsApiService.GetNewsByStockId(-1);
+            var news = new List<News>();
+            var stockNews = await _investagramsApiService.GetNewsByStockId(-1);
+            var disclosureNews = await _investagramsApiService.GetDisclosureNews();
+
+            news.AddRange(stockNews);
+            news.AddRange(disclosureNews);
             var watchList = _watchListService.GetAllWatchList();
 
             var viewModels = NewsHelper.GetNewsViewModels(news, watchList);
@@ -75,6 +82,18 @@ namespace Lychee.Stocks.Controllers
         {
             var stocks = await _investagramsApiService.GetOversoldStocksLessThan20();
             return PartialView(stocks);
+        }
+
+        public async Task<PartialViewResult> AboutToCrossMacd()
+        {
+            var stocks = await _investagramsApiService.GetMacdAboutToCrossFromBelowBullish();
+            return PartialView("_MACD", stocks);
+        }
+
+        public async Task<PartialViewResult> CrossingMacd()
+        {
+            var stocks = await _investagramsApiService.GetMacdCrossingSignalFromBelowBullish();
+            return PartialView("_MACD", stocks);
         }
 
         public PartialViewResult SteepDown()

@@ -1,5 +1,6 @@
 ﻿@using Lychee.Stocks.Domain.Enums
 @using Lychee.Stocks.Domain.Helpers
+@using Lychee.Stocks.Helpers
 @using Lychee.Stocks.InvestagramsApi.Constants
 @model IEnumerable<Lychee.Stocks.Entities.StockTrendReportModel>
 
@@ -33,11 +34,13 @@
     {
         var highlightClass = stockCodes != null && stockCodes.Contains(item.StockCode) ? "report-stock-highlight" : "";
         var stockTypeClass = item.StockType == StockTypes.BlueChips ? "color-blue" : item.StockType == StockTypes.ClassA ? "color-downtrend" : ""; //move this to a service
+        var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
+
         <tr class="@highlightClass">
             <td>
                 <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
             </td>
-            <td>
+            <td class="@trendColour">
                 @item.Last
             </td>
             <td>

@@ -11,9 +11,10 @@ $(function () {
                     alert('Setting has been successfully updated');
                 });
             } else {
-                $.post(url).done((partialView) => {
+                $.get(url).done((partialView) => {
                     $(e).html(partialView);
                     $(e).removeAttr('data-url');
+                    $(e).removeAttr('data-verb');
                 });
             }
 
