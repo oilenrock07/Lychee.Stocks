@@ -43,6 +43,9 @@
         </p>
     </div>
     <div class="col-md-4">
+        
+        @Html.AsyncPartialLoader("SteepDown", "Home")
+
         <h2 class="color-downtrend">Oversold < 20</h2>
         <p>
             @Html.AsyncPartialLoader("Oversold", "Home")
