@@ -183,6 +183,29 @@ namespace Lychee.Stocks.InvestagramsApi.Test
             Assert.That(result, Is.Not.Null);
         }
 
+        [Test]
+        public async Task DownloadChart()
+        {
+            //Arrange
+            var code = "MPI";
+            var date = DateTime.Now;
+
+            //Act
+            var stock = await _investagramsApiRepository.ViewStockWithoutFundamentalAnalysis(code);
+            var result = await _investagramsApiRepository.GetChartHistoryByDate(stock.StockInfo.StockId, date);
+
+            var stringResult = Utf8Json.JsonSerializer.ToJsonString(result);
+
+            var fileName = $@"C:\StocksDownloadedData\{code}-{date:yyyyMMdd}.json";
+            using (var file = new System.IO.StreamWriter(fileName, true))
+            {
+                file.WriteLine(stringResult);
+            }
+
+            //Asserts
+            Assert.That(result, Is.Not.Null);
+        }
+
 
         [Test]
         public async Task TplTest()

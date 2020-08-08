@@ -18,7 +18,7 @@ namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
         public decimal[] Lows { get; set; }
 
         [DataMember(Name = "C")]
-        public decimal[] Changes { get; set; }
+        public decimal[] Closes { get; set; }
 
         [DataMember(Name = "V")]
         public decimal[] Volumes { get; set; }

@@ -296,6 +296,7 @@
   <ItemGroup>
     <Compile Include="Constants\CacheNames.cs" />
     <Compile Include="Constants\SettingNames.cs" />
+    <Compile Include="Enums\CandleStickReversalPattern.cs" />
     <Compile Include="Enums\StockTrend.cs" />
     <Compile Include="Enums\StockTypes.cs" />
     <Compile Include="Exception\InvestagramsException.cs" />
@@ -306,15 +307,18 @@
     <Compile Include="Interfaces\Repositories\IStockMarketStatusRepository.cs" />
     <Compile Include="Interfaces\Repositories\ISuspendedStockRepository.cs" />
     <Compile Include="Interfaces\Repositories\IWatchListRepository.cs" />
+    <Compile Include="Interfaces\Services\ICandleStickAnalyzerService.cs" />
     <Compile Include="Interfaces\Services\IInvestagramsApiCachedService.cs" />
     <Compile Include="Interfaces\Services\IPredictionService.cs" />
     <Compile Include="Interfaces\Services\IStockNewsService.cs" />
     <Compile Include="Interfaces\Services\IStockScoreService.cs" />
     <Compile Include="Interfaces\Services\IStockService.cs" />
     <Compile Include="Interfaces\Services\IWatchListService.cs" />
+    <Compile Include="Models\CandleStick.cs" />
     <Compile Include="Models\ReasonScore.cs" />
     <Compile Include="Models\ShouldIBuyStockModel.cs" />
     <Compile Include="Repositories\WatchListRepository.cs" />
+    <Compile Include="Services\CandleStickAnalyzer.cs" />
     <Compile Include="Services\InvestagramsApiCachedService.cs" />
     <Compile Include="Repositories\StockMarketStatusRepository.cs" />
     <Compile Include="Services\StockNewsService.cs" />

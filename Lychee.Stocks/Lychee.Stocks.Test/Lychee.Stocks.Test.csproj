@@ -323,17 +323,28 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Utf8Json, Version=1.3.7.0, Culture=neutral, PublicKeyToken=8a73d3ba7e392e27, processorArchitecture=MSIL">
+      <HintPath>..\packages\Utf8Json.1.3.7\lib\net47\Utf8Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CandleStickAnalyzerTest.cs" />
     <Compile Include="InvestagramsApiRepositoryTest.cs" />
     <Compile Include="StockServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\CandleStickAnalyzerData\EveningStars\MPI-20200808.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.csproj">
+      <Project>{273498e1-0613-4baa-927f-eee07b2b839a}</Project>
+      <Name>Lychee.Stocks.InvestagramsApi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lychee.Stocks.Domain\Lychee.Stocks.Domain.csproj">
       <Project>{737824e5-8102-4457-9331-e6681fa72609}</Project>
       <Name>Lychee.Stocks.Domain</Name>
@@ -343,6 +354,7 @@
       <Name>Lychee.Stocks.Entities</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
