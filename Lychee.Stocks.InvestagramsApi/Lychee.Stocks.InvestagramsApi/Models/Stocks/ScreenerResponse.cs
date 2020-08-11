@@ -15,6 +15,8 @@
         public decimal? YTD { get; set; }
         public decimal? MTD { get; set; }
         public decimal? WTD { get; set; }
+        public decimal? WeekHigh52 { get; set; }
+        public decimal? WeekLow52 { get; set; }
     }
 
 }

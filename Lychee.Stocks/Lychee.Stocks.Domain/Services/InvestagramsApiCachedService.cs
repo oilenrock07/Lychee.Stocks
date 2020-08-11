@@ -238,6 +238,14 @@ namespace Lychee.Stocks.Domain.Services
             return await GetScreenerRequest(request, cacheKey);
         }
 
+        public async Task<List<ScreenerResponse>> Get52WeekLow()
+        {
+            var cacheKey = $"52WeekLow-{DateTime.Now:MMdd}";
+            var request = new Screener { TechnicalWeekLow52 = 2 };
+            return await GetScreenerRequest(request, cacheKey);
+        }
+
+
         /// <summary>
         /// Oversold <= 30
         /// MA9 below SMA20

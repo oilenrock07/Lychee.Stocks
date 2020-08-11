@@ -96,6 +96,12 @@ namespace Lychee.Stocks.Controllers
             return PartialView("_MACD", stocks);
         }
 
+        public async Task<PartialViewResult> FiftyTwoWeekLow()
+        {
+            var stocks = await _investagramsApiService.Get52WeekLow();
+            return PartialView(stocks);
+        }
+
         public PartialViewResult SteepDown()
         {
             var stocks = _stockService.GetStockWithSteepDown();

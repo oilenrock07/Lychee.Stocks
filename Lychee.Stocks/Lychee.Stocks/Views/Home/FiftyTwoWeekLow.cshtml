@@ -1,0 +1,69 @@
+﻿@using Lychee.CommonHelper.Extensions
+@using Lychee.Stocks.Domain.Helpers
+@using Lychee.Stocks.Helpers
+@using Lychee.Stocks.InvestagramsApi.Constants
+@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.ScreenerResponse>
+
+@if (Model.Any())
+{
+
+    <h2 class="color-downtrend">52 Week Low</h2>
+    <p>
+        <table class="table table-hover">
+            <tr>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Last
+                </th>
+                <th>
+                    Volume
+                </th>
+                <th>
+                    Low
+                </th>
+                <th>
+                    High
+                </th>
+                <th>
+                    YTD
+                </th>
+                <th>
+                    52 Week Low
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
+                var ytdTrendColor = StockUIClassHelper.StockColourClass(item.YTD.ToDecimal());
+
+                <tr>
+                    <td>
+                        <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+                    </td>
+                    <td class="@trendColour">
+                        @item.Last
+                    </td>
+                    <td>
+                        @item.Volume.ConvertToShortHand()
+                    </td>
+                    <td>
+                        @item.Low
+                    </td>
+                    <td>
+                        @item.High
+                    </td>
+                    <td class="@ytdTrendColor">
+                        @item.YTD
+                    </td>
+                    <td>
+                        @item.WeekLow52
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </p>
+}

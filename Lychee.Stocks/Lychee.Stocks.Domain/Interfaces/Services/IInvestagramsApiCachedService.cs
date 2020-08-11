@@ -16,5 +16,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         Task<List<ScreenerResponse>> GetOversoldStocks();
 
         Task<List<ScreenerResponse>> GetOversoldStocksLessThan20();
+
+        Task<List<ScreenerResponse>> Get52WeekLow();
     }
 }

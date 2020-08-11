@@ -432,7 +432,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Prediction\Prediction.cshtml" />
     <Content Include="Views\Prediction\EditPrediction.cshtml" />
@@ -468,6 +467,7 @@
     <Content Include="Views\Watchlist\Index.cshtml" />
     <Content Include="Views\Home\SteepDown.cshtml" />
     <Content Include="Views\Home\_MACD.cshtml" />
+    <Content Include="Views\Home\FiftyTwoWeekLow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

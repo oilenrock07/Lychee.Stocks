@@ -1,4 +1,5 @@
 ﻿@using Lychee.Stocks.Domain.Helpers
+@using Lychee.Stocks.Helpers
 @using Lychee.Stocks.InvestagramsApi.Constants
 @model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.ScreenerResponse>
 
@@ -23,11 +24,13 @@
 
     @foreach (var item in Model)
     {
+        var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
+
         <tr>
             <td>
                 <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
             </td>
-            <td>
+            <td class="@trendColour">
                 @item.Last
             </td>
             <td>
