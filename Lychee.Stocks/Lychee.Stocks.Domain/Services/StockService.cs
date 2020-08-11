@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LazyCache;
 using Lychee.Caching.Interfaces;
+using Lychee.CommonHelper.Extensions;
 using Lychee.Domain.Interfaces;
 using Lychee.Infrastructure.Interfaces;
 using Lychee.Stocks.Domain.Constants;
@@ -58,15 +59,24 @@ namespace Lychee.Stocks.Domain.Services
 
         public async Task SaveLatestStockUpdate()
         {
+            var stocks = new List<ScreenerResponse>();
+            var realTimePrice = new List<RealTimePrice>();
+
             //Save stocks
-            var stocks = await _investagramsApiService.GetAllLatestStocks();
+            var tasks = new List<Task>
+            {
+                Task.Run(async () => await _investagramsApiService.GetAllLatestStocks()).ContinueWith(x => stocks.AddRange(x.Result)),
+                Task.Run(async () => await _investagramsApiService.GetAllActiveStockPriceRealTime().ContinueWith(x => realTimePrice.AddRange(x.Result)))
+            };
+            Task.WaitAll(tasks.ToArray());
+
             if (stocks == null)
                 throw new System.Exception("Please update investa cookie");
 
-            SaveStocks(stocks);
+            SaveStocks(stocks, realTimePrice);
         }
 
-        protected void SaveStocks(List<ScreenerResponse> stocks)
+        protected void SaveStocks(List<ScreenerResponse> stocks, List<RealTimePrice> realTimePrice)
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
             var allStocks = _stockHistoryRepository.GetAllStocksByDate(date);
@@ -74,20 +84,34 @@ namespace Lychee.Stocks.Domain.Services
             foreach (var item in stocks)
             {
                 var stock = allStocks?.FirstOrDefault(x => x.StockCode == item.StockCode && x.Date == date);
+                var realTimeData = realTimePrice.FirstOrDefault(x => x.StockCode == item.StockCode);
+
                 if (stock == null)
                 {
                     var newStockHistory = Mapper.Map<StockHistory>(item);
                     newStockHistory.Date = date;
+                    MapRealTimeDataToStockHistory(realTimeData, newStockHistory);
+
                     _stockHistoryRepository.Add(newStockHistory);
                 }
                 else
                 {
+                    _stockHistoryRepository.Attach(stock);
                     stock.InjectFrom(item);
-                    _stockHistoryRepository.Update(stock);
+                    MapRealTimeDataToStockHistory(realTimeData, stock);
                 }
             }
 
             _databaseFactory.SaveChanges();
+        }
+
+        private void MapRealTimeDataToStockHistory(RealTimePrice realTimePrice, StockHistory stock)
+        {
+            if (realTimePrice == null) return;
+
+            stock.Change = realTimePrice.ChangePercentage;
+            stock.Value = realTimePrice.Value;
+            stock.Trades = realTimePrice.Trades;
         }
 
         public DateTime GetLastDataUpdates()

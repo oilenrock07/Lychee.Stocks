@@ -338,6 +338,9 @@
     <None Include="Data\CandleStickAnalyzerData\EveningStars\MPI-20200808.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Data\CandleStickAnalyzerData\EveningStars\NIKL-20200811.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

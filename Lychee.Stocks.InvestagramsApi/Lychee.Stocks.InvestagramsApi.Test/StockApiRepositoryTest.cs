@@ -187,7 +187,7 @@ namespace Lychee.Stocks.InvestagramsApi.Test
         public async Task DownloadChart()
         {
             //Arrange
-            var code = "MPI";
+            var code = "NIKL";
             var date = DateTime.Now;
 
             //Act
