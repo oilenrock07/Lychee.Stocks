@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Antlr.Runtime.Misc;
 using Lychee.Domain.Interfaces;
+using Lychee.Infrastructure.Interfaces;
+using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Models;
+using Lychee.Stocks.Entities;
 using Lychee.Stocks.Models;
 using Newtonsoft.Json;
+using Omu.ValueInjecter;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -15,11 +20,54 @@ namespace Lychee.Stocks.Controllers
     {
         private readonly IStockService _stockService;
         private readonly ISettingService _settingService;
+        private readonly IRepository<Stock> _stockRepository;
 
-        public StockController(IStockService stockService, ISettingService settingService)
+        public StockController(IStockService stockService, ISettingService settingService, IRepository<Stock> stockRepository)
         {
             _stockService = stockService;
             _settingService = settingService;
+            _stockRepository = stockRepository;
+        }
+
+        public ActionResult List()
+        {
+            var models = _stockRepository.GetAll().ToList().OrderBy(x => x.StockCode);
+            return View(models);
+        }
+
+        public JsonResult UpdateStock(Stock model)
+        {
+            var stock = _stockRepository.GetById(model.StockId);
+            _stockRepository.Attach(stock);
+            stock.InjectFrom(model);
+            _stockRepository.SaveChanges();
+
+            return Json(new {success = true}, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult CreateStock()
+        {
+            return View(new Stock());
+        }
+
+        [HttpPost]
+        public ActionResult CreateStock(Stock model)
+        {
+            _stockRepository.Add(model);
+            _stockRepository.SaveChanges();
+            TempData["Success"] = $"{model.StockCode} has been successfully created";
+
+            return RedirectToAction("List");
+        }
+
+        public ActionResult DeleteStock(int stockId)
+        {
+            var stock = _stockRepository.GetById(stockId);
+            _stockRepository.Delete(stock);
+            _stockRepository.SaveChanges();
+
+            TempData["Success"] = $"{stock.StockCode} has been successfully deleted";
+            return RedirectToAction("List");
         }
 
         public async Task<ActionResult> FetchRealTimeData()

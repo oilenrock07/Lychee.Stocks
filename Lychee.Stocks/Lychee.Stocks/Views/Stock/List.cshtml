@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Lychee.Stocks.Entities.Stock>
+
+@{
+    ViewBag.Title = "List";
+    var successMessage = TempData["Success"];
+}
+
+<h2>Stocks</h2>
+
+@if (successMessage != null)
+{
+    <div class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create New", "CreateStock")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StockCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StockType)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <input type="text" value="@item.StockCode" name="@nameof(item.StockCode)" class="form-control" />
+            </td>
+            <td>
+                <input type="text" value="@item.Name" name="@nameof(item.Name)" class="form-control" />
+            </td>
+            <td>
+                <input type="text" value="@item.StockType" name="@nameof(item.StockType)" class="form-control" />
+            </td>
+            <td>
+                
+                <input type="hidden" value="@item.StockId" name="@nameof(item.StockId)" />
+                @Html.ActionLink("Update", "Edit", null, new { @class = "js-ajaxSubmitRow", data_url = "/Stock/UpdateStock" }) |
+                @Html.ActionLink("Delete", "DeleteStock", new { stockId = item.StockId }, new { @class = "js-delete" })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts
+{
+    <script src="~/Scripts/Custom/Confirmations.js"></script>
+    <script src="~/Scripts/Custom/AjaxTable.js"></script>
+}

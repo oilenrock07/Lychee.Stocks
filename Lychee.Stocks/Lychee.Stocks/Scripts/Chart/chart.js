@@ -21,7 +21,7 @@ function renderChart(placeholder, label, data) {
 
 function getData(data) {
 
-    var ctr = 14;
+    var ctr = 59;
     var arr = [];
     while (ctr >= 0) {
         arr.push({

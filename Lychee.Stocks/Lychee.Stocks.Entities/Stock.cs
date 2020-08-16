@@ -7,6 +7,8 @@ namespace Lychee.Stocks.Entities
     public class Stock
     {
         [Key]
+        public int StockId { get; set; }
+
         public string StockCode { get; set; }
         public string Name { get; set; }
         public string StockType { get; set; }

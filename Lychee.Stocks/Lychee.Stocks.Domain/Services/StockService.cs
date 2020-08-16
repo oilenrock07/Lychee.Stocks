@@ -109,7 +109,6 @@ namespace Lychee.Stocks.Domain.Services
         {
             if (realTimePrice == null) return;
 
-            stock.Change = realTimePrice.ChangePercentage;
             stock.Value = realTimePrice.Value;
             stock.Trades = realTimePrice.Trades;
         }
