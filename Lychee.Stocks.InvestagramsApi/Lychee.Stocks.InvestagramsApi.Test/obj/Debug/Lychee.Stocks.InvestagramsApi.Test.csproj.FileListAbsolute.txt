@@ -34,3 +34,5 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.Inv
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.Test\obj\Debug\Lychee.Stocks.InvestagramsApi.Test.csproj.CopyComplete
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.Test\obj\Debug\Lychee.Stocks.InvestagramsApi.Test.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.Test\obj\Debug\Lychee.Stocks.InvestagramsApi.Test.pdb
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.Test\bin\Debug\Lychee.Stocks.Common.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.Test\bin\Debug\Lychee.Stocks.Common.pdb

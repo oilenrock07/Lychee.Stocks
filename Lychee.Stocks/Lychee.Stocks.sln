@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lychee.Stocks.InvestagramsA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{2EAE3715-911A-47A9-B41E-8D6ED8A24678}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{45F28E1A-B0EB-46DE-9863-F1AE8F4D6401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lychee.Stocks.Common", "Lychee.Stocks.Common\Lychee.Stocks.Common.csproj", "{C8481E54-3798-4BAF-B53A-5494FFE0147A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,10 @@ Global
 		{A869AE3D-209F-4AE7-8B24-127E9A96256D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A869AE3D-209F-4AE7-8B24-127E9A96256D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A869AE3D-209F-4AE7-8B24-127E9A96256D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8481E54-3798-4BAF-B53A-5494FFE0147A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8481E54-3798-4BAF-B53A-5494FFE0147A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8481E54-3798-4BAF-B53A-5494FFE0147A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8481E54-3798-4BAF-B53A-5494FFE0147A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +62,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{273498E1-0613-4BAA-927F-EEE07B2B839A} = {2EAE3715-911A-47A9-B41E-8D6ED8A24678}
 		{A869AE3D-209F-4AE7-8B24-127E9A96256D} = {2EAE3715-911A-47A9-B41E-8D6ED8A24678}
+		{C8481E54-3798-4BAF-B53A-5494FFE0147A} = {45F28E1A-B0EB-46DE-9863-F1AE8F4D6401}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A71D99EF-2FA5-46AA-ABFF-21CE9BDE51B3}

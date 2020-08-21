@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Lychee.Stocks.Common.Interfaces;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Helpers;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
@@ -81,31 +82,44 @@ namespace Lychee.Stocks.Controllers
         public async Task<PartialViewResult> Oversold()
         {
             var stocks = await _investagramsApiService.GetOversoldStocksLessThan20();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
             return PartialView(stocks);
         }
 
         public async Task<PartialViewResult> AboutToCrossMacd()
         {
             var stocks = await _investagramsApiService.GetMacdAboutToCrossFromBelowBullish();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
+            ViewBag.Title = "MACD About to Cross";
             return PartialView("_MACD", stocks);
         }
 
         public async Task<PartialViewResult> CrossingMacd()
         {
             var stocks = await _investagramsApiService.GetMacdCrossingSignalFromBelowBullish();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
+            ViewBag.Title = "MACD Crossing";
             return PartialView("_MACD", stocks);
         }
 
         public async Task<PartialViewResult> FiftyTwoWeekLow()
         {
             var stocks = await _investagramsApiService.Get52WeekLow();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
             return PartialView(stocks);
         }
 
         public PartialViewResult SteepDown()
         {
             var stocks = _stockService.GetStockWithSteepDown();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
             return PartialView(stocks);
+        }
+
+        private List<T> GetStocksWithAverageTradesAbove100<T>(List<T> list) where T: IStock
+        {
+            var stocksWithAvgTradesAbove100 = _stockService.GetStockTradeAverages(2, 100);
+            return list.Where(x => stocksWithAvgTradesAbove100.Select(s => s.StockCode).Contains(x.StockCode)).ToList();
         }
     }
 }

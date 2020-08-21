@@ -74,6 +74,7 @@ namespace Lychee.Stocks.Domain.Services
                 throw new System.Exception("Please update investa cookie");
 
             SaveStocks(stocks, realTimePrice);
+            ClearStockTradeAverageCache();
         }
 
         protected void SaveStocks(List<ScreenerResponse> stocks, List<RealTimePrice> realTimePrice)
@@ -296,6 +297,22 @@ namespace Lychee.Stocks.Domain.Services
         public List<StockHistory> GetStockWithSteepDown()
         {
             return _stockHistoryRepository.GetAllStocksWithSteepDown();
+        }
+
+        public List<StockTradeAverage> GetStockTradeAverages(int averageDays, int averageTrades)
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = $"StockTradeAverage-{date:MMdd}-{averageDays}-{averageTrades}";
+            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetAverageStocks(averageDays, averageTrades));
+        }
+
+        private void ClearStockTradeAverageCache()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = $"StockTradeAverage-{date:MMdd}-{2}-{100}";
+
+            if (_cache.Get<List<StockTradeAverage>>(cacheKey) != null)
+                _cache.Remove(cacheKey);
         }
 
         private void UpdateBlockSale(ICollection<StockBlockSale> stockBlockSales)

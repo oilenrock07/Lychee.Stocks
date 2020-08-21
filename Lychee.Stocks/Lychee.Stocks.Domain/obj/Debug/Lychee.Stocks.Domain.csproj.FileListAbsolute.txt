@@ -84,3 +84,5 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\obj\Debug\Ly
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\obj\Debug\Lychee.Stocks.Domain.pdb
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Z.Expressions.Eval.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Z.Expressions.Eval.xml
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.Stocks.Common.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Domain\bin\Debug\Lychee.Stocks.Common.pdb

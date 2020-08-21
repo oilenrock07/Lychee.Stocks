@@ -493,6 +493,10 @@
       <Project>{273498e1-0613-4baa-927f-eee07b2b839a}</Project>
       <Name>Lychee.Stocks.InvestagramsApi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lychee.Stocks.Common\Lychee.Stocks.Common.csproj">
+      <Project>{c8481e54-3798-4baf-b53a-5494ffe0147a}</Project>
+      <Name>Lychee.Stocks.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lychee.Stocks.Domain\Lychee.Stocks.Domain.csproj">
       <Project>{737824e5-8102-4457-9331-e6681fa72609}</Project>
       <Name>Lychee.Stocks.Domain</Name>

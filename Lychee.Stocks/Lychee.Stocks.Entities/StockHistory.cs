@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Lychee.Stocks.Common.Interfaces;
 
 namespace Lychee.Stocks.Entities
 {
     [Table("StockHistory")]
-    public class StockHistory
+    public class StockHistory :IStock
     {
         [Key]
         public int Id { get; set; }

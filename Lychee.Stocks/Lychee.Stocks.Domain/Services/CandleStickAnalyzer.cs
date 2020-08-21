@@ -96,7 +96,7 @@ namespace Lychee.Stocks.Domain.Services
         public bool IsDoji(CandleStick candle)
         {
             var boundary = candle.CandleFullHeight * _dojiRangePercentage;
-            return candle.Close <= Math.Round(candle.Open + boundary, 2) && candle.Open >= Math.Round(candle.Close - boundary, 2);
+            return candle.Close <= Math.Round(candle.Open + boundary, 2) && candle.Close >= Math.Round(candle.Open - boundary, 2);
         }
 
         public CandleStick GetCandleStick(ChartHistory history, int index)

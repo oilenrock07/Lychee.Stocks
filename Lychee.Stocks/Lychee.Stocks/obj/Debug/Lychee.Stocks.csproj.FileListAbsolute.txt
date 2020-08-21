@@ -156,3 +156,5 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\obj\Debug\Lychee.St
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\obj\Debug\Lychee.Stocks.csproj.CopyComplete
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\obj\Debug\Lychee.Stocks.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\obj\Debug\Lychee.Stocks.pdb
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.Stocks.Common.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks\bin\Lychee.Stocks.Common.pdb

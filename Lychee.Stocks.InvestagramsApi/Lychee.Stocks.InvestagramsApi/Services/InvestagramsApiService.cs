@@ -92,7 +92,7 @@ namespace Lychee.Stocks.InvestagramsApi.Services
         {
             var result = new List<RealTimePrice>();
             List<RealTimePrice> prices;
-            var page = 1;
+            var page = 0;
             do
             {
                 prices = await _stockApiRepository.GetAllActiveStockPriceRealTime(page);

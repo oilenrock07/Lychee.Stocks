@@ -4,6 +4,7 @@ using System.Linq;
 using Lychee.Infrastructure;
 using Lychee.Infrastructure.Interfaces;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
+using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.Entities;
 
 namespace Lychee.Stocks.Domain.Repositories
@@ -23,6 +24,11 @@ namespace Lychee.Stocks.Domain.Repositories
         public virtual List<StockHistory> GetAllStocksWithSteepDown()
         {
             return ExecuteSqlQuery<StockHistory>("EXEC RetrieveStockSteepDown").ToList();
+        }
+
+        public virtual List<StockTradeAverage> GetAverageStocks(int averageDays, int averageTrades)
+        {
+            return ExecuteSqlQuery<StockTradeAverage>($"EXEC RetrieveAverageStocks {averageDays}, {averageTrades}").ToList();
         }
     }
 

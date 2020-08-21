@@ -38,5 +38,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         Task<List<Dividend>> GetStocksGivingDividends();
 
         List<StockHistory> GetStockWithSteepDown();
+
+        List<StockTradeAverage> GetStockTradeAverages(int averageDays, int averageTrades);
     }
 }

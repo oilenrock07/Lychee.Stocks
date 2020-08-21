@@ -1,6 +1,9 @@
-﻿namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
+﻿using Lychee.Stocks.Common.Interfaces;
+using Lychee.Stocks.InvestagramsApi.Interfaces;
+
+namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
 {
-    public class ScreenerResponse
+    public class ScreenerResponse : IStock
     {
         public int StockId { get; set; }
         public string StockCode { get; set; }

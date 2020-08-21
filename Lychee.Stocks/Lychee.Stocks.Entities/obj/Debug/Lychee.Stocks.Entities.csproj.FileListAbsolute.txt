@@ -11,3 +11,5 @@ C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.dll
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.pdb
 C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\obj\Debug\Lychee.Stocks.Entities.csprojAssemblyReference.cache
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\Lychee.Stocks.Common.dll
+C:\Cawi\DEV\Lychee\Lychee.Stocks\Lychee.Stocks\Lychee.Stocks.Entities\bin\Debug\Lychee.Stocks.Common.pdb
