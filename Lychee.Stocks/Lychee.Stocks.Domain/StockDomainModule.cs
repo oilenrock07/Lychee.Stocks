@@ -20,6 +20,7 @@ namespace Lychee.Stocks.Domain
             container.Register<IStockScoreService, StockScoreService>(Lifestyle.Scoped);
             container.Register<IWatchListService, WatchListService>(Lifestyle.Scoped);
             container.Register<IInvestagramsApiCachedService, InvestagramsApiCachedService>(Lifestyle.Scoped);
+            container.Register<ICandleStickAnalyzerService, CandleStickAnalyzerService>(Lifestyle.Scoped);
         }
     }
 }

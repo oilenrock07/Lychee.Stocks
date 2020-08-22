@@ -10,8 +10,10 @@ namespace Lychee.Stocks.Domain.Interfaces.Repositories
     {
         List<StockHistory> GetAllStocksByDate(DateTime date);
 
-        List<StockHistory> GetAllStocksWithSteepDown();
-
         List<StockTradeAverage> GetAverageStocks(int averageDays, int averageTrades);
+
+        List<StockHistory> GetTopXTradeHistory(DateTime date, int topX);
+
+        List<StockHistory> GetAllDojis();
     }
 }

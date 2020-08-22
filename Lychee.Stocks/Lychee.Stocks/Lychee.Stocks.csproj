@@ -470,6 +470,7 @@
     <Content Include="Views\Home\FiftyTwoWeekLow.cshtml" />
     <Content Include="Views\Stock\List.cshtml" />
     <Content Include="Views\Stock\CreateStock.cshtml" />
+    <Content Include="Views\Home\MorningStarDoji.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

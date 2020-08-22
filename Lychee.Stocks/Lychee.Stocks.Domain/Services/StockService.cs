@@ -9,6 +9,7 @@ using Lychee.CommonHelper.Extensions;
 using Lychee.Domain.Interfaces;
 using Lychee.Infrastructure.Interfaces;
 using Lychee.Stocks.Domain.Constants;
+using Lychee.Stocks.Domain.Helpers;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Models;
@@ -35,14 +36,16 @@ namespace Lychee.Stocks.Domain.Services
         private readonly IStockScoreService _stockScoreService;
         private readonly IStockHistoryRepository _stockHistoryRepository;
         private readonly IStockMarketStatusRepository _stockMarketStatusRepository;
+        private readonly ICandleStickAnalyzerService _candleStickAnalyzerService;
 
+        private const string CACHE_MORNING_STAR_DOJI = "MorningStarDoji-{0}";
 
         public StockService(IDatabaseFactory databaseFactory, ISettingService settingService,
             IRepository<Stock> stockRepository,
             IStockHistoryRepository stockHistoryRepository, ICachingFactory cacheFactory,
             ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository,
             ICookieProviderService cookieProviderService, IInvestagramsApiCachedService investagramsApiService,
-            IStockScoreService stockScoreService, IStockMarketStatusRepository stockMarketStatusRepository)
+            IStockScoreService stockScoreService, IStockMarketStatusRepository stockMarketStatusRepository, ICandleStickAnalyzerService candleStickAnalyzerService)
         {
             _databaseFactory = databaseFactory;
             _settingService = settingService;
@@ -54,6 +57,7 @@ namespace Lychee.Stocks.Domain.Services
             _investagramsApiService = investagramsApiService;
             _stockScoreService = stockScoreService;
             _stockMarketStatusRepository = stockMarketStatusRepository;
+            _candleStickAnalyzerService = candleStickAnalyzerService;
             _cache = cacheFactory.GetCacheService();
         }
 
@@ -74,7 +78,7 @@ namespace Lychee.Stocks.Domain.Services
                 throw new System.Exception("Please update investa cookie");
 
             SaveStocks(stocks, realTimePrice);
-            ClearStockTradeAverageCache();
+            ClearCache();
         }
 
         protected void SaveStocks(List<ScreenerResponse> stocks, List<RealTimePrice> realTimePrice)
@@ -296,7 +300,30 @@ namespace Lychee.Stocks.Domain.Services
 
         public List<StockHistory> GetStockWithSteepDown()
         {
-            return _stockHistoryRepository.GetAllStocksWithSteepDown();
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var allStocks = GetTopXTradeHistory(date, 30);
+            var stocksWithRedCandle = allStocks.Where(x => x.Date == date && x.Last < x.Open).Select(x => x.StockCode).ToList();
+            var stocksWithSteepDown = new List<StockHistory>();
+
+            foreach (var code in stocksWithRedCandle)
+            {
+                var stocks = allStocks.Where(x => x.StockCode == code).ToList();
+                var candles = stocks.Select(x =>
+                {
+                    var item = Mapper.Map<CandleStick>(x);
+                    item.Close = x.Last;
+
+                    return item;
+                }).ToList();
+                
+                var lastCandle = candles.First();
+                var biggestCandle = candles.OrderByDescending(x => x.CandleFullHeight).First();
+
+                if (lastCandle.CandleFullHeight == biggestCandle.CandleFullHeight)
+                    stocksWithSteepDown.Add(stocks.First());
+            }
+
+            return stocksWithSteepDown;
         }
 
         public List<StockTradeAverage> GetStockTradeAverages(int averageDays, int averageTrades)
@@ -306,13 +333,52 @@ namespace Lychee.Stocks.Domain.Services
             return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetAverageStocks(averageDays, averageTrades));
         }
 
+        public List<StockHistory> GetTopXTradeHistory(DateTime date, int topX)
+        {
+            var cacheKey = $"TopXTradeHistory-{date:MMdd}-{topX}";
+            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetTopXTradeHistory(date, topX));
+        }
+
+        public List<StockHistory> GetMorningStarDoji()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = string.Format(CACHE_MORNING_STAR_DOJI, date.ToString("MMdd"));
+
+            var dojiStocks = _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetAllDojis());
+            var allStocks = GetTopXTradeHistory(date, 30);
+            var morningStarDojiStocks = new List<StockHistory>();
+
+            foreach (var dojiStock in dojiStocks)
+            {
+                var chartHistory = MapToChartHistory(allStocks.Where(x => x.StockCode == dojiStock.StockCode).ToList());
+                if (_candleStickAnalyzerService.IsMorningStarDoji(chartHistory))
+                    morningStarDojiStocks.Add(dojiStock);
+            }
+
+            return morningStarDojiStocks;
+        }
+
         private void ClearStockTradeAverageCache()
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
             var cacheKey = $"StockTradeAverage-{date:MMdd}-{2}-{100}";
 
-            if (_cache.Get<List<StockTradeAverage>>(cacheKey) != null)
-                _cache.Remove(cacheKey);
+            _cache.SafeRemove<List<StockHistory>>(cacheKey);
+        }
+
+        private void ClearTopXTradeHistoryCache()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = $"TopXTradeHistory-{date:MMdd}-{30}";
+
+            _cache.SafeRemove<List<StockHistory>>(cacheKey);
+        }
+
+        private void ClearMorningStarDojiCache()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = string.Format(CACHE_MORNING_STAR_DOJI, date.ToString("MMdd"));
+            _cache.SafeRemove<List<StockHistory>>(cacheKey);
         }
 
         private void UpdateBlockSale(ICollection<StockBlockSale> stockBlockSales)
@@ -339,6 +405,24 @@ namespace Lychee.Stocks.Domain.Services
                 _suspendedStockRepository.SaveSuspendedStocks(suspendedStocks);
         }
 
+        private void ClearCache()
+        {
+            ClearStockTradeAverageCache();
+            ClearTopXTradeHistoryCache();
+            ClearMorningStarDojiCache();
+        }
+
+        private ChartHistory MapToChartHistory(List<StockHistory> stockHistory)
+        {
+            var chartHistory = new ChartHistory();
+            chartHistory.Opens = stockHistory.OrderByDescending(x => x.Date).Select(x => x.Open).ToArray();
+            chartHistory.Closes = stockHistory.OrderByDescending(x => x.Date).Select(x => x.Last).ToArray();
+            chartHistory.Highs = stockHistory.OrderByDescending(x => x.Date).Select(x => x.High).ToArray();
+            chartHistory.Lows = stockHistory.OrderByDescending(x => x.Date).Select(x => x.Low).ToArray();
+            chartHistory.Dates = stockHistory.OrderByDescending(x => x.Date).Select(x => x.Date).ToArray();
+
+            return chartHistory;
+        }
 
     }
 }

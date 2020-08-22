@@ -300,6 +300,7 @@
     <Compile Include="Enums\StockTrend.cs" />
     <Compile Include="Enums\StockTypes.cs" />
     <Compile Include="Exception\InvestagramsException.cs" />
+    <Compile Include="Helpers\AppCacheExtension.cs" />
     <Compile Include="Helpers\StockExtension.cs" />
     <Compile Include="Interfaces\Repositories\IStockHistoryRepository.cs" />
     <Compile Include="Interfaces\Repositories\IStockDataRepository.cs" />

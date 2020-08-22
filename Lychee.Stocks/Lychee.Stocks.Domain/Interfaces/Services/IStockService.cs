@@ -40,5 +40,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         List<StockHistory> GetStockWithSteepDown();
 
         List<StockTradeAverage> GetStockTradeAverages(int averageDays, int averageTrades);
+
+        List<StockHistory> GetMorningStarDoji();
     }
 }

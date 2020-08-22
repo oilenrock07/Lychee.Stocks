@@ -32,6 +32,7 @@ namespace Lychee.Stocks.Domain.Services
                 var totalPreviousCandleHeight = GetAllGreenCandleTotalHeight(history, 1);
                 var getCandlesCount = history.Dates.Length > 15 ? 15 : history.Dates.Length;
                 var last15Candles = GetAllCandleSticks(history, 1, getCandlesCount);
+                var lastCandleClose = last15Candles.First().Close;
 
                 //if the accumulated up recently is atleast 3rd of the height bar in 15days then return true
                 if (getCandlesCount > 3)
@@ -41,15 +42,46 @@ namespace Lychee.Stocks.Domain.Services
                         .ElementAt(2)
                         .CandleBodyHeight;
 
-                    if (isWithinTop3Candles)
+                    if (isWithinTop3Candles && candle.Close >= lastCandleClose)
                         return true;
                 }
 
-                var lastCandleClose = last15Candles.Last().Close;
+                
                 if (candle.Close >= lastCandleClose * 0.8m)
                     return true;
             }
             
+            return false;
+        }
+
+        public bool IsMorningStarDoji(ChartHistory history)
+        {
+            var candle = GetCandleStick(history, 0);
+            var isDoji = IsDoji(candle);
+
+            if (isDoji)
+            {
+                var totalPreviousCandleHeight = GetAllRedCandleTotalHeight(history, 1);
+                var getCandlesCount = history.Dates.Length > 15 ? 15 : history.Dates.Length;
+                var last15Candles = GetAllCandleSticks(history, 1, getCandlesCount - 1);
+                var lastCandleClose = last15Candles.First().Close;
+
+                //if the accumulated up recently is atleast 3rd of the height bar in 15days then return true
+                if (getCandlesCount > 3)
+                {
+                    var isWithinTop3Candles = totalPreviousCandleHeight >= last15Candles
+                        .OrderByDescending(x => x.CandleBodyHeight).ToList()
+                        .ElementAt(2)
+                        .CandleBodyHeight;
+
+                    if (isWithinTop3Candles && candle.Close <= lastCandleClose)
+                        return true;
+                }
+
+                if (candle.Close <= lastCandleClose * 0.8m)
+                    return true;
+            }
+
             return false;
         }
 
@@ -78,6 +110,32 @@ namespace Lychee.Stocks.Domain.Services
             } while (!stop);
 
             return allGreenCandlesHeight;
+        }
+
+        /// <summary>
+        /// Loop all the previous candle until not red and get the total height
+        /// </summary>
+        /// <returns></returns>
+        private decimal GetAllRedCandleTotalHeight(ChartHistory history, int start)
+        {
+            var allRedCandlesHeight = 0m;
+            var stop = false;
+            var ctr = start;
+
+            do
+            {
+                var candle = GetCandleStick(history, ctr);
+                if (candle.IsGreenCandle)
+                    stop = true;
+                else
+                {
+                    allRedCandlesHeight += candle.CandleBodyHeight;
+                    ctr++;
+                }
+
+            } while (!stop);
+
+            return allRedCandlesHeight;
         }
 
         private List<CandleStick> GetAllCandleSticks(ChartHistory history, int start, int count)

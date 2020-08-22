@@ -116,6 +116,13 @@ namespace Lychee.Stocks.Controllers
             return PartialView(stocks);
         }
 
+        public PartialViewResult MorningStarDoji()
+        {
+            var stocks = _stockService.GetMorningStarDoji();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
+            return PartialView(stocks);
+        }
+
         private List<T> GetStocksWithAverageTradesAbove100<T>(List<T> list) where T: IStock
         {
             var stocksWithAvgTradesAbove100 = _stockService.GetStockTradeAverages(2, 100);
