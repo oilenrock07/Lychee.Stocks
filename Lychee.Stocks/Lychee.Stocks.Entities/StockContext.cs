@@ -22,5 +22,13 @@ namespace Lychee.Stocks.Entities
         public virtual IDbSet<Watchlist> WatchLists { get; set; }
 
         public virtual IDbSet<WatchListGroup> WatchListGroups { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StockHistory>().Property(x => x.Last).HasPrecision(18, 5);
+            modelBuilder.Entity<StockHistory>().Property(x => x.Open).HasPrecision(18, 5);
+            modelBuilder.Entity<StockHistory>().Property(x => x.High).HasPrecision(18, 5);
+            modelBuilder.Entity<StockHistory>().Property(x => x.Low).HasPrecision(18, 5);
+        }
     }
 }

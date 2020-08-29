@@ -12,7 +12,7 @@ namespace Lychee.Stocks.Domain.Services
 {
     public class CandleStickAnalyzerService : ICandleStickAnalyzerService
     {
-        private readonly decimal _dojiRangePercentage = 0.1m;
+        private readonly decimal _dojiRangePercentage = 0.075m;
 
         public CandleStickReversalPattern GetCandleStickPattern(ChartHistory history)
         {
@@ -80,6 +80,23 @@ namespace Lychee.Stocks.Domain.Services
 
                 if (candle.Close <= lastCandleClose * 0.8m)
                     return true;
+            }
+
+            return false;
+        }
+
+        public bool IsHammer(ChartHistory history)
+        {
+            var candle = GetCandleStick(history, 0);
+            if (IsHammer(candle) && ! IsDoji(candle))
+            {
+                var referenceDay = 10;
+                if (history.Dates.Length <= referenceDay)
+                    referenceDay = history.Dates.Length;
+
+                var averagePrice = history.Closes.Take(referenceDay).Average();
+
+                return averagePrice > candle.Close;
             }
 
             return false;
@@ -155,6 +172,12 @@ namespace Lychee.Stocks.Domain.Services
         {
             var boundary = candle.CandleFullHeight * _dojiRangePercentage;
             return candle.Close <= Math.Round(candle.Open + boundary, 2) && candle.Close >= Math.Round(candle.Open - boundary, 2);
+        }
+
+        public bool IsHammer(CandleStick candle)
+        {
+            //it's in the sp
+            return true;
         }
 
         public CandleStick GetCandleStick(ChartHistory history, int index)

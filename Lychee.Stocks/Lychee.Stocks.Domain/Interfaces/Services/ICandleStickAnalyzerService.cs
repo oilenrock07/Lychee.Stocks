@@ -8,5 +8,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         bool IsMorningStarDoji(ChartHistory history);
         bool IsEveningStarDoji(ChartHistory history);
         bool IsDoji(CandleStick candle);
+
+        bool IsHammer(ChartHistory history);
     }
 }

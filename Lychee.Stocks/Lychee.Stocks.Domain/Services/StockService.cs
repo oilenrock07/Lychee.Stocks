@@ -39,6 +39,7 @@ namespace Lychee.Stocks.Domain.Services
         private readonly ICandleStickAnalyzerService _candleStickAnalyzerService;
 
         private const string CACHE_MORNING_STAR_DOJI = "MorningStarDoji-{0}";
+        private const string CACHE_HAMMER = "Hammer-{0}";
 
         public StockService(IDatabaseFactory databaseFactory, ISettingService settingService,
             IRepository<Stock> stockRepository,
@@ -356,6 +357,25 @@ namespace Lychee.Stocks.Domain.Services
             }
 
             return morningStarDojiStocks;
+        }
+
+        public List<StockHistory> GetHammers()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = string.Format(CACHE_HAMMER, date.ToString("MMdd"));
+
+            var hammers = _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetAllHammers());
+            var allStocks = GetTopXTradeHistory(date, 30);
+            var hammerStocks = new List<StockHistory>();
+
+            foreach (var dojiStock in hammers)
+            {
+                var chartHistory = MapToChartHistory(allStocks.Where(x => x.StockCode == dojiStock.StockCode).ToList());
+                if (_candleStickAnalyzerService.IsHammer(chartHistory))
+                    hammerStocks.Add(dojiStock);
+            }
+
+            return hammerStocks;
         }
 
         private void ClearStockTradeAverageCache()

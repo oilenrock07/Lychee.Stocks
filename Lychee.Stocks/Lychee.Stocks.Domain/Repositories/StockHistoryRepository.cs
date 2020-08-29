@@ -35,6 +35,11 @@ namespace Lychee.Stocks.Domain.Repositories
         {
             return ExecuteSqlQuery<StockHistory>("EXEC RetrieveAllDojis").ToList();
         }
+
+        public virtual List<StockHistory> GetAllHammers()
+        {
+            return ExecuteSqlQuery<StockHistory>("EXEC RetrieveAllHammers").ToList();
+        }
     }
 
 }

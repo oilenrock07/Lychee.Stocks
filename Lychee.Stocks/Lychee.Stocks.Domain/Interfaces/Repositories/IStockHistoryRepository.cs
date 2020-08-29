@@ -15,5 +15,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Repositories
         List<StockHistory> GetTopXTradeHistory(DateTime date, int topX);
 
         List<StockHistory> GetAllDojis();
+
+        List<StockHistory> GetAllHammers();
     }
 }

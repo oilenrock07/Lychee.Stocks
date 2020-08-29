@@ -120,7 +120,16 @@ namespace Lychee.Stocks.Controllers
         {
             var stocks = _stockService.GetMorningStarDoji();
             stocks = GetStocksWithAverageTradesAbove100(stocks);
-            return PartialView(stocks);
+            ViewBag.Header = "Morning Star Doji";
+            return PartialView("_BasicChartHistoryDisplay", stocks);
+        }
+
+        public PartialViewResult Hammers()
+        {
+            var stocks = _stockService.GetHammers();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
+            ViewBag.Header = "Hammers";
+            return PartialView("_BasicChartHistoryDisplay", stocks);
         }
 
         private List<T> GetStocksWithAverageTradesAbove100<T>(List<T> list) where T: IStock
