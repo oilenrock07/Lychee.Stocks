@@ -15,6 +15,11 @@ namespace Lychee.Stocks.Domain.Repositories
         {
         }
 
+        public virtual List<StockHistory> RetrieveStockLastHistory()
+        {
+            return ExecuteSqlQuery<StockHistory>("EXEC RetrieveStockLastHistory").ToList();
+        }
+
         public virtual List<StockHistory> GetAllStocksByDate(DateTime date)
         {
             date = date.Date;

@@ -80,15 +80,6 @@
     <Reference Include="Lychee.Infrastructure, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Infrastructure.1.7.0\lib\net40\Lychee.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Lychee.Scrapper.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LycheeScrapper.Domain.1.2.7\lib\net40\Lychee.Scrapper.Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="Lychee.Scrapper.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LycheeScrapper.Domain.1.2.7\lib\net40\Lychee.Scrapper.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Lychee.Scrapper.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LycheeScrapper.Domain.1.2.7\lib\net40\Lychee.Scrapper.Repository.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNetCore.WebUtilities, Version=2.0.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.WebUtilities.2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
     </Reference>
@@ -330,7 +321,6 @@
   <ItemGroup>
     <Compile Include="CandleStickAnalyzerTest.cs" />
     <Compile Include="InvestagramsApiRepositoryTest.cs" />
-    <Compile Include="StockServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

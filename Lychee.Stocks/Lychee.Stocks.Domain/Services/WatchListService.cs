@@ -17,15 +17,34 @@ namespace Lychee.Stocks.Domain.Services
     public class WatchListService : Service<WatchListGroup>, IWatchListService
     {
         private readonly IWatchListRepository _watchListRepository;
+        private readonly IStockService _stockService;
 
-        public WatchListService(IWatchListRepository watchListRepository) : base(watchListRepository)
+        public WatchListService(IWatchListRepository watchListRepository, IStockService stockService) : base(watchListRepository)
         {
             _watchListRepository = watchListRepository;
+            _stockService = stockService;
         }
 
         public List<WatchListGroup> GetAllWatchList()
         {
-            return _watchListRepository.GetAllWatchList();
+            var watchList = _watchListRepository.GetAllWatchList();
+            var stockPrice = _stockService.GetLatestStockHistory();
+
+            foreach (var group in watchList)
+            {
+                foreach (var groupWatchList in group.WatchLists)
+                {
+                    var stock = stockPrice.FirstOrDefault(x => x.StockCode == groupWatchList.StockCode);
+                    if (stock != null)
+                    {
+                        groupWatchList.Last = stock.Last;
+                        groupWatchList.Open = stock.Open;
+                    }
+                        
+                }
+            }
+
+            return watchList;
         }
 
         public void Add(WatchListGroup group)

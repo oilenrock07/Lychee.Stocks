@@ -22,5 +22,12 @@ namespace Lychee.Stocks.Entities
         public string Note { get; set; }
         public bool Deleted { get; set; }
         public DateTime DateCreated { get; set; }
+
+        //These should be in viewmodel. I am just being lazy
+        [NotMapped]
+        public decimal Last { get; set; }
+
+        [NotMapped]
+        public decimal Open { get; set; }
     }
 }

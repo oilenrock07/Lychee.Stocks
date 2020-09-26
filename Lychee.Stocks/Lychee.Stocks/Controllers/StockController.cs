@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -121,6 +122,19 @@ namespace Lychee.Stocks.Controllers
         {
             var result = _stockService.GetStockTrendReport(days, losingWinningStreak, trend);
             return PartialView(result);
+        }
+
+        public async Task<ActionResult> UpdateAllStocks()
+        {
+            try
+            {
+                await _stockService.UpdateAllStock();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View();
         }
     }
 }

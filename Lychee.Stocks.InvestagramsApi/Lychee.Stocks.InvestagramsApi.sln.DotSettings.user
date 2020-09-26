@@ -1,0 +1,57 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=23f02b30_002Ddd50_002D4727_002Db930_002D41a43e962c52/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanViewStock #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanViewStock&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=51966752_002D48e5_002D4bb8_002D8cda_002Dc8a2659c8d69/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanGetMarketStatus" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetMarketStatus&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetLatestStockMarketActivity&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5ebc2023_002Deb49_002D4a98_002Dbf50_002D4bca67441c8a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanGetLatestStockMarketActivity" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetLatestStockMarketActivity&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a53b1512_002Da6eb_002D49b6_002Da07e_002D17eecbb1d11d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanGetLatestStockHistoryByStockId" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetLatestStockHistoryByStockId&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetAskAndBidByStockId&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetAllActiveStockRealTimePrice&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetChartHistory&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.TplTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanViewStock&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetLatestTechnicalAnalysis&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ac014ac3_002D1df6_002D4a2a_002D879a_002De6ca701f075b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanGetAllTheNews" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetAllTheNews&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ac277ea8_002D54ce_002D4d5e_002Da365_002Df596759b6e50/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanViewStock" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanViewStock&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetAllActiveStockRealTimePrice&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetAskAndBidByStockId&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ad251ead_002Df3aa_002D4174_002Da608_002D9fcf9778700d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanGetAllActiveStockRealTimePrice" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetAllActiveStockRealTimePrice&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetNewsByStockId&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetFinancialReportNews&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetBusinessNews&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetDisclosureNews&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanViewStock&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetChartByMinute&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b20782c2_002D9f94_002D4ee7_002Db079_002Db4801ddd29aa/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanGetMarketStatus #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.CanGetMarketStatus&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	</wpf:ResourceDictionary>

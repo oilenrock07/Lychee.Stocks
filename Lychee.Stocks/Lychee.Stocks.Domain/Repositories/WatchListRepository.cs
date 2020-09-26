@@ -14,6 +14,8 @@ namespace Lychee.Stocks.Domain.Repositories
     {
         private readonly IAppCache _cache;
 
+        private const string CACHE_ALL_WATCHLIST = "AllWatchList";
+
         public WatchListRepository(IDatabaseFactory databaseFactory, ICachingFactory cacheFactory) : base(databaseFactory.GetContext())
         {
             _cache = cacheFactory.GetCacheService();
@@ -23,7 +25,7 @@ namespace Lychee.Stocks.Domain.Repositories
         {
             //this currently returns all the watchlist including the deleted.
             //There is a EF extension to IncludeFilter but it generates a yucky sql code
-            var cachedGroupData = _cache.GetOrAdd("AllWatchListKey", () => Find(x => !x.Deleted).ToList());
+            var cachedGroupData = _cache.GetOrAdd(CACHE_ALL_WATCHLIST, () => Find(x => !x.Deleted).ToList());
             foreach (var watchListGroup in cachedGroupData)
             {
                 watchListGroup.WatchLists = watchListGroup.WatchLists.Where(x => !x.Deleted).ToList();

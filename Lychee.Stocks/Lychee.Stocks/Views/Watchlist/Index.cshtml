@@ -1,4 +1,6 @@
-﻿@model Lychee.Stocks.Models.Watchlist.WatchlistViewModel
+﻿@using Lychee.Stocks.Helpers
+@using Lychee.Stocks.InvestagramsApi.Constants
+@model Lychee.Stocks.Models.Watchlist.WatchlistViewModel
 @{
     ViewBag.Title = "Watch List";
 }
@@ -41,6 +43,7 @@
                     <thead>
                         <tr>
                             <th>Code</th>
+                            <th>Last</th>
                             <th>Entry</th>
                             <th>Cutloss</th>
                             <th>Target</th>
@@ -51,20 +54,23 @@
                     <tbody>
                         @foreach (var item in Model.SelectedWatchList.WatchLists)
                         {
-                            <tr>
-                                <td>@item.StockCode</td>
-                                <td><input type="number" value="@item.Entry" name="@nameof(item.Entry)" class="form-control" /></td>
-                                <td><input type="number" value="@item.Cutloss" name="@nameof(item.Cutloss)" class="form-control" /></td>
-                                <td><input type="number" value="@item.Target" name="@nameof(item.Target)" class="form-control" /></td>
-                                <td><input type="text" value="@item.Note" name="@nameof(item.Note)" class="form-control" /></td>
-                                <td>
-                                    <input type="hidden" name="@nameof(item.WatchListGroupId)" value="@item.WatchListGroupId" />
-                                    <input type="hidden" name="@nameof(item.WatchListId)" value="@item.WatchListId" />
+                            var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
 
-                                    @Html.ActionLink("Update", "Edit", new { id = item.WatchListId }, new {@class = "js-ajaxSubmitRow", data_url= "/Watchlist/UpdateWatchList" }) |
-                                    @Html.ActionLink("Delete", "Delete", new { groupId = item.WatchListGroupId, watchListId = item.WatchListId }, new { @class = "js-delete" })
-                                </td>
-                            </tr>
+                        <tr>
+                            <td><a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a></td>
+                            <td class="@trendColour">@item.Last</td>
+                            <td><input type="number" value="@item.Entry" name="@nameof(item.Entry)" class="form-control" /></td>
+                            <td><input type="number" value="@item.Cutloss" name="@nameof(item.Cutloss)" class="form-control" /></td>
+                            <td><input type="number" value="@item.Target" name="@nameof(item.Target)" class="form-control" /></td>
+                            <td><input type="text" value="@item.Note" name="@nameof(item.Note)" class="form-control" /></td>
+                            <td>
+                                <input type="hidden" name="@nameof(item.WatchListGroupId)" value="@item.WatchListGroupId" />
+                                <input type="hidden" name="@nameof(item.WatchListId)" value="@item.WatchListId" />
+
+                                @Html.ActionLink("Update", "Edit", new { id = item.WatchListId }, new { @class = "js-ajaxSubmitRow", data_url = "/Watchlist/UpdateWatchList" }) |
+                                @Html.ActionLink("Delete", "Delete", new { groupId = item.WatchListGroupId, watchListId = item.WatchListId }, new { @class = "js-delete" })
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

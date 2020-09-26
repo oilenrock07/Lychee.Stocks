@@ -1,0 +1,33 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=36753c55_002Dc52f_002D4e2a_002Daf93_002Db7d7a7af8e0d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="EveningStarDojiTest #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C1406FA2-71CC-49F1-A5AA-E0562B7B81AA::.NETFramework,Version=v4.7.2::Lychee.Stocks.Test.CandleStickAnalyzerTest.EveningStarDojiTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=50e2a472_002D882c_002D4f16_002Da06c_002D9e395172df20/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CanGetStocksFromInvestagramApiUsingParallelTask" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C1406FA2-71CC-49F1-A5AA-E0562B7B81AA::.NETFramework,Version=v4.7.2::Lychee.Stocks.Test.StockServiceTest.CanGetStocksFromInvestagramApiUsingParallelTask&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6316e367_002D2a1c_002D4ca6_002Dbe77_002Debf3d5373e18/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DownloadChart #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.DownloadChart&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C1406FA2-71CC-49F1-A5AA-E0562B7B81AA::.NETFramework,Version=v4.7.2::Lychee.Stocks.Test.CandleStickAnalyzerTest.EveningStarDojiTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=72114386_002Dd157_002D41e9_002Db962_002Dcc647b04d666/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="EveningStarDojiTest #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C1406FA2-71CC-49F1-A5AA-E0562B7B81AA::.NETFramework,Version=v4.7.2::Lychee.Stocks.Test.CandleStickAnalyzerTest.EveningStarDojiTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7501821e_002Da0a0_002D4c0f_002D9426_002D3a758f88480c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="DownloadChart" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::A869AE3D-209F-4AE7-8B24-127E9A96256D::.NETFramework,Version=v4.7.2::Lychee.Stocks.InvestagramsApi.Test.StockApiRepositoryTest.DownloadChart&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C1406FA2-71CC-49F1-A5AA-E0562B7B81AA::.NETFramework,Version=v4.7.2::Lychee.Stocks.Test.CandleStickAnalyzerTest.EveningStarDojiTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9ff347d9_002D315c_002D4731_002Da4f4_002Db66d2d3cfec9/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="EveningStarDojiTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::C1406FA2-71CC-49F1-A5AA-E0562B7B81AA::.NETFramework,Version=v4.7.2::Lychee.Stocks.Test.CandleStickAnalyzerTest.EveningStarDojiTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

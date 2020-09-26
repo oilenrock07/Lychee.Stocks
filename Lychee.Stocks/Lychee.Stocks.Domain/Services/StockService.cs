@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace Lychee.Stocks.Domain.Services
 
         private const string CACHE_MORNING_STAR_DOJI = "MorningStarDoji-{0}";
         private const string CACHE_HAMMER = "Hammer-{0}";
+        private const string CACHE_LATEST_STOCK_HISTORY = "LatestStockHistory-{0}";
 
         public StockService(IDatabaseFactory databaseFactory, ISettingService settingService,
             IRepository<Stock> stockRepository,
@@ -82,6 +84,61 @@ namespace Lychee.Stocks.Domain.Services
             ClearCache();
         }
 
+        /// <summary>
+        /// Only use this if you missed to fetched some trades on some day. This will not include the trades
+        /// </summary>
+        public async Task UpdateAllStock()
+        {
+            var allStocks = await _investagramsApiService.GetAllActiveStockPriceRealTime();
+            var charts = new Dictionary<string, ChartHistory>();
+            var tasks = new List<Task>();
+
+            foreach (var stock in allStocks)
+            {
+                tasks.Add(Task.Run(async () => await _investagramsApiService.GetChartHistoryByDate(stock.StockId, DateTime.Now))
+                    .ContinueWith(x => charts.Add(stock.StockCode, x.Result)));
+
+            }
+
+            Task.WaitAll(tasks.ToArray());
+
+            foreach (var chartHistory in charts)
+            {
+                try
+                {
+                    var lastDate = chartHistory.Value.Dates.Last();
+                    var allStockHistory = _stockHistoryRepository.Find(x => x.StockCode == chartHistory.Key && x.Date >= lastDate).ToList();
+
+                    var index = 0;
+                    foreach (var date in chartHistory.Value.Dates)
+                    {
+                        var stockHistory = allStockHistory.FirstOrDefault(x => x.Date == date);
+                        if (stockHistory == null)
+                        {
+                            _stockHistoryRepository.Add(new StockHistory
+                            {
+                                StockCode = chartHistory.Key,
+                                Last = chartHistory.Value.Closes[index],
+                                Date = date,
+                                Low = chartHistory.Value.Lows[index],
+                                Open = chartHistory.Value.Opens[index],
+                                High = chartHistory.Value.Highs[index],
+                                Volume = chartHistory.Value.Volumes[index]
+                            });
+                        }
+
+                        index++;
+                    }
+
+                    _stockHistoryRepository.SaveChanges();
+                }
+                catch (System.Exception ex)
+                {
+                    //carry on if something happens from upsert
+                }
+            }
+        }
+
         protected void SaveStocks(List<ScreenerResponse> stocks, List<RealTimePrice> realTimePrice)
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
@@ -109,6 +166,13 @@ namespace Lychee.Stocks.Domain.Services
             }
 
             _databaseFactory.SaveChanges();
+        }
+
+        public List<StockHistory> GetLatestStockHistory()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = string.Format(CACHE_LATEST_STOCK_HISTORY, date.ToString("MMdd"));
+            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.RetrieveStockLastHistory());
         }
 
         private void MapRealTimeDataToStockHistory(RealTimePrice realTimePrice, StockHistory stock)
@@ -318,7 +382,7 @@ namespace Lychee.Stocks.Domain.Services
                 }).ToList();
                 
                 var lastCandle = candles.First();
-                var biggestCandle = candles.OrderByDescending(x => x.CandleFullHeight).First();
+                var biggestCandle = candles.OrderByDescending(x => x.CandleBodyHeight).First();
 
                 if (lastCandle.CandleFullHeight == biggestCandle.CandleFullHeight)
                     stocksWithSteepDown.Add(stocks.First());
@@ -401,6 +465,20 @@ namespace Lychee.Stocks.Domain.Services
             _cache.SafeRemove<List<StockHistory>>(cacheKey);
         }
 
+        private void ClearHammers()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = string.Format(CACHE_HAMMER, date.ToString("MMdd"));
+            _cache.SafeRemove<List<StockHistory>>(cacheKey);
+        }
+
+        private void ClearLatestStockHistory()
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var cacheKey = string.Format(CACHE_LATEST_STOCK_HISTORY, date.ToString("MMdd"));
+            _cache.SafeRemove<List<StockHistory>>(cacheKey);
+        }
+
         private void UpdateBlockSale(ICollection<StockBlockSale> stockBlockSales)
         {
             if (!stockBlockSales.Any())
@@ -430,6 +508,7 @@ namespace Lychee.Stocks.Domain.Services
             ClearStockTradeAverageCache();
             ClearTopXTradeHistoryCache();
             ClearMorningStarDojiCache();
+            ClearHammers();
         }
 
         private ChartHistory MapToChartHistory(List<StockHistory> stockHistory)

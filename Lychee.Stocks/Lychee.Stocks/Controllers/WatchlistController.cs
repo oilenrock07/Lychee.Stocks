@@ -12,6 +12,7 @@ namespace Lychee.Stocks.Controllers
     public class WatchlistController : Controller
     {
         private readonly IWatchListService _watchListService;
+        
 
         public WatchlistController(IWatchListService watchListService)
         {
@@ -21,8 +22,16 @@ namespace Lychee.Stocks.Controllers
         public ActionResult Index(int id = 0)
         {
             var watchList = _watchListService.GetAllWatchList();
-            if (id == 0 && watchList.Any())
-                id = watchList.First().WatchListGroupId;
+
+            if (watchList.Any(x => x.WatchListGroupId == 0))
+                watchList.Remove(watchList.First());
+
+            watchList.Insert(0, new WatchListGroup
+            {
+                GroupName = "All",
+                WatchListGroupId = 0,
+                WatchLists = watchList.SelectMany(x => x.WatchLists).ToList()
+            });
 
             var viewModel = new WatchlistViewModel
             {
