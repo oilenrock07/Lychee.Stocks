@@ -16,6 +16,7 @@ namespace Lychee.Stocks.Entities
         public int WatchListId { get; set; }
         public string StockCode { get; set; }
         public int WatchListGroupId { get; set; }
+        public decimal Shares { get; set; }
         public decimal Entry { get; set; }
         public decimal Cutloss { get; set; }
         public decimal Target { get; set; }

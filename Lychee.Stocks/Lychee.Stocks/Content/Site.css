@@ -118,3 +118,10 @@ textarea {
     font-size: large;
 }
 /***************************************End of News*/
+
+
+.calculator-mode {
+    display: none;
+    font-size: smaller;
+    padding-top: 3px;
+}

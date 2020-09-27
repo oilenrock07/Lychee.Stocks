@@ -24,13 +24,16 @@
     </div>
     <div class="row">
         <div class="col-md-2">
+            <input type="checkbox" id="chkCalculator" />
+            <label for="chkCalculator">Calculator Mode</label>
+
             <ul class="list-group">
                 @foreach (var item in Model.WatchListGroups)
                 {
                     var activeClass = item.WatchListGroupId == Model.SelectedId ? "active" : string.Empty;
                     <li class="list-group-item @activeClass">
                         <span class="badge">@item.WatchLists.Count</span>
-                        @Html.ActionLink(item.GroupName, "Index", new {id=item.WatchListGroupId})
+                        @Html.ActionLink(item.GroupName, "Index", new { id = item.WatchListGroupId })
                     </li>
                 }
             </ul>
@@ -44,6 +47,7 @@
                         <tr>
                             <th>Code</th>
                             <th>Last</th>
+                            <th>Shares</th>
                             <th>Entry</th>
                             <th>Cutloss</th>
                             <th>Target</th>
@@ -56,21 +60,43 @@
                         {
                             var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
 
-                        <tr>
-                            <td><a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a></td>
-                            <td class="@trendColour">@item.Last</td>
-                            <td><input type="number" value="@item.Entry" name="@nameof(item.Entry)" class="form-control" /></td>
-                            <td><input type="number" value="@item.Cutloss" name="@nameof(item.Cutloss)" class="form-control" /></td>
-                            <td><input type="number" value="@item.Target" name="@nameof(item.Target)" class="form-control" /></td>
-                            <td><input type="text" value="@item.Note" name="@nameof(item.Note)" class="form-control" /></td>
-                            <td>
-                                <input type="hidden" name="@nameof(item.WatchListGroupId)" value="@item.WatchListGroupId" />
-                                <input type="hidden" name="@nameof(item.WatchListId)" value="@item.WatchListId" />
+                            <tr>
+                                <td><a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a></td>
+                                <td class="@trendColour">@item.Last</td>
+                                <td><input type="number" value="@item.Shares" name="@nameof(item.Shares)" class="form-control" /></td>
+                                <td>
+                                    <input type="number" value="@item.Entry" name="@nameof(item.Entry)" class="form-control" />
+                                    <div class="calculator-mode">
+                                        Total Amount: <span class="js-totalAmount">0.00</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" value="@item.Cutloss" name="@nameof(item.Cutloss)" class="form-control" />
+                                    <div class="color-downtrend calculator-mode">
+                                        Total Amount: <span class="js-cl-totalAmount">0.00</span>
+                                    </div>
+                                    <div class="color-downtrend calculator-mode">
+                                        Net Profit: <span class="js-cl-netprofit">0.00</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" value="@item.Target" name="@nameof(item.Target)" class="form-control" />
+                                    <div class="color-uptrend calculator-mode">
+                                        Total Amount: <span class="js-t-totalAmount">0.00</span>
+                                    </div>
+                                    <div class="color-uptrend calculator-mode">
+                                        Net Profit: <span class="js-t-netprofit">0.00</span>
+                                    </div>
+                                </td>
+                                <td><input type="text" value="@item.Note" name="@nameof(item.Note)" class="form-control" /></td>
+                                <td>
+                                    <input type="hidden" name="@nameof(item.WatchListGroupId)" value="@item.WatchListGroupId" />
+                                    <input type="hidden" name="@nameof(item.WatchListId)" value="@item.WatchListId" />
 
-                                @Html.ActionLink("Update", "Edit", new { id = item.WatchListId }, new { @class = "js-ajaxSubmitRow", data_url = "/Watchlist/UpdateWatchList" }) |
-                                @Html.ActionLink("Delete", "Delete", new { groupId = item.WatchListGroupId, watchListId = item.WatchListId }, new { @class = "js-delete" })
-                            </td>
-                        </tr>
+                                    @Html.ActionLink("Update", "Edit", new { id = item.WatchListId }, new { @class = "js-ajaxSubmitRow", data_url = "/Watchlist/UpdateWatchList" }) |
+                                    @Html.ActionLink("Delete", "Delete", new { groupId = item.WatchListGroupId, watchListId = item.WatchListId }, new { @class = "js-delete" })
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -82,6 +108,9 @@
 
 @section scripts
 {
+    <script src="~/Scripts/Custom/Utilities.js"></script>
     <script src="~/Scripts/Custom/Confirmations.js"></script>
     <script src="~/Scripts/Custom/AjaxTable.js"></script>
+    <script src="~/Scripts/Custom/Calculator.js"></script>
+    <script src="~/Scripts/Custom/WatchList.js"></script>
 }

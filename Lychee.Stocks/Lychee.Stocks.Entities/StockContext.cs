@@ -29,6 +29,10 @@ namespace Lychee.Stocks.Entities
             modelBuilder.Entity<StockHistory>().Property(x => x.Open).HasPrecision(18, 5);
             modelBuilder.Entity<StockHistory>().Property(x => x.High).HasPrecision(18, 5);
             modelBuilder.Entity<StockHistory>().Property(x => x.Low).HasPrecision(18, 5);
+
+            modelBuilder.Entity<Watchlist>().Property(x => x.Entry).HasPrecision(18, 5);
+            modelBuilder.Entity<Watchlist>().Property(x => x.Cutloss).HasPrecision(18, 5);
+            modelBuilder.Entity<Watchlist>().Property(x => x.Target).HasPrecision(18, 5);
         }
     }
 }

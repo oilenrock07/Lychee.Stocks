@@ -407,9 +407,12 @@
     <Content Include="Scripts\Chart\chartjs-chart-financial.js" />
     <Content Include="Scripts\Chart\chart.js" />
     <Content Include="Scripts\Custom\AjaxTable.js" />
+    <Content Include="Scripts\Custom\Utilities.js" />
+    <Content Include="Scripts\Custom\Calculator.js" />
     <Content Include="Scripts\Custom\PartialLoader.js" />
     <Content Include="Scripts\Custom\Confirmations.js" />
     <Content Include="Scripts\Custom\Setting.js" />
+    <Content Include="Scripts\Custom\WatchList.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
