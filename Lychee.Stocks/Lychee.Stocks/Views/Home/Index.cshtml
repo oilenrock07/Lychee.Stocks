@@ -3,6 +3,11 @@
     ViewBag.Title = "My Stocks";
 }
 
+@section scripts_head {
+    <script src="~/Scripts/Chart/chart.min.js"></script>
+    <script src="~/Scripts/Chart/chart-utils.js"></script>
+}
+
 <header class="page-heading">
     <div class="container-fluid">
         @if (TempData["FetchRealTimeData"] != null)
@@ -28,8 +33,15 @@
         <p>
             @Html.AsyncPartialLoader("TrendingStocks", "Home")
         </p>
-        
-        <hr/>
+
+        <hr />
+
+        <h2>Top 10 Highest Trades</h2>
+        <p>
+            <canvas id="Top10TradesCanvas" height="400"></canvas>
+        </p>
+
+        <hr />
 
         <h2>Dividends</h2>
         <p>
@@ -43,8 +55,8 @@
         </p>
     </div>
     <div class="col-md-4">
-        
-        
+
+
         <div>
             @Html.AsyncPartialLoader("SteepDown", "Home")
         </div>
@@ -55,16 +67,22 @@
         <div>
             @Html.AsyncPartialLoader("Oversold", "Home")
         </div>
-        
+
         <h2 class="color-downtrend">8/10 Down Trends</h2>
         <div>
             @{ Html.RenderAction("StockTrendReport", "Stock", new { days = 10, losingWinningStreak = 8, trend = "Bearish" });}
         </div>
     </div>
     <div class="col-md-4">
+        <div>@Html.AsyncPartialLoader("GreenVolume", "Home")</div>
         <div>@Html.AsyncPartialLoader("MorningStarDoji", "Home")</div>
         <div>@Html.AsyncPartialLoader("Hammers", "Home")</div>
         <div>@Html.AsyncPartialLoader("AboutToCrossMacd", "Home")</div>
         <div>@Html.AsyncPartialLoader("CrossingMacd", "Home")</div>
     </div>
 </div>
+
+@section scripts_footer
+{
+    <script src="~/Scripts/Chart/top10-trades.js"></script>
+}

@@ -387,6 +387,7 @@
     <Compile Include="Models\Reports\MarketStatusViewModel.cs" />
     <Compile Include="Models\Reports\TrendReportBaseClass.cs" />
     <Compile Include="Models\Reports\UpTrendReportViewModel.cs" />
+    <Compile Include="Models\Stocks\TrendingStockViewModel.cs" />
     <Compile Include="Models\Watchlist\WatchlistViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -404,8 +405,11 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\Chart\chart-utils.js" />
+    <Content Include="Scripts\Chart\chart.min.js" />
     <Content Include="Scripts\Chart\chartjs-chart-financial.js" />
-    <Content Include="Scripts\Chart\chart.js" />
+    <Content Include="Scripts\Chart\stock-chart.js" />
+    <Content Include="Scripts\Chart\top10-trades.js" />
     <Content Include="Scripts\Custom\AjaxTable.js" />
     <Content Include="Scripts\Custom\Utilities.js" />
     <Content Include="Scripts\Custom\Calculator.js" />
@@ -474,10 +478,10 @@
     <Content Include="Views\Stock\List.cshtml" />
     <Content Include="Views\Stock\CreateStock.cshtml" />
     <Content Include="Views\Home\_BasicChartHistoryDisplay.cshtml" />
+    <Content Include="Views\Home\GreenVolume.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Stocks\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

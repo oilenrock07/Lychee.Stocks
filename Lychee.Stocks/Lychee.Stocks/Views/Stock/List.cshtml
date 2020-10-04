@@ -44,7 +44,7 @@
                 <input type="text" value="@item.StockType" name="@nameof(item.StockType)" class="form-control" />
             </td>
             <td>
-                
+
                 <input type="hidden" value="@item.StockId" name="@nameof(item.StockId)" />
                 @Html.ActionLink("Update", "Edit", null, new { @class = "js-ajaxSubmitRow", data_url = "/Stock/UpdateStock" }) |
                 @Html.ActionLink("Delete", "DeleteStock", new { stockId = item.StockId }, new { @class = "js-delete" })
@@ -54,7 +54,7 @@
 
 </table>
 
-@section scripts
+@section scripts_footer
 {
     <script src="~/Scripts/Custom/Confirmations.js"></script>
     <script src="~/Scripts/Custom/AjaxTable.js"></script>

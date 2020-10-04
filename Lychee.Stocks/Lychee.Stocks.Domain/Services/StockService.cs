@@ -42,6 +42,7 @@ namespace Lychee.Stocks.Domain.Services
         private const string CACHE_MORNING_STAR_DOJI = "MorningStarDoji-{0}";
         private const string CACHE_HAMMER = "Hammer-{0}";
         private const string CACHE_LATEST_STOCK_HISTORY = "LatestStockHistory-{0}";
+        private const string CACHE_HIGHEST_TRADES = "HighestTrades-{0}";
 
         public StockService(IDatabaseFactory databaseFactory, ISettingService settingService,
             IRepository<Stock> stockRepository,
@@ -168,11 +169,11 @@ namespace Lychee.Stocks.Domain.Services
             _databaseFactory.SaveChanges();
         }
 
-        public List<StockHistory> GetLatestStockHistory()
+        public Dictionary<string, StockHistory> GetLatestStockHistory()
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
             var cacheKey = string.Format(CACHE_LATEST_STOCK_HISTORY, date.ToString("MMdd"));
-            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.RetrieveStockLastHistory());
+            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.RetrieveStockLastHistory().ToDictionary(x => x.StockCode, x => x));
         }
 
         private void MapRealTimeDataToStockHistory(RealTimePrice realTimePrice, StockHistory stock)
@@ -363,6 +364,15 @@ namespace Lychee.Stocks.Domain.Services
             _cookieProviderService.SetCookie(value);
         }
 
+        public List<StockHistory> GetTop10HighestTrades(DateTime? date = null)
+        {
+            if (date == null)
+                date = _stockMarketStatusRepository.GetLastTradingDate();
+
+            var cacheKey = string.Format(CACHE_HIGHEST_TRADES, $"{date: MMdd}");
+            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetTop10HighesTrades(date.Value));
+        }
+
         public List<StockHistory> GetStockWithSteepDown()
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
@@ -442,6 +452,15 @@ namespace Lychee.Stocks.Domain.Services
             return hammerStocks;
         }
 
+        private void ClearHighestTradesCache(DateTime? date = null)
+        {
+            if (date == null)
+                date = _stockMarketStatusRepository.GetLastTradingDate();
+
+            var cacheKey = string.Format(CACHE_HIGHEST_TRADES, $"{date: MMdd}");
+            _cache.SafeRemove<List<StockHistory>>(cacheKey);
+        }
+
         private void ClearStockTradeAverageCache()
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
@@ -509,6 +528,8 @@ namespace Lychee.Stocks.Domain.Services
             ClearTopXTradeHistoryCache();
             ClearMorningStarDojiCache();
             ClearHammers();
+            ClearLatestStockHistory();
+            ClearHighestTradesCache();
         }
 
         private ChartHistory MapToChartHistory(List<StockHistory> stockHistory)

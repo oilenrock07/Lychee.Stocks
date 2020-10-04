@@ -8,7 +8,7 @@
         public decimal Last { get; set; }
         public decimal ChangePercentage { get; set; }
         public decimal Value { get; set; }
-        public decimal Trades { get; set; }
+        public int Trades { get; set; }
     }
 
 }

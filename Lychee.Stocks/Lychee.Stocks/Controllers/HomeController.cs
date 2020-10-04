@@ -7,6 +7,7 @@ using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Helpers;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
+using Lychee.Stocks.Models.Stocks;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -55,7 +56,24 @@ namespace Lychee.Stocks.Controllers
         public async Task<PartialViewResult> TrendingStocks()
         {
             var model = await _investagramsApiService.GetTrendingStocks();
-            return PartialView(model);
+            var latestStockData = _stockService.GetLatestStockHistory();
+
+
+            var viewModel = model.Select(x =>
+            {
+                var stock = latestStockData.ContainsKey(x.Stock.StockCode) ? latestStockData[x.Stock.StockCode] : null;
+
+                return new TrendingStockViewModel
+                {
+                    StockCode = x.Stock.StockCode,
+                    Last = stock?.Last ?? 0,
+                    Open = stock?.Open ?? 0,
+                    Trades = stock?.Trades ?? 0
+                };
+            }).ToList();
+
+
+            return PartialView(viewModel);
         }
 
         public PartialViewResult Dividends()
@@ -130,6 +148,19 @@ namespace Lychee.Stocks.Controllers
             stocks = GetStocksWithAverageTradesAbove100(stocks);
             ViewBag.Header = "Hammers";
             return PartialView("_BasicChartHistoryDisplay", stocks);
+        }
+
+        public async Task<PartialViewResult> GreenVolume()
+        {
+            var stocks = await _investagramsApiService.GreenVolume();
+            stocks = GetStocksWithAverageTradesAbove100(stocks);
+            return PartialView("GreenVolume", stocks);
+        }
+
+        public JsonResult Top10Trades()
+        {
+            var stocks =  _stockService.GetTop10HighestTrades();
+            return Json(stocks);
         }
 
         private List<T> GetStocksWithAverageTradesAbove100<T>(List<T> list) where T: IStock

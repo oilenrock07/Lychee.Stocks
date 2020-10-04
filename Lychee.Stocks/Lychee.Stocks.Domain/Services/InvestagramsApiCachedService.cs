@@ -245,6 +245,12 @@ namespace Lychee.Stocks.Domain.Services
             return await GetScreenerRequest(request, cacheKey);
         }
 
+        public async Task<List<ScreenerResponse>> GreenVolume()
+        {
+            var cacheKey = $"GreenVolume-{DateTime.Now:MMdd}";
+            var request = new Screener { DescriptiveChangePercent = 2, TechnicalRelativeStrengthIndex14 = 28, TechnicalVolumeAverage20 = 2};
+            return await GetScreenerRequest(request, cacheKey);
+        }
 
         /// <summary>
         /// Oversold <= 30

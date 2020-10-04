@@ -34,7 +34,7 @@ namespace Lychee.Stocks.Domain.Services
             {
                 foreach (var groupWatchList in group.WatchLists)
                 {
-                    var stock = stockPrice.FirstOrDefault(x => x.StockCode == groupWatchList.StockCode);
+                    var stock = stockPrice[groupWatchList.StockCode];
                     if (stock != null)
                     {
                         groupWatchList.Last = stock.Last;

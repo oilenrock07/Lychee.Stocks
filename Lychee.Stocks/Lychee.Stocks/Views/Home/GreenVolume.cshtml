@@ -1,0 +1,55 @@
+﻿@using Lychee.Stocks.Domain.Helpers
+@using Lychee.Stocks.Helpers
+@using Lychee.Stocks.InvestagramsApi.Constants
+@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.ScreenerResponse>
+
+@if (Model.Any())
+{
+    <h2 class="color-uptrend">Green Volumes</h2>
+    <p>Above MA20 Price and Volume</p>
+
+    <table class="table table-hover">
+        <tr>
+            <th>
+                Code
+            </th>
+            <th>
+                Last
+            </th>
+            <th>
+                Volume
+            </th>
+            <th>
+                Low
+            </th>
+            <th>
+                High
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
+
+            <tr>
+                <td>
+                    <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+                </td>
+                <td class="@trendColour">
+                    @item.Last
+                </td>
+                <td>
+                    @item.Volume.ConvertToShortHand()
+                </td>
+                <td>
+                    @item.Low
+                </td>
+                <td>
+                    @item.High
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+

@@ -1,8 +1,35 @@
-﻿@model List<Lychee.Stocks.InvestagramsApi.Models.Social.TrendingStock>
+﻿@using Lychee.Stocks.Helpers
+@using Lychee.Stocks.InvestagramsApi.Constants
+@model List<Lychee.Stocks.Models.Stocks.TrendingStockViewModel>
 
-@foreach (var item in Model)
-{
-    <p>
-        @Html.ActionLink(item.Stock.StockCode, "StockAnalysis", "Stock", new {stockCode = item.Stock.StockCode}, new {target= "_blank"})
-    </p>
-}
+<table class="table table-hover">
+    <tr>
+        <th>
+            Code
+        </th>
+        <th>
+            Last
+        </th>
+        <th>
+            Trade
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var trendColour = StockUIClassHelper.StockColourClass(item.Open, item.Last);
+
+        <tr>
+            <td>
+                <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+            </td>
+            <td class="@trendColour">
+                @item.Last
+            </td>
+            <td>
+                @item.Trades
+            </td>
+        </tr>
+    }
+
+</table>

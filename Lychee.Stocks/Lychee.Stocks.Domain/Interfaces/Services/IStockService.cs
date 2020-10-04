@@ -47,6 +47,8 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
 
         List<StockHistory> GetHammers();
 
-        List<StockHistory> GetLatestStockHistory();
+        Dictionary<string, StockHistory> GetLatestStockHistory();
+
+        List<StockHistory> GetTop10HighestTrades(DateTime? date = null);
     }
 }

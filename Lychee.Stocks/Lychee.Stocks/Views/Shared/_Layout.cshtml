@@ -6,6 +6,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    @RenderSection("scripts_head", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-stocks navbar-fixed-top">
@@ -80,6 +82,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Scripts/Custom/PartialLoader.js"></script>
-    @RenderSection("scripts", required: false)
+    @RenderSection("scripts_footer", required: false)
 </body>
 </html>

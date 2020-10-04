@@ -26,6 +26,12 @@ namespace Lychee.Stocks.Domain.Repositories
             return Find(x => x.Date == date).ToList();
         }
 
+        public virtual List<StockHistory> GetTop10HighesTrades(DateTime date)
+        {
+            date = date.Date;
+            return Find(x => x.Date == date).OrderByDescending(x => x.Trades).Take(10).ToList();
+        }
+
         public virtual List<StockTradeAverage> GetAverageStocks(int averageDays, int averageTrades)
         {
             return ExecuteSqlQuery<StockTradeAverage>($"EXEC RetrieveAverageStocks {averageDays}, {averageTrades}").ToList();

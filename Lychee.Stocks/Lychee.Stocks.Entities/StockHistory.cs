@@ -23,6 +23,6 @@ namespace Lychee.Stocks.Entities
         public decimal High { get; set; }
         public decimal Volume { get; set; }
         public decimal Value { get; set; }
-        public decimal Trades { get; set; }
+        public int Trades { get; set; }
     }
 }

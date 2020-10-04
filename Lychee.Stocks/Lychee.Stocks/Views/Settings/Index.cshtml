@@ -53,13 +53,13 @@
             </td>
             <td>
                 <a href="javascript:void(0)" class="js-update" data-id="@item.SettingId" data-name="@item.Key">Update</a> |
-                @Html.ActionLink("Delete", "Delete", new {id = item.SettingId})
+                @Html.ActionLink("Delete", "Delete", new { id = item.SettingId })
             </td>
         </tr>
     }
 </table>
 
-@section scripts
+@section scripts_footer
 {
     <script src="~/Scripts/Custom/Setting.js"></script>
 }
