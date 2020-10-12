@@ -21,5 +21,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Repositories
         List<StockHistory> RetrieveStockLastHistory();
 
         List<StockHistory> GetTop10HighesTrades(DateTime date);
+
+        List<StockHistory> GetTop10HighesVolumes(DateTime date);
     }
 }

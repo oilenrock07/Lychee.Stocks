@@ -21,6 +21,22 @@ namespace Lychee.Stocks.Domain.Services
         private readonly ISettingService _settingService;
         private readonly IStockMarketStatusRepository _marketStatusRepository;
 
+
+        private const string CACHE_GREEN_VOLUME = "GreenVolume-{0}";
+        private const string CACHE_LATEST_MARKET_ACTIVITY = "LatestStockMarketActivity-{0}";
+
+
+
+        private IEnumerable<string> AllCacheKeys
+        {
+            get
+            {
+                var date = $"{DateTime.Now:MMdd}";
+                yield return string.Format(CACHE_LATEST_MARKET_ACTIVITY, date);
+                yield return string.Format(CACHE_GREEN_VOLUME, date);
+            }
+        }
+
         private readonly int _newsCacheExpiry = 20; //in minutes
 
         public InvestagramsApiCachedService(IStockApiRepository apiRepository, 
@@ -38,7 +54,7 @@ namespace Lychee.Stocks.Domain.Services
 
         public override async Task<LatestStockMarketActivityVm> GetLatestStockMarketActivity()
         {
-            var cacheKey = $"LatestStockMarketActivity-{DateTime.Now:MMdd}";
+            var cacheKey = string.Format(CACHE_LATEST_MARKET_ACTIVITY, $"{DateTime.Now:MMdd}");
 
             //if within trading day and time, always fetch the data
             if (IsTradingHours())
@@ -52,7 +68,7 @@ namespace Lychee.Stocks.Domain.Services
             }
 
             
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetLatestStockMarketActivity(), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetLatestStockMarketActivity(), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<ViewStock> ViewStock(string stockCode)
@@ -66,12 +82,12 @@ namespace Lychee.Stocks.Domain.Services
 
                 if (_cache.Get<ViewStock>(cacheKey) != null)
                     _cache.Remove(cacheKey);
-
+                
                 return data;
             }
 
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.ViewStock(stockCode), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.ViewStock(stockCode), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<ViewStock> ViewStockWithoutFundamentalAnalysis(string stockCode)
@@ -90,7 +106,7 @@ namespace Lychee.Stocks.Domain.Services
             }
 
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.ViewStockWithoutFundamentalAnalysis(stockCode), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.ViewStockWithoutFundamentalAnalysis(stockCode), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<TechnicalAnalysisInfo> GetLatestTechnicalAnalysis(string stockCode)
@@ -109,13 +125,13 @@ namespace Lychee.Stocks.Domain.Services
             }
 
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetLatestTechnicalAnalysis(stockCode), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetLatestTechnicalAnalysis(stockCode), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<AskAndBid> GetAskAndBidByStockId(int investagramStockId)
         {
             var cacheKey = $"AskAndBidByStockId-{investagramStockId}-{DateTime.Now:MMdd}";
-
+            
             //if within trading day and time, always fetch the data
             if (IsTradingHours())
             {
@@ -128,7 +144,7 @@ namespace Lychee.Stocks.Domain.Services
             }
 
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetAskAndBidByStockId(investagramStockId), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetAskAndBidByStockId(investagramStockId), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<LatestStockHistory> GetLatestStockHistoryByStockId(int investagramStockId)
@@ -147,7 +163,7 @@ namespace Lychee.Stocks.Domain.Services
             }
 
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetLatestStockHistoryByStockId(investagramStockId), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetLatestStockHistoryByStockId(investagramStockId), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<ChartHistory> GetChartHistoryByDate(int investagramStockId, DateTime date)
@@ -166,7 +182,7 @@ namespace Lychee.Stocks.Domain.Services
             }
 
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetChartHistoryByDate(investagramStockId, date), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetChartHistoryByDate(investagramStockId, date), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<BullBearData> GetBullBearData(int investagramStockId)
@@ -182,13 +198,13 @@ namespace Lychee.Stocks.Domain.Services
             }
 
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetBullBearData(investagramStockId), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetBullBearData(investagramStockId), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<List<TrendingStock>> GetTrendingStocks()
         {
             var cacheKey = $"TrendingStocks-{DateTime.Now:MMdd}";
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetTrendingStocks(), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetTrendingStocks(), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<MarketStatus> GetMarketStatus(DateTime date)
@@ -206,14 +222,14 @@ namespace Lychee.Stocks.Domain.Services
                 return data;
             }
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetMarketStatus(date), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetMarketStatus(date), _marketStatusRepository.NextClosingDateTime());
         }
 
 
         public override async Task<CalendarOverview> GetCalendarOverview()
         {
             var cacheKey = $"CalendarOverview-{DateTime.Now:MMdd}";
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetCalendarOverview(), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetCalendarOverview(), _marketStatusRepository.NextClosingDateTime());
         }
 
 
@@ -247,7 +263,7 @@ namespace Lychee.Stocks.Domain.Services
 
         public async Task<List<ScreenerResponse>> GreenVolume()
         {
-            var cacheKey = $"GreenVolume-{DateTime.Now:MMdd}";
+            var cacheKey = string.Format(CACHE_GREEN_VOLUME, $"{DateTime.Now:MMdd}");
             var request = new Screener { DescriptiveChangePercent = 2, TechnicalRelativeStrengthIndex14 = 28, TechnicalVolumeAverage20 = 2};
             return await GetScreenerRequest(request, cacheKey);
         }
@@ -331,7 +347,15 @@ namespace Lychee.Stocks.Domain.Services
                 return data;
             }
 
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetScreenerResponse(request), TimeSpan.FromDays(1));
+            return await _cache.GetOrAddAsync(cacheKey, () => base.GetScreenerResponse(request), _marketStatusRepository.NextClosingDateTime());
+        }
+
+        public void ClearAllCache()
+        {
+            foreach (var key in AllCacheKeys)
+            {
+                _cache.Remove(key);
+            }
         }
     }
 }

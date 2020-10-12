@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
-using Lychee.CommonHelper.Extensions;
+using Lychee.CommonHelper.StringExtensions;
 
 namespace Lychee.Stocks.Domain.Helpers
 {

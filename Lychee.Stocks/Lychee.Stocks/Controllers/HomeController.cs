@@ -8,6 +8,7 @@ using Lychee.Stocks.Helpers;
 using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Lychee.Stocks.Models.Stocks;
+using Omu.ValueInjecter;
 
 namespace Lychee.Stocks.Controllers
 {
@@ -40,13 +41,6 @@ namespace Lychee.Stocks.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
 
             return View();
         }
@@ -153,14 +147,32 @@ namespace Lychee.Stocks.Controllers
         public async Task<PartialViewResult> GreenVolume()
         {
             var stocks = await _investagramsApiService.GreenVolume();
+            var trendingStocks = await _investagramsApiService.GetTrendingStocks();
+            var wathcList = _watchListService.GetAllWatchList().SelectMany(x => x.WatchLists.Select(w => w.StockCode));
+
             stocks = GetStocksWithAverageTradesAbove100(stocks);
-            return PartialView("GreenVolume", stocks);
+
+            var viewModel = stocks.Select(x =>
+            {
+                var item = Mapper.Map<GreenVolumeViewModel>(x);
+                item.IsTrending = trendingStocks.Any(t => t.StockCode == item.StockCode);
+                item.IsInWatchList = wathcList.Any(w => w == item.StockCode);
+
+                return item;
+            }).ToList();
+            return PartialView("GreenVolume", viewModel);
         }
 
         public JsonResult Top10Trades()
         {
             var stocks =  _stockService.GetTop10HighestTrades();
-            return Json(stocks);
+            return Json(stocks, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Top10Volumes()
+        {
+            var stocks = _stockService.GetTop10HighestVolumes();
+            return Json(stocks, JsonRequestBehavior.AllowGet);
         }
 
         private List<T> GetStocksWithAverageTradesAbove100<T>(List<T> list) where T: IStock

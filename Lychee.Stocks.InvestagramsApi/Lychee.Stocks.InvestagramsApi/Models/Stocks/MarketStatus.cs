@@ -1,4 +1,6 @@
-﻿namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
+﻿using Lychee.Stocks.Common.Interfaces;
+
+namespace Lychee.Stocks.InvestagramsApi.Models.Stocks
 {
     public class MarketStatus
     {
@@ -9,7 +11,7 @@
         public object LeastActive { get; set; }
     }
 
-    public class MarketStatusModel
+    public class MarketStatusModel : IStock
     {
         public int StockId { get; set; }
         public string StockCode { get; set; }

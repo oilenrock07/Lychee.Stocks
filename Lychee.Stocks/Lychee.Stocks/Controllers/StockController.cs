@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Antlr.Runtime.Misc;
 using Lychee.Domain.Interfaces;
 using Lychee.Infrastructure.Interfaces;
-using Lychee.Stocks.Domain.Interfaces.Repositories;
 using Lychee.Stocks.Domain.Interfaces.Services;
 using Lychee.Stocks.Domain.Models;
 using Lychee.Stocks.Entities;
 using Lychee.Stocks.Models;
-using Newtonsoft.Json;
 using Omu.ValueInjecter;
 
 namespace Lychee.Stocks.Controllers
@@ -71,12 +66,12 @@ namespace Lychee.Stocks.Controllers
             return RedirectToAction("List");
         }
 
-        public async Task<ActionResult> FetchRealTimeData()
+        public ActionResult FetchRealTimeData()
         {
             //make this an ajax request and return json. Maybe publish the changes as toast.
             //at the moment this will just display the yellow page of death
             //when you have time, convert this to use bootstrap 4 and use toast https://getbootstrap.com/docs/4.3/components/toasts/
-            await _stockService.SaveLatestStockUpdate();
+            _stockService.SaveLatestStockUpdate();
 
             TempData["FetchRealTimeData"] = "Success";
             return RedirectToAction(nameof(HomeController.Index), "Home");
@@ -97,15 +92,6 @@ namespace Lychee.Stocks.Controllers
         {
             var viewModel = await _stockService.AnalyzeTrendingStock();
             return View(viewModel);
-        }
-
-        public async Task<ActionResult> GetDataUpdates()
-        {
-            await _stockService.UpdateSuspendedStocks();
-            await _stockService.UpdateBlockSaleStocks();
-
-            TempData["FetchRealTimeData"] = "Success";
-            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
         public ActionResult LastDataUpdates()

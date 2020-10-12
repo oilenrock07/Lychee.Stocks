@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LazyCache;
 using Lychee.Caching.Interfaces;
+using Lychee.Domain.Interfaces;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
 
@@ -13,9 +10,10 @@ namespace Lychee.Stocks.Domain.Repositories
     public class StockMarketStatusRepository : IStockMarketStatusRepository
     {
         private readonly IAppCache _cache;
-
-        public StockMarketStatusRepository(ICachingFactory cacheFactory)
+        private readonly ISettingService _settingService;
+        public StockMarketStatusRepository(ICachingFactory cacheFactory, ISettingService settingService)
         {
+            _settingService = settingService;
             _cache = cacheFactory.GetCacheService();
         }
 
@@ -34,11 +32,19 @@ namespace Lychee.Stocks.Domain.Repositories
 
                 //consider holiday
 
-                _cache.Add(CacheNames.LastTradingDateCacheKey, lastTradingDate, TimeSpan.FromDays(1));
+                _cache.Add(CacheNames.LastTradingDateCacheKey, lastTradingDate, NextClosingDateTime());
             }
 
 
             return lastTradingDate.Date;
+        }
+
+        public virtual DateTime NextClosingDateTime()
+        {
+            var date = DateTime.Now.Date;
+            var closingTime = _settingService.GetSettingValue<DateTime>(SettingNames.TradingClosingTime);
+
+            return date.AddDays(1).Add(closingTime.TimeOfDay);
         }
     }
 }

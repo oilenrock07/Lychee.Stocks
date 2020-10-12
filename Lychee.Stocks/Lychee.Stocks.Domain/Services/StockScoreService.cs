@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lychee.CommonHelper.Extensions;
 using Lychee.Domain.Interfaces;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Enums;

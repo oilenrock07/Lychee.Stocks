@@ -10,11 +10,10 @@ namespace Lychee.Stocks.Domain
     {
         public static void RegisterStocksDomain(this Container container)
         {
-            container.Register<ISuspendedStockRepository, SuspendedStockRepository>(Lifestyle.Scoped);
-            container.Register<IBlockSaleStockRepository, BlockSaleStockRepository>(Lifestyle.Scoped);
             container.Register<IStockHistoryRepository, StockHistoryRepository>(Lifestyle.Scoped);
             container.Register<IWatchListRepository, WatchListRepository>(Lifestyle.Scoped);
-            container.RegisterSingleton<IStockMarketStatusRepository, StockMarketStatusRepository>();
+            container.Register<IEventRepository, EventRepository>(Lifestyle.Scoped);
+            container.Register<IStockMarketStatusRepository, StockMarketStatusRepository>(Lifestyle.Scoped);
             
 
             container.Register<IStockScoreService, StockScoreService>(Lifestyle.Scoped);

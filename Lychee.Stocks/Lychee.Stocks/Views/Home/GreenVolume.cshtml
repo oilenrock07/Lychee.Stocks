@@ -1,7 +1,7 @@
 ﻿@using Lychee.Stocks.Domain.Helpers
 @using Lychee.Stocks.Helpers
 @using Lychee.Stocks.InvestagramsApi.Constants
-@model List<Lychee.Stocks.InvestagramsApi.Models.Stocks.ScreenerResponse>
+@model List<Lychee.Stocks.Models.Stocks.GreenVolumeViewModel>
 
 @if (Model.Any())
 {
@@ -33,7 +33,19 @@
 
             <tr>
                 <td>
-                    <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">@item.StockCode</a>
+                    <a href="@string.Format(UrlConstants.InvestagramsStockUrl, item.StockCode)" target="_blank">
+                        @item.StockCode
+
+                        @if (item.IsTrending)
+                        {
+                            <span class="glyphicon glyphicon-fire" aria-hidden="true" title="Trending"></span>
+                        }
+                        
+                        @if (item.IsInWatchList)
+                        {
+                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true" title="In Watchlist"></span>
+                        }
+                    </a>
                 </td>
                 <td class="@trendColour">
                     @item.Last

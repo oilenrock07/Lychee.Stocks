@@ -10,7 +10,6 @@ var greyBorder = window.chartColors.grey;
 
 function renderTop10TradesChart(result) {
 
-
     var horizontalBarChartData = {
         labels: result.map(x => x.StockCode),
         datasets: [{
@@ -23,6 +22,27 @@ function renderTop10TradesChart(result) {
 
 
     var ctx = document.getElementById('Top10TradesCanvas').getContext('2d');
+    
+    renderHorizontalChart(ctx, horizontalBarChartData);
+}
+
+function renderTop10VolumesChart(result) {
+    var ctx  = document.getElementById('Top10VolumesCanvas').getContext('2d');
+
+    var horizontalBarChartData = {
+        labels: result.map(x => x.StockCode),
+        datasets: [{
+            backgroundColor: result.map(x => getBarColor(x.Last, x.Open)),
+            borderColor: result.map(x => getBarBorderColor(x.Last, x.Open)),
+            borderWidth: 1,
+            data: result.map(x => x.Volume)
+        }]
+    };
+
+    renderHorizontalChart(ctx, horizontalBarChartData);
+}
+
+function renderHorizontalChart(ctx, horizontalBarChartData) {
     var chart = new Chart(ctx, {
         type: 'horizontalBar',
         data: horizontalBarChartData,
@@ -73,4 +93,9 @@ function getBarBorderColor(last, open) {
 
 $.post('Home/Top10Trades').done((result) => {
     renderTop10TradesChart(result);
+});
+
+
+$.post('Home/Top10Volumes').done((result) => {
+    renderTop10VolumesChart(result);
 });

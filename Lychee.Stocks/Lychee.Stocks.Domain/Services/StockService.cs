@@ -6,9 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using LazyCache;
 using Lychee.Caching.Interfaces;
-using Lychee.CommonHelper.Extensions;
+using Lychee.CommonHelper.DictionaryExtensions;
 using Lychee.Domain.Interfaces;
 using Lychee.Infrastructure.Interfaces;
+using Lychee.Stocks.Common.Interfaces;
 using Lychee.Stocks.Domain.Constants;
 using Lychee.Stocks.Domain.Helpers;
 using Lychee.Stocks.Domain.Interfaces.Repositories;
@@ -19,6 +20,7 @@ using Lychee.Stocks.InvestagramsApi.Interfaces;
 using Lychee.Stocks.InvestagramsApi.Models.Calendar;
 using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Omu.ValueInjecter;
+using Omu.ValueInjecter.Injections;
 using Serilog;
 using SuspendedStock = Lychee.Stocks.InvestagramsApi.Models.Stocks.SuspendedStock;
 
@@ -30,51 +32,74 @@ namespace Lychee.Stocks.Domain.Services
         private readonly ISettingService _settingService;
         private readonly IRepository<Stock> _stockRepository;
         private readonly IAppCache _cache;
-        private readonly ISuspendedStockRepository _suspendedStockRepository;
-        private readonly IBlockSaleStockRepository _blockSaleStockRepository;
         private readonly IInvestagramsApiCachedService _investagramsApiService;
         private readonly ICookieProviderService _cookieProviderService;
         private readonly IStockScoreService _stockScoreService;
         private readonly IStockHistoryRepository _stockHistoryRepository;
         private readonly IStockMarketStatusRepository _stockMarketStatusRepository;
         private readonly ICandleStickAnalyzerService _candleStickAnalyzerService;
+        private readonly IEventRepository _eventRepository;
 
         private const string CACHE_MORNING_STAR_DOJI = "MorningStarDoji-{0}";
         private const string CACHE_HAMMER = "Hammer-{0}";
         private const string CACHE_LATEST_STOCK_HISTORY = "LatestStockHistory-{0}";
         private const string CACHE_HIGHEST_TRADES = "HighestTrades-{0}";
+        private const string CACHE_HIGHEST_VOLUMES = "HighestVolumes-{0}";
 
         public StockService(IDatabaseFactory databaseFactory, ISettingService settingService,
             IRepository<Stock> stockRepository,
             IStockHistoryRepository stockHistoryRepository, ICachingFactory cacheFactory,
-            ISuspendedStockRepository suspendedStockRepository, IBlockSaleStockRepository blockSaleStockRepository,
             ICookieProviderService cookieProviderService, IInvestagramsApiCachedService investagramsApiService,
-            IStockScoreService stockScoreService, IStockMarketStatusRepository stockMarketStatusRepository, ICandleStickAnalyzerService candleStickAnalyzerService)
+            IStockScoreService stockScoreService, IStockMarketStatusRepository stockMarketStatusRepository, ICandleStickAnalyzerService candleStickAnalyzerService, IEventRepository eventRepository)
         {
             _databaseFactory = databaseFactory;
             _settingService = settingService;
             _stockRepository = stockRepository;
             _stockHistoryRepository = stockHistoryRepository;
-            _suspendedStockRepository = suspendedStockRepository;
-            _blockSaleStockRepository = blockSaleStockRepository;
             _cookieProviderService = cookieProviderService;
             _investagramsApiService = investagramsApiService;
             _stockScoreService = stockScoreService;
             _stockMarketStatusRepository = stockMarketStatusRepository;
             _candleStickAnalyzerService = candleStickAnalyzerService;
+            _eventRepository = eventRepository;
             _cache = cacheFactory.GetCacheService();
         }
 
-        public async Task SaveLatestStockUpdate()
+        public void SaveLatestStockUpdate()
         {
             var stocks = new List<ScreenerResponse>();
             var realTimePrice = new List<RealTimePrice>();
 
+            var events = new List<Event>();
+
+            ClearCache();
+
             //Save stocks
             var tasks = new List<Task>
             {
-                Task.Run(async () => await _investagramsApiService.GetAllLatestStocks()).ContinueWith(x => stocks.AddRange(x.Result)),
-                Task.Run(async () => await _investagramsApiService.GetAllActiveStockPriceRealTime().ContinueWith(x => realTimePrice.AddRange(x.Result)))
+                Task.Run(async () => await _investagramsApiService.GetAllLatestStocks()).ContinueWith(x =>
+                {
+                    stocks.AddRange(x.Result);
+                    AddEvents(x.Result.OrderByDescending(e => e.Volume).Take(10), events, EventTypes.HighestVolume);
+                }),
+                Task.Run(async () => await _investagramsApiService.GetAllActiveStockPriceRealTime()).ContinueWith(x =>
+                {
+                    realTimePrice.AddRange(x.Result);
+                    AddEvents(x.Result.OrderByDescending(e => e.Trades).Take(10), events, EventTypes.HighestTrade);
+                }),
+                
+                //adding events
+                Task.Run(async() => await _investagramsApiService.GetMarketStatus(DateTime.Now)).ContinueWith(x =>
+                {
+                    AddEvents(x.Result.MostActive, events, EventTypes.MostActive);
+                    AddEvents(x.Result.TopGainer, events, EventTypes.TopWinner);
+                    AddEvents(x.Result.TopLoser, events, EventTypes.TopLoser);
+                }),
+
+                Task.Run(async () => await _investagramsApiService.Get52WeekLow()).ContinueWith(x => AddEvents(x.Result, events, EventTypes._52WeekLow)),
+                Task.Run(async () => await _investagramsApiService.GetOversoldStocks()).ContinueWith(x => AddEvents(x.Result, events, EventTypes.Oversold)),
+                Task.Run(async () => await _investagramsApiService.GetTrendingStocks()).ContinueWith(x => AddEvents(x.Result, events, EventTypes.Trending)),
+                Task.Run(async () => await _investagramsApiService.GreenVolume()).ContinueWith(x => AddEvents(x.Result, events, EventTypes.GreenVolume)),
             };
             Task.WaitAll(tasks.ToArray());
 
@@ -82,7 +107,22 @@ namespace Lychee.Stocks.Domain.Services
                 throw new System.Exception("Please update investa cookie");
 
             SaveStocks(stocks, realTimePrice);
-            ClearCache();
+            SaveEvents(events);
+        }
+
+        private void AddEvents(IEnumerable<IStock> stockCodes, List<Event> events, string eventType)
+        {
+            if (stockCodes == null) return;
+
+            stockCodes = stockCodes.ToList();
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+
+            events.AddRange(stockCodes.Select(e => new Event
+            {
+                StockCode = e.StockCode,
+                Date = date,
+                EventType = eventType
+            }));
         }
 
         /// <summary>
@@ -140,7 +180,7 @@ namespace Lychee.Stocks.Domain.Services
             }
         }
 
-        protected void SaveStocks(List<ScreenerResponse> stocks, List<RealTimePrice> realTimePrice)
+        private void SaveStocks(List<ScreenerResponse> stocks, List<RealTimePrice> realTimePrice)
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
             var allStocks = _stockHistoryRepository.GetAllStocksByDate(date);
@@ -167,6 +207,34 @@ namespace Lychee.Stocks.Domain.Services
             }
 
             _databaseFactory.SaveChanges();
+        }
+
+        private void SaveEvents(List<Event> events)
+        {
+            var date = _stockMarketStatusRepository.GetLastTradingDate();
+            var allEvents = _eventRepository.GetEvents(date);
+
+            foreach (var ev in events)
+            {
+                if (allEvents != null && allEvents.ContainsKey((ev.StockCode, ev.EventType)))
+                {
+                    var item = allEvents.GetValue(ev.StockCode, ev.EventType);
+                    _eventRepository.Attach(item);
+                    item.InjectFrom(new LoopInjection(new[]
+                    {
+                        nameof(Event.EventId)
+                    }),ev);
+                }
+                else
+                {
+                    _eventRepository.Add(ev);
+                }
+            }
+
+            _eventRepository.SaveChanges();
+
+            if (allEvents == null)
+                _cache.Remove($"Events-{date:MMdd}");
         }
 
         public Dictionary<string, StockHistory> GetLatestStockHistory()
@@ -199,78 +267,6 @@ namespace Lychee.Stocks.Domain.Services
             return _stockRepository.ExecuteSqlQuery<StockTrendReportModel>(
                 "EXEC RetrieveStockTrendReport @Days, @LosingWinningStreak, @Trend", paramDays,
                 paramLosingWinningStreak, paramTrend).ToList();
-        }
-
-        public Task<ICollection<SuspendedStock>> GetSuspendedStocks()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public virtual async Task<LatestStockMarketActivityVm> GetSuspendedAndBlockSaleStocks()
-        {
-            return await _investagramsApiService.GetLatestStockMarketActivity();
-        }
-
-
-        public virtual async Task UpdateSuspendedStocks()
-        {
-            //var suspendedStocks = await GetSuspendedStocks();
-            //if (!suspendedStocks.Any())
-            //    return;
-
-            //var lastSuspensionDate = _suspendedStockRepository.GetLastStockSuspensionDate();
-
-            //if (lastSuspensionDate != suspendedStocks.First().Date)
-            //    _suspendedStockRepository.SaveSuspendedStocks(suspendedStocks);
-        }
-
-        public virtual async Task<ICollection<StockBlockSale>> GetBlockSaleStocks()
-        {
-            //var data = _cache.Get<LatestStockMarketActivityVm>(CacheNames.StockMarketActivityVm);
-            //if (data != null)
-            //    return data.StockBlockSaleList;
-
-
-            //var result = await _investagramsApiRepository.GetLatestStockMarketActivity();
-            //var blockSaleList = result.StockBlockSaleList.ToList();
-
-            //_cache.Add(CacheNames.StockMarketActivityVm, result, TimeSpan.FromHours(12));
-
-            //return blockSaleList;
-            return null;
-        }
-
-        /// <summary>
-        /// Block Sales are those stocks that someone might buy a lot. This is a good indicator that it may go up
-        /// </summary>
-        public virtual async Task UpdateBlockSaleStocks()
-        {
-            //var blockSaleStocks = await GetBlockSaleStocks();
-            //if (!blockSaleStocks.Any())
-            //    return;
-
-            //var lastBlockSaleDate = _blockSaleStockRepository.GetLastBlockSaleStocksDate();
-
-            //if (lastBlockSaleDate != blockSaleStocks.First().Date)
-                //_blockSaleStockRepository.SaveBlockSaleStocks(blockSaleStocks);
-        }
-
-        public virtual async Task UpdateStocks(IEnumerable<string> stockCodes)
-        {
-            //var stockList = new List<ViewStock>();
-            //var suspendedStocksToday = new List<string>();
-
-            ////todo: exclude the suspended stocks from getting details in api
-
-            //var tasks = new List<Task<ViewStock>>();
-            //foreach (var code in stockCodes)
-            //{
-            //    tasks.Add(_investagramsApiRepository.ViewStock(code));
-            //}
-
-            //await Task.WhenAll(tasks);
-            //stockList = tasks.Select(x => x.Result).ToList();
         }
 
         public async Task<StockScore> GetStockTotalScore(string stockCode)
@@ -371,6 +367,15 @@ namespace Lychee.Stocks.Domain.Services
 
             var cacheKey = string.Format(CACHE_HIGHEST_TRADES, $"{date: MMdd}");
             return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetTop10HighesTrades(date.Value));
+        }
+
+        public List<StockHistory> GetTop10HighestVolumes(DateTime? date = null)
+        {
+            if (date == null)
+                date = _stockMarketStatusRepository.GetLastTradingDate();
+
+            var cacheKey = string.Format(CACHE_HIGHEST_VOLUMES, $"{date: MMdd}");
+            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetTop10HighesVolumes(date.Value));
         }
 
         public List<StockHistory> GetStockWithSteepDown()
@@ -498,30 +503,6 @@ namespace Lychee.Stocks.Domain.Services
             _cache.SafeRemove<List<StockHistory>>(cacheKey);
         }
 
-        private void UpdateBlockSale(ICollection<StockBlockSale> stockBlockSales)
-        {
-            if (!stockBlockSales.Any())
-                return;
-
-            var date = stockBlockSales.First().Date;
-            var lastSuspendedDate = _blockSaleStockRepository.GetLastBlockSaleStocksDate();
-
-            if (date.Date != lastSuspendedDate?.Date)
-                _blockSaleStockRepository.SaveBlockSaleStocks(stockBlockSales);
-        }
-
-        private void UpdateSuspendedStocks(ICollection<InvestagramsApi.Models.Stocks.SuspendedStock> suspendedStocks)
-        {
-            if (!suspendedStocks.Any())
-                return;
-
-            var date = suspendedStocks.First().Date;
-            var lastSuspendedDate = _suspendedStockRepository.GetLastStockSuspensionDate();
-
-            if (date.Date != lastSuspendedDate?.Date)
-                _suspendedStockRepository.SaveSuspendedStocks(suspendedStocks);
-        }
-
         private void ClearCache()
         {
             ClearStockTradeAverageCache();
@@ -530,6 +511,8 @@ namespace Lychee.Stocks.Domain.Services
             ClearHammers();
             ClearLatestStockHistory();
             ClearHighestTradesCache();
+
+            _investagramsApiService.ClearAllCache();
         }
 
         private ChartHistory MapToChartHistory(List<StockHistory> stockHistory)

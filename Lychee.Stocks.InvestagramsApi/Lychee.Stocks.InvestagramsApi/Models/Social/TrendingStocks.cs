@@ -1,12 +1,18 @@
 ﻿using System;
+using Lychee.Stocks.Common.Interfaces;
 
 namespace Lychee.Stocks.InvestagramsApi.Models.Social
 {
-    public class TrendingStock
+    public class TrendingStock : IStock
     {
         public DateTime TrendingDate { get; set; }
         public Stock Stock { get; set; }
         public int Count { get; set; }
+        public string StockCode
+        {
+            get => Stock.StockCode;
+            set { }
+        }
     }
 
     public class Stock

@@ -10,22 +10,13 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
 {
     public interface IStockService
     {
-        Task SaveLatestStockUpdate();
-
-        Task<LatestStockMarketActivityVm> GetSuspendedAndBlockSaleStocks();
+        void SaveLatestStockUpdate();
 
         DateTime GetLastDataUpdates();
 
         ICollection<StockTrendReportModel> GetStockTrendReport(int days, int losingWinningStreak,
             string trend = "Bearish");
 
-        Task<ICollection<InvestagramsApi.Models.Stocks.SuspendedStock>> GetSuspendedStocks();
-        Task UpdateSuspendedStocks();
-
-        Task<ICollection<StockBlockSale>> GetBlockSaleStocks();
-        Task UpdateBlockSaleStocks();
-
-        Task UpdateStocks(IEnumerable<string> stockCodes);
 
         void UpdateInvestagramsCookie(string value);
         
@@ -50,5 +41,7 @@ namespace Lychee.Stocks.Domain.Interfaces.Services
         Dictionary<string, StockHistory> GetLatestStockHistory();
 
         List<StockHistory> GetTop10HighestTrades(DateTime? date = null);
+
+        List<StockHistory> GetTop10HighestVolumes(DateTime? date = null);
     }
 }

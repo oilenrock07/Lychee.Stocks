@@ -15,13 +15,11 @@ namespace Lychee.Stocks.Entities
         public virtual IDbSet<TechnicalAnalysis> TechnicalAnalysis { get; set; }
 
         public virtual IDbSet<MyPrediction> Predictions { get; set; }
-
-        public virtual IDbSet<SuspendedStock> SuspendedStocks { get; set; }
-        public virtual IDbSet<BlockSaleStock> BlockSaleStocks { get; set; }
-
         public virtual IDbSet<Watchlist> WatchLists { get; set; }
 
         public virtual IDbSet<WatchListGroup> WatchListGroups { get; set; }
+
+        public virtual IDbSet<Event> Events { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -33,6 +31,8 @@ namespace Lychee.Stocks.Entities
             modelBuilder.Entity<Watchlist>().Property(x => x.Entry).HasPrecision(18, 5);
             modelBuilder.Entity<Watchlist>().Property(x => x.Cutloss).HasPrecision(18, 5);
             modelBuilder.Entity<Watchlist>().Property(x => x.Target).HasPrecision(18, 5);
+
+            modelBuilder.Entity<Event>().Property(x => x.Decimal1).HasPrecision(18, 5);
         }
     }
 }

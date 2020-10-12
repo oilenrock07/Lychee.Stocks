@@ -47,12 +47,6 @@
     <Reference Include="Lychee.Caching, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Caching.1.0.1\lib\net40\Lychee.Caching.dll</HintPath>
     </Reference>
-    <Reference Include="Lychee.CommonHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.CommonHelper.2.0.0\lib\net40\Lychee.CommonHelper.dll</HintPath>
-    </Reference>
-    <Reference Include="Lychee.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lychee.Domain.1.3.1\lib\net40\Lychee.Domain.dll</HintPath>
-    </Reference>
     <Reference Include="Lychee.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lychee.Entities.1.1.1\lib\net40\Lychee.Entities.dll</HintPath>
     </Reference>
@@ -302,11 +296,10 @@
     <Compile Include="Exception\InvestagramsException.cs" />
     <Compile Include="Helpers\AppCacheExtension.cs" />
     <Compile Include="Helpers\StockExtension.cs" />
+    <Compile Include="Interfaces\Repositories\IEventRepository.cs" />
     <Compile Include="Interfaces\Repositories\IStockHistoryRepository.cs" />
     <Compile Include="Interfaces\Repositories\IStockDataRepository.cs" />
-    <Compile Include="Interfaces\Repositories\IBlockSaleStockRepository.cs" />
     <Compile Include="Interfaces\Repositories\IStockMarketStatusRepository.cs" />
-    <Compile Include="Interfaces\Repositories\ISuspendedStockRepository.cs" />
     <Compile Include="Interfaces\Repositories\IWatchListRepository.cs" />
     <Compile Include="Interfaces\Services\ICandleStickAnalyzerService.cs" />
     <Compile Include="Interfaces\Services\IInvestagramsApiCachedService.cs" />
@@ -319,6 +312,7 @@
     <Compile Include="Models\ReasonScore.cs" />
     <Compile Include="Models\ShouldIBuyStockModel.cs" />
     <Compile Include="Models\StockTradeAverage.cs" />
+    <Compile Include="Repositories\EventRepository.cs" />
     <Compile Include="Repositories\WatchListRepository.cs" />
     <Compile Include="Services\CandleStickAnalyzer.cs" />
     <Compile Include="Services\InvestagramsApiCachedService.cs" />
@@ -329,8 +323,6 @@
     <Compile Include="Models\StockScore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\StockHistoryRepository.cs" />
-    <Compile Include="Repositories\BlockSaleStockRepository.cs" />
-    <Compile Include="Repositories\SuspendedStockRepository.cs" />
     <Compile Include="Services\PredictionService.cs" />
     <Compile Include="Services\StockScoreService.cs" />
     <Compile Include="Services\StockService.cs" />
@@ -340,6 +332,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Lychee.CommonHelper\Lychee.CommonHelper\Lychee.CommonHelper\Lychee.CommonHelper.csproj">
+      <Project>{e5d326ba-6be1-4763-aaed-dd95d8db1f16}</Project>
+      <Name>Lychee.CommonHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Lychee.Domain\Lychee.Domain\Lychee.Domain\Lychee.Domain.csproj">
+      <Project>{01b8d458-8f85-48ed-bfed-f9d3c694aa8a}</Project>
+      <Name>Lychee.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi\Lychee.Stocks.InvestagramsApi.csproj">
       <Project>{273498e1-0613-4baa-927f-eee07b2b839a}</Project>
       <Name>Lychee.Stocks.InvestagramsApi</Name>
