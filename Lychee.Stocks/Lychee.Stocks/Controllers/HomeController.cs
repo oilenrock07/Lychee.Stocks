@@ -175,6 +175,12 @@ namespace Lychee.Stocks.Controllers
             return Json(stocks, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult Top10Value()
+        {
+            var stocks = _stockService.GetTop10HighestValue();
+            return Json(stocks, JsonRequestBehavior.AllowGet);
+        }
+
         private List<T> GetStocksWithAverageTradesAbove100<T>(List<T> list) where T: IStock
         {
             var stocksWithAvgTradesAbove100 = _stockService.GetStockTradeAverages(2, 100);

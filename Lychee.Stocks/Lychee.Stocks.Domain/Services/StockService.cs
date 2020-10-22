@@ -22,7 +22,6 @@ using Lychee.Stocks.InvestagramsApi.Models.Stocks;
 using Omu.ValueInjecter;
 using Omu.ValueInjecter.Injections;
 using Serilog;
-using SuspendedStock = Lychee.Stocks.InvestagramsApi.Models.Stocks.SuspendedStock;
 
 namespace Lychee.Stocks.Domain.Services
 {
@@ -45,6 +44,7 @@ namespace Lychee.Stocks.Domain.Services
         private const string CACHE_LATEST_STOCK_HISTORY = "LatestStockHistory-{0}";
         private const string CACHE_HIGHEST_TRADES = "HighestTrades-{0}";
         private const string CACHE_HIGHEST_VOLUMES = "HighestVolumes-{0}";
+        private const string CACHE_HIGHEST_VALUE = "HighestValue-{0}";
 
         public StockService(IDatabaseFactory databaseFactory, ISettingService settingService,
             IRepository<Stock> stockRepository,
@@ -378,6 +378,15 @@ namespace Lychee.Stocks.Domain.Services
             return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetTop10HighesVolumes(date.Value));
         }
 
+        public List<StockHistory> GetTop10HighestValue(DateTime? date = null)
+        {
+            if (date == null)
+                date = _stockMarketStatusRepository.GetLastTradingDate();
+
+            var cacheKey = string.Format(CACHE_HIGHEST_VALUE, $"{date: MMdd}");
+            return _cache.GetOrAdd(cacheKey, () => _stockHistoryRepository.GetTop10HighesValue(date.Value));
+        }
+
         public List<StockHistory> GetStockWithSteepDown()
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
@@ -466,6 +475,15 @@ namespace Lychee.Stocks.Domain.Services
             _cache.SafeRemove<List<StockHistory>>(cacheKey);
         }
 
+        private void ClearHighestValueCache(DateTime? date = null)
+        {
+            if (date == null)
+                date = _stockMarketStatusRepository.GetLastTradingDate();
+
+            var cacheKey = string.Format(CACHE_HIGHEST_VALUE, $"{date: MMdd}");
+            _cache.SafeRemove<List<StockHistory>>(cacheKey);
+        }
+
         private void ClearStockTradeAverageCache()
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
@@ -500,7 +518,7 @@ namespace Lychee.Stocks.Domain.Services
         {
             var date = _stockMarketStatusRepository.GetLastTradingDate();
             var cacheKey = string.Format(CACHE_LATEST_STOCK_HISTORY, date.ToString("MMdd"));
-            _cache.SafeRemove<List<StockHistory>>(cacheKey);
+            _cache.SafeRemove<Dictionary<string, StockHistory>>(cacheKey);
         }
 
         private void ClearCache()
@@ -511,6 +529,7 @@ namespace Lychee.Stocks.Domain.Services
             ClearHammers();
             ClearLatestStockHistory();
             ClearHighestTradesCache();
+            ClearHighestValueCache();
 
             _investagramsApiService.ClearAllCache();
         }

@@ -20,10 +20,9 @@ namespace Lychee.Stocks.Domain.Repositories
         public virtual DateTime GetLastTradingDate()
         {
             var lastTradingDate = _cache.Get<DateTime>(CacheNames.LastTradingDateCacheKey);
-            if (lastTradingDate != DateTime.Now)
+            if (lastTradingDate.Date != DateTime.Now.Date)
             {
-                if (lastTradingDate == DateTime.MinValue)
-                    lastTradingDate = DateTime.Now;
+                lastTradingDate = DateTime.Now;
 
                 if (lastTradingDate.DayOfWeek == DayOfWeek.Sunday)
                     lastTradingDate = lastTradingDate.AddDays(-2);
@@ -32,7 +31,7 @@ namespace Lychee.Stocks.Domain.Repositories
 
                 //consider holiday
 
-                _cache.Add(CacheNames.LastTradingDateCacheKey, lastTradingDate, NextClosingDateTime());
+                _cache.Add(CacheNames.LastTradingDateCacheKey, lastTradingDate.Date, NextClosingDateTime());
             }
 
 

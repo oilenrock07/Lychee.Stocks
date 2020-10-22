@@ -24,7 +24,7 @@ namespace Lychee.Stocks.Domain.Services
 
         private const string CACHE_GREEN_VOLUME = "GreenVolume-{0}";
         private const string CACHE_LATEST_MARKET_ACTIVITY = "LatestStockMarketActivity-{0}";
-
+        private const string CACHE_TRENDING = "Trending";
 
 
         private IEnumerable<string> AllCacheKeys
@@ -34,6 +34,7 @@ namespace Lychee.Stocks.Domain.Services
                 var date = $"{DateTime.Now:MMdd}";
                 yield return string.Format(CACHE_LATEST_MARKET_ACTIVITY, date);
                 yield return string.Format(CACHE_GREEN_VOLUME, date);
+                yield return CACHE_TRENDING;
             }
         }
 
@@ -203,8 +204,7 @@ namespace Lychee.Stocks.Domain.Services
 
         public override async Task<List<TrendingStock>> GetTrendingStocks()
         {
-            var cacheKey = $"TrendingStocks-{DateTime.Now:MMdd}";
-            return await _cache.GetOrAddAsync(cacheKey, () => base.GetTrendingStocks(), _marketStatusRepository.NextClosingDateTime());
+            return await _cache.GetOrAddAsync(CACHE_TRENDING, () => base.GetTrendingStocks(), _marketStatusRepository.NextClosingDateTime());
         }
 
         public override async Task<MarketStatus> GetMarketStatus(DateTime date)

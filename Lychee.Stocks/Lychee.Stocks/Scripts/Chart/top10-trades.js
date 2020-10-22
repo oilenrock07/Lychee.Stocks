@@ -42,6 +42,23 @@ function renderTop10VolumesChart(result) {
     renderHorizontalChart(ctx, horizontalBarChartData);
 }
 
+function renderTop10ValueChart(result) {
+    var ctx = document.getElementById('Top10ValueCanvas').getContext('2d');
+
+    var horizontalBarChartData = {
+        labels: result.map(x => x.StockCode),
+        datasets: [{
+            backgroundColor: result.map(x => getBarColor(x.Last, x.Open)),
+            borderColor: result.map(x => getBarBorderColor(x.Last, x.Open)),
+            borderWidth: 1,
+            data: result.map(x => x.Value)
+        }]
+    };
+
+    renderHorizontalChart(ctx, horizontalBarChartData);
+}
+
+
 function renderHorizontalChart(ctx, horizontalBarChartData) {
     var chart = new Chart(ctx, {
         type: 'horizontalBar',
@@ -98,4 +115,8 @@ $.post('Home/Top10Trades').done((result) => {
 
 $.post('Home/Top10Volumes').done((result) => {
     renderTop10VolumesChart(result);
+});
+
+$.post('Home/Top10Value').done((result) => {
+    renderTop10ValueChart(result);
 });
